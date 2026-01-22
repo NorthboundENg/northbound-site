@@ -81,7 +81,7 @@ const Section = ({
   children: React.ReactNode;
 }) => (
   <section id={id} className="relative py-20">
-  {/* eliminar esa linea <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/40 to-slate-950 pointer-events-none" />*/}
+    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/40 to-slate-950 pointer-events-none" />
     <Container>
       <motion.h2
         initial={{ opacity: 0, y: 16 }}
@@ -109,7 +109,7 @@ const Section = ({
 );
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
-  <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg backdrop-blur">
+  <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-lg backdrop-blur">
     <div className="text-3xl font-bold text-white">{value}</div>
     <div className="text-slate-400 mt-1">{label}</div>
   </div>
@@ -130,7 +130,7 @@ const Card = ({
   title: string;
   children: React.ReactNode;
 }) => (
-  <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+  <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
     <div className="flex items-center gap-2 text-cyan-300">
       {icon}
       <span className="font-medium">{title}</span>
@@ -154,7 +154,7 @@ const UseCaseCard = ({
   outcomes: string[];
   to: string;
 }) => (
-  <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg backdrop-blur flex flex-col">
+  <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-lg backdrop-blur flex flex-col">
     <div className="flex items-center justify-between gap-3">
       <div className="flex items-center gap-2 text-cyan-300">
         {icon}
@@ -168,18 +168,18 @@ const UseCaseCard = ({
 
     <ul className="mt-4 space-y-2 text-sm text-slate-300">
       {outcomes.map((t, i) => (
-  <li key={i} className="flex gap-3 items-start">
-    <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-    <span className="leading-snug">{t}</span>
-  </li>
-))}
+        <li key={i} className="flex gap-3">
+          <CheckCircle2 className="w-5 h-5 text-cyan-400" />
+          <span>{t}</span>
+        </li>
+      ))}
     </ul>
 
     <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
       <span className="text-sm text-slate-400">Read the full story</span>
       <Link
         to={to}
-        className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
+        className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950/40 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
       >
         View
         <ArrowRight className="w-4 h-4" />
@@ -189,7 +189,7 @@ const UseCaseCard = ({
 );
 
 const TopNav = () => (
-  <header className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950 backdrop-blur">
+  <header className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
     <Container>
       <div className="h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
@@ -374,7 +374,8 @@ function HomePage() {
           </div>
         </Container>
       </section>
-         {/* SUMMARY */}
+
+      {/* SUMMARY */}
       <Section
         title="Executive Summary"
         subtitle="Maintenance efficiency is no longer a future aspiration - it is a mandatory competitive advantage."
@@ -456,7 +457,7 @@ function HomePage() {
               text: "Lost reliability drives higher total cost of ownership and unplanned work.",
             },
           ].map((c, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+            <div key={i} className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
               <div className="flex items-center gap-2 text-cyan-300">
                 {c.icon}
                 <span className="font-medium">{c.title}</span>
@@ -475,51 +476,12 @@ function HomePage() {
       >
         <UseCasesGrid />
       </Section>
-      {/* CONTACT */}
-<Section
-  id="contact"
-  title="Request an Assessment"
-  subtitle="Start with a quick readiness assessment to identify value pockets, align governance, and build a roadmap to predictable performance."
->
-  <div className="relative p-8 md:p-12 rounded-3xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-    <div>
-      <div className="flex items-center gap-3 text-cyan-300">
-        <NBELogo />
-        <span className="font-semibold">Northbound Engineering Services</span>
-      </div>
-
-      <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">Let’s evaluate your reliability readiness</h3>
-
-      <p className="mt-2 text-slate-300 max-w-2xl">
-        Email us to schedule an initial assessment and discuss your current constraints, data readiness, and highest-impact opportunities.
-      </p>
-
-      <p className="mt-4 text-sm text-slate-400">
-        Email:{" "}
-        <a
-          href="mailto:info@northboundengineering.com?subject=Assessment%20Request"
-          className="text-cyan-300 hover:text-cyan-200 underline underline-offset-4"
-        >
-          info@northboundengineering.com
-        </a>
-      </p>
-    </div>
-
-    <a
-      href="mailto:info@northboundengineering.com?subject=Assessment%20Request"
-      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-    >
-      Request an Assessment
-    </a>
-  </div>
-</Section>
-
 
       {/* CTA */}
       <section className="relative py-20 border-t border-slate-800/60">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-fuchsia-500/10 to-transparent" />
         <Container>
-          <div className="relative p-8 md:p-12 rounded-3xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="relative p-8 md:p-12 rounded-3xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-3 text-cyan-300">
                 <NBELogo />
@@ -590,14 +552,14 @@ function UseCaseFooterNav({ prev, next }: { prev?: string; next?: string }) {
             {prev ? (
               <Link
                 to={prev}
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950/40 border border-slate-800 hover:bg-slate-900 transition"
               >
                 <ArrowRight className="w-4 h-4 rotate-180" /> Prev
               </Link>
             ) : (
               <Link
                 to="/use-cases"
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950/40 border border-slate-800 hover:bg-slate-900 transition"
               >
                 <ArrowRight className="w-4 h-4 rotate-180" /> All Use Cases
               </Link>
@@ -605,7 +567,7 @@ function UseCaseFooterNav({ prev, next }: { prev?: string; next?: string }) {
 
             <Link
               to="/"
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950/40 border border-slate-800 hover:bg-slate-900 transition"
             >
               Home
             </Link>
@@ -614,14 +576,14 @@ function UseCaseFooterNav({ prev, next }: { prev?: string; next?: string }) {
           {next ? (
             <Link
               to={next}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950/40 border border-slate-800 hover:bg-slate-900 transition"
             >
               Next <ArrowRight className="w-4 h-4" />
             </Link>
           ) : (
             <Link
               to="/use-cases"
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950/40 border border-slate-800 hover:bg-slate-900 transition"
             >
               All Use Cases <ArrowRight className="w-4 h-4" />
             </Link>
@@ -636,19 +598,6 @@ function UseCaseFooterNav({ prev, next }: { prev?: string; next?: string }) {
 function UseCase1Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 1 — Zero Service Quality Losses | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How maintenance effectiveness (not response speed) delivered six months of zero equipment-driven quality losses and tripled MTBF in a service-critical manufacturing facility."
-  />
-  <meta property="og:title" content="Use Case 1 — Zero Service Quality Losses" />
-  <meta
-    property="og:description"
-    content="Maintenance effectiveness delivered sustained quality stability—MTBF tripled and quality losses reached zero for six months."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -706,7 +655,7 @@ function UseCase1Page() {
         subtitle="A service-critical manufacturing operation where quality depends on equipment reliability."
       >
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The organization operates a cementing plant manufacturing facility in Texas, supporting service-critical
               operations where equipment reliability directly impacts service quality and customer commitments.
@@ -771,7 +720,7 @@ function UseCase1Page() {
 
       <Section title="3) Objectives" subtitle="Shift from cosmetic KPIs to real reliability and quality stability.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="flex items-center gap-2 text-cyan-300">
               <Target className="w-5 h-5" />
               <span className="font-medium">Leadership expectations</span>
@@ -792,7 +741,7 @@ function UseCase1Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="text-white font-medium">Priority</div>
             <p>
               The priority was not improved reporting or superficial metrics - it was reliability, quality stability,
@@ -808,7 +757,7 @@ function UseCase1Page() {
 
       <Section title="4) Approach and Solution" subtitle="Failure-mode strategy redesign and effectiveness-based work.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <ClipboardList className="w-5 h-5" />
               <span className="font-medium">What NBE analyzed</span>
@@ -832,7 +781,7 @@ function UseCase1Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <Wrench className="w-5 h-5" />
               <span className="font-medium">Strategy redesign</span>
@@ -900,7 +849,7 @@ function UseCase1Page() {
 
       <Section title="7) Business Impact" subtitle="Maintenance became a strategic quality enabler.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <p>
               The initiative demonstrated that maintenance effectiveness - not responsiveness - is the foundation of
               service quality. Stability increased confidence to meet higher demand while reducing operational risk.
@@ -920,7 +869,7 @@ function UseCase1Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Key takeaways</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -949,19 +898,6 @@ function UseCase1Page() {
 function UseCase2Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 2 — From Availability to Capital Discipline | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How telematics and ROI dashboards reframed utilization economically, reduced CAPEX growth ~50%, and increased fleet flexibility through a disciplined rental strategy."
-  />
-  <meta property="og:title" content="Use Case 2 — From Availability to Capital Discipline" />
-  <meta
-    property="og:description"
-    content="Telematics-based economic utilization and transparent ROI dashboards reduced CAPEX growth and improved planning discipline."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1019,7 +955,7 @@ function UseCase2Page() {
         subtitle="Availability pressure often drives excess owned fleets - at the expense of capital efficiency."
       >
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               Capital-intensive construction businesses operate under constant execution pressure: schedules are
               aggressive, margins are tight, and delays translate directly into financial losses. Equipment availability
@@ -1073,14 +1009,14 @@ function UseCase2Page() {
 
       <Section title="3) Turning Insight" subtitle="Availability was masking planning inefficiency and capital risk.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               Service records suggested many assets accumulated far fewer productive hours than expected. The pattern
               was systemic and created resistance. Finance recognized the capital risk: with the equipment base
               approaching USD 200M, small inefficiencies destroyed large value.
             </p>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Key insight</div>
             <p className="mt-3">
               The organization was not suffering from lack of availability; it was suffering from lack of capital
@@ -1123,7 +1059,7 @@ function UseCase2Page() {
 
       <Section title="5) Capital Allocation and ROI Model" subtitle="Make idle capital visible with a project-level cost of capital.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="text-white font-medium">Project capital model</div>
             <ul className="space-y-2 text-sm">
               {[
@@ -1139,7 +1075,7 @@ function UseCase2Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Decision question changed</div>
             <p className="mt-3">From: Do we have enough equipment?</p>
             <p className="mt-2">To: Can this project economically justify the capital it is consuming?</p>
@@ -1175,7 +1111,7 @@ function UseCase2Page() {
 
       <Section title="7) Illustrative Example" subtitle="High-capacity cranes: from excess capacity to high-utilization execution.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               One project planned continuous use of five cranes (about USD 1.5M each) and still rented additional cranes
               due to perceived availability risk. Maintenance ensured availability.
@@ -1185,7 +1121,7 @@ function UseCase2Page() {
               around three owned cranes at high utilization plus selective rental, and idle cranes were redeployed.
             </p>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Outcome</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1215,7 +1151,7 @@ function UseCase2Page() {
 
       <Section title="9) Lessons Learned" subtitle="What this case proves for asset-intensive businesses.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "Maintenance performance alone does not guarantee business efficiency",
@@ -1232,7 +1168,7 @@ function UseCase2Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="text-white font-medium">Design principle</div>
             <p>
               Use telematics to measure productive hours, then govern capital with ROI dashboards that make idle assets
@@ -1262,20 +1198,6 @@ function UseCase2Page() {
 function UseCase3Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 3 — IIoT for Mobile Energy Operations | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How an edge-first IIoT reliability platform with alarm governance improved production up to 30%, reduced NPT ~50%, and achieved ~5x ROI in six months under intermittent connectivity."
-  />
-  <meta property="og:title" content="Use Case 3 — IIoT for Mobile Energy Operations" />
-  <meta
-    property="og:description"
-    content="Edge-first IIoT plus disciplined alarm governance delivered higher production, lower NPT, and scalable reliability under changing conditions."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1333,7 +1255,7 @@ function UseCase3Page() {
         subtitle="Mobile field operations where reliability depends on coordinated assets and controls."
       >
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The organization is an energy-sector service provider whose core business depends on mobilizing high-power
               industrial equipment to deliver complex field services. Operations can require coordinated deployment of
@@ -1404,7 +1326,7 @@ function UseCase3Page() {
 
       <Section title="3) Objectives" subtitle="Improve efficiency and reliability without creating alarm fatigue or overload.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="flex items-center gap-2 text-cyan-300">
               <Target className="w-5 h-5" />
               <span className="font-medium">Program objectives</span>
@@ -1426,7 +1348,7 @@ function UseCase3Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="text-white font-medium">Success criteria</div>
             <p>
               Predictive maintenance needed to be actionable in dynamic field conditions without overwhelming crews.
@@ -1438,7 +1360,7 @@ function UseCase3Page() {
 
       <Section title="4) Approach and Solution" subtitle="Edge-first integration designed for low-bandwidth environments.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <Network className="w-5 h-5" />
               <span className="font-medium">Platform design</span>
@@ -1458,7 +1380,7 @@ function UseCase3Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <Layers className="w-5 h-5" />
               <span className="font-medium">Why edge-first</span>
@@ -1556,7 +1478,7 @@ function UseCase3Page() {
 
       <Section title="8) Business Impact" subtitle="IIoT evolved from experimental to a core operational capability.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "ROI of about 5x within six months",
@@ -1573,7 +1495,7 @@ function UseCase3Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Key takeaways</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1602,20 +1524,6 @@ function UseCase3Page() {
 function UseCase4Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 4 — Vendor SLAs & Reliability Governance | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How performance-based SLAs and governance turned outsourcing into a controlled reliability capability—reducing rework, clarifying scope boundaries, and stabilizing maintenance outcomes."
-  />
-  <meta property="og:title" content="Use Case 4 — Vendor SLAs That Enable Reliability" />
-  <meta
-    property="og:description"
-    content="Performance-based SLAs and acceptance criteria reduced contractor-driven quality issues and stabilized outcomes without adding headcount."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1670,7 +1578,7 @@ function UseCase4Page() {
 
       <Section title="1) Context" subtitle="Outsourcing was necessary - but outcomes were inconsistent.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The organization operated energy assets where maintenance quality directly impacted safety, availability,
               and service performance. Workforce volatility forced the company to supplement internal capability with
@@ -1712,7 +1620,7 @@ function UseCase4Page() {
 
       <Section title="3) Objectives" subtitle="Control outsourcing without increasing complexity.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="flex items-center gap-2 text-cyan-300">
               <Target className="w-5 h-5" />
               <span className="font-medium">What leadership needed</span>
@@ -1732,7 +1640,7 @@ function UseCase4Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <div className="text-white font-medium">Key principle</div>
             <p>
               Vendor management is a reliability discipline. Shift the relationship from time-based contracting to
@@ -1789,7 +1697,7 @@ function UseCase4Page() {
         </div>
 
         <div className="mt-10 grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">What changed</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1805,7 +1713,7 @@ function UseCase4Page() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Key takeaways</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1832,19 +1740,6 @@ function UseCase4Page() {
 function UseCase5Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 5 — Life-Stage Maintenance & -30% CAPEX YoY | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How telemetry-enabled life-stage strategy aligned deployment, maintenance depth, and risk—cutting capital requirements ~30% year over year without compromising safety or service quality."
-  />
-  <meta property="og:title" content="Use Case 5 — Life-Stage Maintenance Cutting CAPEX" />
-  <meta
-    property="og:description"
-    content="Telemetry plus life-stage strategy reduced capital requirements ~30% YoY by aligning deployment and maintenance to risk and value."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1899,7 +1794,7 @@ function UseCase5Page() {
 
       <Section title="1) Context" subtitle="Telemetry existed - but strategy and capital decisions were disconnected.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The client operated light-duty vehicles, trucks, and construction machinery supporting mission-critical
               services across diverse environments. Basic condition monitoring existed, but it was not driving
@@ -1986,7 +1881,7 @@ function UseCase5Page() {
 
       <Section title="5) Key takeaways" subtitle="Capital efficiency emerges when maintenance, risk, and deployment act as one system.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "Asset age should drive deployment - not just maintenance tasks",
@@ -2001,7 +1896,7 @@ function UseCase5Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Design principle</div>
             <p className="mt-3">
               Define life stages, then explicitly map environments, maintenance depth, and replacement timing to risk and
@@ -2031,19 +1926,6 @@ function UseCase5Page() {
 function UseCase6Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 6 — $12M Value via Local Refurbishment | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How a governed local refurbishment path reduced lead time from ~8 months to ~3 weeks, achieved ~120% of original life, and delivered ~$12M value during supply-chain disruption."
-  />
-  <meta property="og:title" content="Use Case 6 — $12M Value Through Local Refurbishment" />
-  <meta
-    property="og:description"
-    content="A controlled, IP- and QA-governed refurbishment program cut lead time dramatically and became a scalable operational standard."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2098,7 +1980,7 @@ function UseCase6Page() {
 
       <Section title="1) Context" subtitle="Centralized manufacturing became a critical risk under global disruption.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The client depended on specialized, IP-protected components manufactured exclusively in the U.S. Global
               logistics disruption and border restrictions exposed Latin American operations to service interruptions,
@@ -2142,7 +2024,7 @@ function UseCase6Page() {
 
       <Section title="4) Business impact" subtitle="Temporary crisis mitigation became a permanent operational standard.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "Reduced inventory and in-transit costs",
@@ -2157,7 +2039,7 @@ function UseCase6Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Key takeaways</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -2184,20 +2066,6 @@ function UseCase6Page() {
 function UseCase7Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 7 — TCO Business Case Delivering $50M+ Savings | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How operating-point validation, lifecycle cost modeling, and pilot proof created a defensible redesign decision—unlocking $50M+ savings and improving stability with better sensing and CBM readiness."
-  />
-  <meta property="og:title" content="Use Case 7 — TCO Business Case Delivering $50M+ Savings" />
-  <meta
-    property="og:description"
-    content="TCO + operating-point validation + field pilot proof enabled a defensible change with $50M+ savings and fewer unscheduled events."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2252,7 +2120,7 @@ function UseCase7Page() {
 
       <Section title="1) Context" subtitle="Gradual degradation normalized underperformance.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The component was deployed globally and was critical to production continuity. Operating boundaries had
               evolved over time due to technology and process changes, progressively pushing the component outside its
@@ -2327,7 +2195,7 @@ function UseCase7Page() {
 
       <Section title="5) Key takeaways" subtitle="Lifecycle performance economics beats unit-cost thinking.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "Gradual degradation can normalize underperformance",
@@ -2342,7 +2210,7 @@ function UseCase7Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Design principle</div>
             <p className="mt-3">Decide using lifecycle performance under actual operating points - not design assumptions.</p>
           </div>
@@ -2358,20 +2226,6 @@ function UseCase7Page() {
 function UseCase8Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 8 — Global Maintenance Maturity (MTBF x3) | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How a People–Process–Technology maturity assessment and phased roadmap delivered a pilot MTBF x3, record-low service-quality issues, and ~10% maintenance cost reduction with no CAPEX."
-  />
-  <meta property="og:title" content="Use Case 8 — Global Maintenance Maturity: MTBF x3 Without CAPEX" />
-  <meta
-    property="og:description"
-    content="A maturity roadmap across People, Process, and Technology delivered MTBF x3 and cost reduction—without capital replacement."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2427,7 +2281,7 @@ function UseCase8Page() {
 
       <Section title="1) Business context" subtitle="Leaders needed reliability and predictability across regions.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               With a large and aging asset base, the organization experienced inconsistent maintenance outcomes,
               recurrent failures, and limited transparency into true asset health. An ambitious CAPEX plan emerged as a
@@ -2506,7 +2360,7 @@ function UseCase8Page() {
 
       <Section title="5) Key takeaways" subtitle="Often, the constraint is discipline - not asset age.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "Execution gaps often drive failures attributed to aging assets",
@@ -2521,7 +2375,7 @@ function UseCase8Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Design principle</div>
             <p className="mt-3">Before replacing assets, validate whether maturity improvements can unlock performance.</p>
           </div>
@@ -2537,22 +2391,6 @@ function UseCase8Page() {
 function UseCase9Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 9 — Hydraulic System Sanitization & Reliability | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How contamination control, monitoring, standardized cleaning procedures, and technician training eliminated repeat pump failures—improving hydraulic MTBF up to 600% and raising utilization from 42% to ~60%."
-  />
-  <meta property="og:title" content="Use Case 9 — Hydraulic System Sanitization Restoring Reliability" />
-  <meta
-    property="og:description"
-    content="Sanitization discipline and contamination control restored hydraulic reliability—MTBF up to +600% and utilization improved materially."
-  />
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content="/images/og-cover.png" />
-<meta name="twitter:image" content="/images/og-cover.png" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2608,7 +2446,7 @@ function UseCase9Page() {
 
       <Section title="1) Context" subtitle="Closed-loop hydraulics under high pressure and tight tolerances.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300 space-y-4">
             <p>
               The plant relied on hydraulically driven systems for continuous industrial production. Reliability depended
               not only on equipment design, but on oil cleanliness, sanitation, and contamination control.
@@ -2687,7 +2525,7 @@ function UseCase9Page() {
 
       <Section title="5) Key takeaways" subtitle="Cleanliness is a reliability parameter - not a secondary concern.">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
               {[
                 "Repetitive failures often originate from systemic maintenance weaknesses",
@@ -2702,7 +2540,7 @@ function UseCase9Page() {
               ))}
             </ul>
           </div>
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
+          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-300">
             <div className="text-white font-medium">Customer feedback</div>
             <p className="mt-3">
               "We did not understand how important hydraulic sanitization was until we had to repeatedly pay for broken
@@ -2716,24 +2554,10 @@ function UseCase9Page() {
     </PageShell>
   );
 }
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-    // If TS complains about "instant", use behavior: "auto"
-  }, [pathname]);
-
-  return null;
-}
 
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/use-cases" element={<UseCasesPage />} />
@@ -2750,7 +2574,6 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
 
 /*
   Minimal smoke tests (documentation-only)

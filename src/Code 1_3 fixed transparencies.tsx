@@ -168,11 +168,11 @@ const UseCaseCard = ({
 
     <ul className="mt-4 space-y-2 text-sm text-slate-300">
       {outcomes.map((t, i) => (
-  <li key={i} className="flex gap-3 items-start">
-    <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-    <span className="leading-snug">{t}</span>
-  </li>
-))}
+        <li key={i} className="flex gap-3">
+          <CheckCircle2 className="w-5 h-5 text-cyan-400" />
+          <span>{t}</span>
+        </li>
+      ))}
     </ul>
 
     <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
@@ -475,45 +475,6 @@ function HomePage() {
       >
         <UseCasesGrid />
       </Section>
-      {/* CONTACT */}
-<Section
-  id="contact"
-  title="Request an Assessment"
-  subtitle="Start with a quick readiness assessment to identify value pockets, align governance, and build a roadmap to predictable performance."
->
-  <div className="relative p-8 md:p-12 rounded-3xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-    <div>
-      <div className="flex items-center gap-3 text-cyan-300">
-        <NBELogo />
-        <span className="font-semibold">Northbound Engineering Services</span>
-      </div>
-
-      <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">Let’s evaluate your reliability readiness</h3>
-
-      <p className="mt-2 text-slate-300 max-w-2xl">
-        Email us to schedule an initial assessment and discuss your current constraints, data readiness, and highest-impact opportunities.
-      </p>
-
-      <p className="mt-4 text-sm text-slate-400">
-        Email:{" "}
-        <a
-          href="mailto:info@northboundengineering.com?subject=Assessment%20Request"
-          className="text-cyan-300 hover:text-cyan-200 underline underline-offset-4"
-        >
-          info@northboundengineering.com
-        </a>
-      </p>
-    </div>
-
-    <a
-      href="mailto:info@northboundengineering.com?subject=Assessment%20Request"
-      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-    >
-      Request an Assessment
-    </a>
-  </div>
-</Section>
-
 
       {/* CTA */}
       <section className="relative py-20 border-t border-slate-800/60">
@@ -636,19 +597,6 @@ function UseCaseFooterNav({ prev, next }: { prev?: string; next?: string }) {
 function UseCase1Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 1 — Zero Service Quality Losses | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How maintenance effectiveness (not response speed) delivered six months of zero equipment-driven quality losses and tripled MTBF in a service-critical manufacturing facility."
-  />
-  <meta property="og:title" content="Use Case 1 — Zero Service Quality Losses" />
-  <meta
-    property="og:description"
-    content="Maintenance effectiveness delivered sustained quality stability—MTBF tripled and quality losses reached zero for six months."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -949,19 +897,6 @@ function UseCase1Page() {
 function UseCase2Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 2 — From Availability to Capital Discipline | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How telematics and ROI dashboards reframed utilization economically, reduced CAPEX growth ~50%, and increased fleet flexibility through a disciplined rental strategy."
-  />
-  <meta property="og:title" content="Use Case 2 — From Availability to Capital Discipline" />
-  <meta
-    property="og:description"
-    content="Telematics-based economic utilization and transparent ROI dashboards reduced CAPEX growth and improved planning discipline."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1262,20 +1197,6 @@ function UseCase2Page() {
 function UseCase3Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 3 — IIoT for Mobile Energy Operations | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How an edge-first IIoT reliability platform with alarm governance improved production up to 30%, reduced NPT ~50%, and achieved ~5x ROI in six months under intermittent connectivity."
-  />
-  <meta property="og:title" content="Use Case 3 — IIoT for Mobile Energy Operations" />
-  <meta
-    property="og:description"
-    content="Edge-first IIoT plus disciplined alarm governance delivered higher production, lower NPT, and scalable reliability under changing conditions."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1602,20 +1523,6 @@ function UseCase3Page() {
 function UseCase4Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 4 — Vendor SLAs & Reliability Governance | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How performance-based SLAs and governance turned outsourcing into a controlled reliability capability—reducing rework, clarifying scope boundaries, and stabilizing maintenance outcomes."
-  />
-  <meta property="og:title" content="Use Case 4 — Vendor SLAs That Enable Reliability" />
-  <meta
-    property="og:description"
-    content="Performance-based SLAs and acceptance criteria reduced contractor-driven quality issues and stabilized outcomes without adding headcount."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -1832,19 +1739,6 @@ function UseCase4Page() {
 function UseCase5Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 5 — Life-Stage Maintenance & -30% CAPEX YoY | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How telemetry-enabled life-stage strategy aligned deployment, maintenance depth, and risk—cutting capital requirements ~30% year over year without compromising safety or service quality."
-  />
-  <meta property="og:title" content="Use Case 5 — Life-Stage Maintenance Cutting CAPEX" />
-  <meta
-    property="og:description"
-    content="Telemetry plus life-stage strategy reduced capital requirements ~30% YoY by aligning deployment and maintenance to risk and value."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2031,19 +1925,6 @@ function UseCase5Page() {
 function UseCase6Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 6 — $12M Value via Local Refurbishment | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How a governed local refurbishment path reduced lead time from ~8 months to ~3 weeks, achieved ~120% of original life, and delivered ~$12M value during supply-chain disruption."
-  />
-  <meta property="og:title" content="Use Case 6 — $12M Value Through Local Refurbishment" />
-  <meta
-    property="og:description"
-    content="A controlled, IP- and QA-governed refurbishment program cut lead time dramatically and became a scalable operational standard."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2184,20 +2065,6 @@ function UseCase6Page() {
 function UseCase7Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 7 — TCO Business Case Delivering $50M+ Savings | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How operating-point validation, lifecycle cost modeling, and pilot proof created a defensible redesign decision—unlocking $50M+ savings and improving stability with better sensing and CBM readiness."
-  />
-  <meta property="og:title" content="Use Case 7 — TCO Business Case Delivering $50M+ Savings" />
-  <meta
-    property="og:description"
-    content="TCO + operating-point validation + field pilot proof enabled a defensible change with $50M+ savings and fewer unscheduled events."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2358,20 +2225,6 @@ function UseCase7Page() {
 function UseCase8Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 8 — Global Maintenance Maturity (MTBF x3) | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How a People–Process–Technology maturity assessment and phased roadmap delivered a pilot MTBF x3, record-low service-quality issues, and ~10% maintenance cost reduction with no CAPEX."
-  />
-  <meta property="og:title" content="Use Case 8 — Global Maintenance Maturity: MTBF x3 Without CAPEX" />
-  <meta
-    property="og:description"
-    content="A maturity roadmap across People, Process, and Technology delivered MTBF x3 and cost reduction—without capital replacement."
-  />
-  <meta property="og:type" content="article" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2537,22 +2390,6 @@ function UseCase8Page() {
 function UseCase9Page() {
   return (
     <PageShell>
-      <Helmet>
-  <title>Use Case 9 — Hydraulic System Sanitization & Reliability | Northbound Engineering Services</title>
-  <meta
-    name="description"
-    content="How contamination control, monitoring, standardized cleaning procedures, and technician training eliminated repeat pump failures—improving hydraulic MTBF up to 600% and raising utilization from 42% to ~60%."
-  />
-  <meta property="og:title" content="Use Case 9 — Hydraulic System Sanitization Restoring Reliability" />
-  <meta
-    property="og:description"
-    content="Sanitization discipline and contamination control restored hydraulic reliability—MTBF up to +600% and utilization improved materially."
-  />
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content="/images/og-cover.png" />
-<meta name="twitter:image" content="/images/og-cover.png" />
-</Helmet>
-
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -2716,24 +2553,10 @@ function UseCase9Page() {
     </PageShell>
   );
 }
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-    // If TS complains about "instant", use behavior: "auto"
-  }, [pathname]);
-
-  return null;
-}
 
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/use-cases" element={<UseCasesPage />} />
@@ -2750,7 +2573,6 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
 
 /*
   Minimal smoke tests (documentation-only)
