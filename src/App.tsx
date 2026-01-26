@@ -401,15 +401,13 @@ function HomePage() {
 
 I’d like to request a reliability readiness assessment.
 
-Company:
+Name/Company:
 Industry:
 Site/Region:
-Assets in scope:
-Top 3 pain points:
-Target timeline:
+Contact Information:
 
 Thank you,
-[Your Name]`
+`
   );
 
   return (
