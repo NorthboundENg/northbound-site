@@ -256,6 +256,11 @@ const TopNav = () => (
   <Link to="/" className="hover:text-white text-slate-300">
     Home
   </Link>
+  
+  <Link to="/reliability-enablement" className="hover:text-white text-slate-300">
+    Reliability Enablement
+  </Link>
+
 
   <Link to="/use-cases" className="hover:text-white text-slate-300">
     Use Cases
@@ -402,8 +407,6 @@ function HomePage() {
 I’d like to request a reliability readiness assessment.
 
 Name/Company:
-Industry:
-Site/Region:
 Contact Information:
 
 Thank you,
@@ -553,6 +556,81 @@ Thank you,
       >
         <UseCasesGrid />
       </Section>
+
+{/* DIGITAL RELIABILITY (HOME BITE) */}
+<Section
+  id="digital-reliability"
+  title="Digital Reliability-as-a-Service"
+  subtitle="Engineering-led edge intelligence that upgrades maintenance maturity—without selling devices."
+>
+  <div className="grid md:grid-cols-2 gap-6">
+    {/* Left: hybrid visual */}
+    <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+      <img
+        src="/images/digital-reliability.png"
+        alt="Industrial equipment with digital overlay"
+        className="w-full h-full object-cover opacity-70"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-slate-950/40 to-slate-950/80" />
+      <div className="absolute bottom-0 p-6">
+        <div className="flex flex-wrap gap-2">
+          <Pill><Network className="w-4 h-4" /> Edge-first intelligence</Pill>
+          <Pill><Bell className="w-4 h-4" /> Stop pre-visibility</Pill>
+          <Pill><Wrench className="w-4 h-4" /> Maintenance maturity upgrade</Pill>
+        </div>
+      </div>
+    </div>
+
+    {/* Right: content */}
+    <div className="space-y-4 text-slate-300">
+      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+        <div className="text-white font-medium">What it is</div>
+        <p className="mt-2">
+          We embed industrial edge intelligence into your critical assets and convert operating signals into
+          decision-grade reliability insight. This is not a device sale—it's a structured reliability improvement
+          model supported by engineering discipline and adoption.
+        </p>
+      </div>
+
+      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+        <div className="text-white font-medium">What it enables</div>
+        <ul className="mt-3 space-y-2 text-sm">
+          {[
+            "Condition-based maintenance and predictive intervention",
+            "Failure-mode-driven maintenance redesign and interval optimization",
+            "Spare part and material planning visibility",
+            "Health scores, degradation trends, and risk-based prioritization",
+          ].map((t, i) => (
+            <li key={i} className="flex gap-3">
+              <CheckCircle2 className="w-5 h-5 text-cyan-400" />
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            to="/reliability-enablement"
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
+          >
+            Learn More <ArrowRight className="w-4 h-4" />
+          </Link>
+
+          <Link
+            to={{ pathname: "/", hash: "#contact" }}
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
+          >
+            Request an Assessment <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
+
+
+
+
       {/* CONTACT */}
 <Section
   id="contact"
@@ -2562,6 +2640,198 @@ function UseCase8Page() {
   );
 }
 
+// RELIABILITY ENABLEMENT PAGE
+function ReliabilityEnablementPage() {
+  return (
+    <PageShell>
+      <Seo
+        title="Digital Reliability Enablement | Northbound Engineering Services"
+        description="A Reliability-as-a-Service model combining edge data processing and engineering expertise to transition from reactive maintenance to condition-based and predictive operations."
+        image="/images/og-cover.png"
+        type="article"
+      />
+
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=2000&auto=format&fit=crop"
+            alt="Industrial digital reliability"
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
+        </div>
+
+        <Container>
+          <div className="relative py-24 md:py-32 max-w-4xl">
+            <div className="flex flex-wrap gap-3">
+              <Pill>
+                <Network className="w-4 h-4" /> Digital Reliability Enablement
+              </Pill>
+              <Pill>
+                <Layers className="w-4 h-4" /> Reliability-as-a-Service
+              </Pill>
+            </div>
+
+            <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
+              Technology-Enabled
+              <span className="block text-cyan-400">Reliability Transformation</span>
+            </h1>
+
+            <p className="mt-6 text-lg text-slate-300 max-w-3xl">
+              We do not sell devices. We deliver measurable reliability improvement.
+              Our Reliability-as-a-Service model combines edge data acquisition,
+              multi-protocol integration, and engineering expertise to transition
+              operations from reactive maintenance to condition-based and predictive execution.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Pill><TrendingUp className="w-4 h-4" /> Reduced unplanned downtime</Pill>
+              <Pill><Gauge className="w-4 h-4" /> Higher asset availability</Pill>
+              <Pill><Calculator className="w-4 h-4" /> Lower maintenance cost</Pill>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* WHY THIS MODEL */}
+      <Section
+        title="Why This Model Exists"
+        subtitle="Small and medium industrial companies often lack structured reliability systems."
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Reactive Maintenance">
+            Equipment is repaired after failure. Visibility is limited. Planning is reactive.
+          </Card>
+
+          <Card icon={<CircuitBoard className="w-5 h-5" />} title="Limited Data Infrastructure">
+            Most companies do not have structured cloud environments or usable equipment analytics.
+          </Card>
+
+          <Card icon={<GitCompare className="w-5 h-5" />} title="Maturity Gap">
+            Data exists in machines — but not in decision processes.
+          </Card>
+        </div>
+      </Section>
+
+      {/* HOW IT WORKS */}
+      <Section
+        title="How the Reliability-as-a-Service Model Works"
+        subtitle="Edge-first, engineering-driven, maturity-focused."
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+
+          <Card icon={<PlugZap className="w-5 h-5" />} title="1. Multi-Protocol Data Ingestion">
+            <ul className="space-y-2 text-sm">
+              <li>CAN (J1939)</li>
+              <li>Modbus RTU / TCP</li>
+              <li>Analog (4-20mA, voltage)</li>
+              <li>Digital I/O</li>
+              <li>OEM controllers</li>
+            </ul>
+            <p className="mt-3 text-sm">
+              Designed for heterogeneous industrial environments.
+            </p>
+          </Card>
+
+          <Card icon={<Cpu className="w-5 h-5" />} title="2. Edge Processing">
+            <ul className="space-y-2 text-sm">
+              <li>Local contextualization of signals</li>
+              <li>Failure-mode-based monitoring</li>
+              <li>Health scoring logic</li>
+              <li>Low-bandwidth friendly</li>
+            </ul>
+            <p className="mt-3 text-sm">
+              Works even when cloud connectivity is limited or unavailable.
+            </p>
+          </Card>
+
+          <Card icon={<BarChart3 className="w-5 h-5" />} title="3. Engineering Translation">
+            <ul className="space-y-2 text-sm">
+              <li>Condition-based maintenance plans</li>
+              <li>Predictive alerts with governance</li>
+              <li>Material planning foresight</li>
+              <li>Maintenance strategy redesign</li>
+            </ul>
+            <p className="mt-3 text-sm">
+              Insights are translated into process improvement.
+            </p>
+          </Card>
+
+        </div>
+      </Section>
+
+      {/* SENSOR FLEXIBILITY */}
+      <Section
+        title="Tailored Sensor Strategy"
+        subtitle="Technology follows failure modes — not the opposite."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card icon={<Activity className="w-5 h-5" />} title="Failure-Mode Driven Instrumentation">
+            After studying your dominant failure patterns, we may introduce:
+            <ul className="mt-3 space-y-2 text-sm">
+              <li>Vibration monitoring</li>
+              <li>Ultrasonic detection</li>
+              <li>Oil cleanliness sensing</li>
+              <li>Pressure / flow monitoring</li>
+              <li>Temperature mapping</li>
+            </ul>
+          </Card>
+
+          <Card icon={<Layers className="w-5 h-5" />} title="Scalable Architecture">
+            The system is modular and adaptable. New sensors and logic blocks can be added
+            as maturity evolves — without redesigning the full architecture.
+          </Card>
+        </div>
+      </Section>
+
+      {/* CLOUD OPTIONAL */}
+      <Section
+        title="Cloud Integration (Optional)"
+        subtitle="If data already exists in the cloud, we can integrate. If not, edge-first is enough."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card icon={<Network className="w-5 h-5" />} title="Edge-First Default">
+            Most small and mid-sized companies operate without structured cloud pipelines.
+            Our architecture delivers value locally first.
+          </Card>
+
+          <Card icon={<LineChart className="w-5 h-5" />} title="Pipeline Capability">
+            When needed, we can integrate structured data pipelines into existing
+            cloud environments to support dashboards and enterprise visibility.
+          </Card>
+        </div>
+      </Section>
+
+      {/* BUSINESS MODEL */}
+      <Section
+        title="What You Are Actually Buying"
+        subtitle="Not hardware. Not software. Measurable reliability improvement."
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          <Stat label="Outcome Focus" value="Reliability" />
+          <Stat label="Model" value="Service-Based" />
+          <Stat label="Approach" value="Engineering-Led" />
+        </div>
+
+        <div className="mt-10 grid md:grid-cols-2 gap-6 text-slate-300">
+          <p>
+            This model combines enabling technology with maintenance engineering,
+            process redesign, and cultural adoption support.
+          </p>
+          <p>
+            The objective is to elevate maintenance maturity — from reactive to
+            condition-based and predictive — while improving availability and reducing cost.
+          </p>
+        </div>
+      </Section>
+
+      <UseCaseFooterNav />
+    </PageShell>
+  );
+}
+
+
 // USE CASE 9 PAGE
 function UseCase9Page() {
   return (
@@ -2774,6 +3044,7 @@ export default function App() {
         <Route path="/use-case-7" element={<UseCase7Page />} />
         <Route path="/use-case-8" element={<UseCase8Page />} />
         <Route path="/use-case-9" element={<UseCase9Page />} />
+        <Route path="/reliability-enablement" element={<ReliabilityEnablementPage />} />
       </Routes>
     </BrowserRouter>
   );
