@@ -26,6 +26,33 @@ import {
   Bell,
   Layers,
   PlugZap,
+  Radio,
+  Router,
+  Stethoscope,
+  Clapperboard,
+  Headset,
+  MapPin,
+  Pickaxe,
+  Truck,
+  Flame,
+  Zap,
+  Thermometer,
+  Siren,
+  Bus,
+  Timer,
+  Eye,
+  Search,
+  Settings2,
+  Users,
+  ShieldCheck,
+  Rocket,
+  Package,
+  BadgePercent,
+  Check,
+  Plus,
+  PiggyBank,
+  KeyRound,
+  Repeat,
 } from "lucide-react";
 
 /**
@@ -262,6 +289,10 @@ const TopNav = () => (
   </Link>
 
 
+  <Link to="/real-time-cbm" className="hover:text-white text-slate-300">
+    Real-Time CBM
+  </Link>
+
   <Link to="/use-cases" className="hover:text-white text-slate-300">
     Use Cases
   </Link>
@@ -291,6 +322,9 @@ const Footer = () => (
         <div className="flex gap-4">
           <Link to="/" className="hover:text-slate-200">
             Home
+          </Link>
+          <Link to="/real-time-cbm" className="hover:text-slate-200">
+            Real-Time CBM
           </Link>
           <Link to="/use-cases" className="hover:text-slate-200">
             Use Cases
@@ -629,7 +663,60 @@ Thank you,
 </Section>
 
 
+{/* REAL-TIME CBM (HOME BITE) - DRAFT */}
+<Section
+  id="real-time-cbm"
+  title="Real Time. Real Predictions."
+  subtitle="See it coming, fix it remotely. Reliability as a subscription. Live condition monitoring and Northbound engineering to cut unplanned downtime, with hardware leased so there is nothing to buy."
+>
+  <div className="grid md:grid-cols-3 gap-6">
+    {[
+      {
+        icon: <Router className="w-5 h-5" />,
+        title: "Cloud Platform subscription",
+        text: "Leased edge hardware, live asset health, trend alerts and a condition-based maintenance plan, reviewed monthly with our engineers.",
+      },
+      {
+        icon: <Plus className="w-5 h-5" />,
+        title: "Add what you need",
+        text: "Remote Technician, CanGuard fault recording, Warp remote OEM tools and Sentinel speed control, turned on remotely per asset.",
+      },
+      {
+        icon: <BadgePercent className="w-5 h-5" />,
+        title: "Bundle and save",
+        text: "Remote Response, Root Cause and Complete Reliability bundles cost less than the modules bought separately. Pay per asset, per month.",
+      },
+    ].map((c, i) => (
+      <Card key={i} icon={c.icon} title={c.title}>
+        <p className="text-sm">{c.text}</p>
+      </Card>
+    ))}
+  </div>
 
+  <div className="mt-6 flex flex-wrap items-center gap-3">
+    <Pill><PiggyBank className="w-4 h-4" /> No CAPEX</Pill>
+    <Pill><Pickaxe className="w-4 h-4" /> Mining</Pill>
+    <Pill><Flame className="w-4 h-4" /> Oil & gas</Pill>
+    <Pill><Zap className="w-4 h-4" /> Power generation</Pill>
+    <Pill><Truck className="w-4 h-4" /> Logistics</Pill>
+    <Pill><Bus className="w-4 h-4" /> Public transport</Pill>
+  </div>
+
+  <div className="mt-8 flex flex-wrap gap-3">
+    <Link
+      to="/real-time-cbm"
+      className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
+    >
+      Explore Real-Time CBM <ArrowRight className="w-4 h-4" />
+    </Link>
+    <Link
+      to={{ pathname: "/real-time-cbm", hash: "#cbm-plans" }}
+      className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
+    >
+      See Plans & Bundles <ArrowRight className="w-4 h-4" />
+    </Link>
+  </div>
+</Section>
 
       {/* CONTACT */}
 <Section
@@ -3008,6 +3095,793 @@ function UseCase9Page() {
   );
 }
 
+// ============================================================
+// REAL-TIME CONDITION-BASED MAINTENANCE (powered by emd Dragonfly)
+// v3 - subscription model: Cloud Platform (base) + add-ons + bundles, leased hardware
+// ============================================================
+
+type CbmAddonKey = "remote" | "canguard" | "warp" | "sentinel";
+
+const CBM_CORE_FEATURES: string[] = [
+  "Leased Dragonfly edge gateway per asset: installed, commissioned, maintained and replaced by us",
+  "Live asset health, custom dashboards, events and alerts for every connected asset",
+  "Edge analytics: failure-mode rules, trend alerts and health scores running on the device",
+  "Condition-based maintenance plan and PM interval redesign for your critical assets",
+  "Operator behavior insight: idling, harsh acceleration, gear use, fuel",
+  "Data integration with your CMMS / ERP (API and MQTT streaming)",
+  "Monthly reliability review with Northbound engineers: MTBF, MTTR, NPT and cost",
+];
+
+const CBM_ADDONS: {
+  key: CbmAddonKey;
+  icon: React.ReactNode;
+  name: string;
+  poweredBy: string;
+  tagline: string;
+  points: string[];
+  outcome: string;
+}[] = [
+  {
+    key: "remote",
+    icon: <Stethoscope className="w-5 h-5" />,
+    name: "Remote Technician",
+    poweredBy: "Live remote diagnostics",
+    tagline: "Like being next to the engine, from anywhere.",
+    points: [
+      "Live CAN bus access to any connected asset, decoded in the browser at millisecond resolution",
+      "See every ECM on the bus with its serial number, calibration, and which faults are really active",
+      "Plot engine speed, torque, and other ECM data live while the machine works under load",
+      "Secure peer-to-peer tunnel. Your proprietary DBC files stay on your own computer",
+    ],
+    outcome: "Fewer emergency call-outs. Check the warning lamp before anyone drives out.",
+  },
+  {
+    key: "canguard",
+    icon: <Clapperboard className="w-5 h-5" />,
+    name: "CanGuard",
+    poweredBy: "Continuous fault recording",
+    tagline: "The full recording, not a snapshot.",
+    points: [
+      "Records the whole CAN bus continuously, millisecond by millisecond, on the device",
+      "Triggers by fault code, FMI and time window, deployed to one unit or the whole fleet",
+      "When a fault fires, the full recording uploads automatically, linked to the event",
+      "Works as a black box: the full recording stays on the device for root-cause analysis",
+    ],
+    outcome: "Intermittent faults finally traced to root cause, so repeat failures stop.",
+  },
+  {
+    key: "warp",
+    icon: <Headset className="w-5 h-5" />,
+    name: "Warp",
+    poweredBy: "Remote OEM tool access",
+    tagline: "Your OEM software, connected as if it were plugged in.",
+    points: [
+      "Virtual RP1210 interface: DiagnosticLink, INSITE, Electronic Technician and others run unmodified",
+      "RS-232 / RS-485 support, so generator tools like InPower reach remote gensets, recalibration included",
+      "Force DPF regenerations, validate trips, and adjust ECU parameters without sending a technician",
+      "With good connectivity, ECM updates can also be done remotely",
+    ],
+    outcome: "Shorter stops and one-trip repairs at remote sites.",
+  },
+  {
+    key: "sentinel",
+    icon: <MapPin className="w-5 h-5" />,
+    name: "Sentinel",
+    poweredBy: "Active speed control",
+    tagline: "It doesn't just report speeding. It prevents it.",
+    points: [
+      "Reshapes throttle response between the pedal and the ECU. Nothing on the vehicle is removed or replaced",
+      "Speed limits per geofence (haul ramp, yard, plant gate, school zone), set from the control room",
+      "Full power up to the limit, then the speed levels off at the zone limit",
+      "Emergency override in the cab, with a live alert showing unit, zone and time, so every override is logged",
+    ],
+    outcome: "Speed violations prevented, less wear on drivetrain and brakes, lower fuel.",
+  },
+];
+
+// TODO(Northbound): set real bundle discounts before publishing
+const CBM_BUNDLES: {
+  name: string;
+  icon: React.ReactNode;
+  addons: CbmAddonKey[];
+  forWho: string;
+  highlight?: boolean;
+}[] = [
+  {
+    name: "Remote Response",
+    icon: <Headset className="w-5 h-5" />,
+    addons: ["remote", "warp"],
+    forWho: "Remote sites and road fleets where every warning currently means a truck roll.",
+  },
+  {
+    name: "Root Cause",
+    icon: <Search className="w-5 h-5" />,
+    addons: ["remote", "canguard"],
+    forWho: "Operations fighting repeat and intermittent failures that erode MTBF.",
+  },
+  {
+    name: "Complete Reliability",
+    icon: <Package className="w-5 h-5" />,
+    addons: ["remote", "canguard", "warp", "sentinel"],
+    forWho: "Critical fleets that want the lowest NPT, safest operation and best price per module.",
+    highlight: true,
+  },
+];
+
+const cbmAddonName = (k: CbmAddonKey) => CBM_ADDONS.find((a) => a.key === k)!.name;
+
+const CBM_SCENARIOS: {
+  icon: React.ReactNode;
+  industry: string;
+  title: string;
+  problem: string;
+  response: string;
+  result: string;
+  plan: string;
+}[] = [
+  {
+    icon: <Pickaxe className="w-5 h-5" />,
+    industry: "Mining - haul trucks",
+    title: "Warning lamp on. Stop the truck or keep hauling?",
+    problem: "An amber lamp comes on. Normally the answer is an emergency call-out and a parked truck.",
+    response:
+      "A technician opens a live session and sees SPN 97 / FMI 3 (water in fuel) is active, with no stop lamp. It is a warning, not a shutdown.",
+    result: "The truck keeps hauling, the repair is scheduled, and no emergency call-out is needed.",
+    plan: "Cloud Platform + Remote Technician",
+  },
+  {
+    icon: <Clapperboard className="w-5 h-5" />,
+    industry: "Mining / heavy equipment",
+    title: "Intermittent faults that disappear before anyone looks",
+    problem: "Snapshot tools capture a single moment. By inspection time, the engine looks healthy again.",
+    response: "A fleet-wide trigger on that fault code uploads the full bus recording around every occurrence.",
+    result: "Root cause is found from complete data, not guesses, and repeat failures stop.",
+    plan: "Cloud Platform + CanGuard",
+  },
+  {
+    icon: <Truck className="w-5 h-5" />,
+    industry: "Highway / logistics",
+    title: "Truck in limp mode, DPF won't regenerate",
+    problem: "Derated engine, a load on board, and the nearest dealer is hours away.",
+    response: "The technician connects remotely with the OEM software and forces a regeneration.",
+    result: "Full power is restored on the roadside, with no tow and no workshop visit.",
+    plan: "Cloud Platform + Warp",
+  },
+  {
+    icon: <Flame className="w-5 h-5" />,
+    industry: "Oil & gas - frac",
+    title: "One pump engine stops. The whole spread stops.",
+    problem: "Every minute of shutdown costs the whole spread. Mechanics usually arrive without a diagnosis.",
+    response: "Remote diagnosis with OEM tools isolates the root cause while crews are still dispatching.",
+    result: "One trip, with the right part, and a shorter shutdown.",
+    plan: "Remote Response bundle",
+  },
+  {
+    icon: <Zap className="w-5 h-5" />,
+    industry: "Remote power generation",
+    title: "Generator trips to emergency at a remote plant",
+    problem: "The site is hours away. The unit may only need validation and a reset.",
+    response: "RS-485 is carried over the secure tunnel so the generator's own tools connect remotely.",
+    result: "The fault is validated and the unit is back online, with no travel if a repair isn't needed.",
+    plan: "Cloud Platform + Warp",
+  },
+  {
+    icon: <Thermometer className="w-5 h-5" />,
+    industry: "Mixed fleets",
+    title: "Coolant heading to 118 °C with a 107 °C limit",
+    problem: "SPN 110 / FMI 16 (coolant temperature above normal) usually becomes an overheated engine.",
+    response: "Edge rules flag the trend early and alert the control room with full context.",
+    result: "The unit is pulled for planned service before an expensive engine failure.",
+    plan: "Included in Cloud Platform",
+  },
+  {
+    icon: <Siren className="w-5 h-5" />,
+    industry: "Mines, well sites, plants",
+    title: "Speed limits that are enforced, not just reported",
+    problem: "Signs are ignored, training wears off, and telematics reports speeding days later.",
+    response: "Speed limits by geofence are enforced at the throttle, with every override logged.",
+    result: "Speeding in those zones is prevented rather than reported afterwards.",
+    plan: "Cloud Platform + Sentinel",
+  },
+  {
+    icon: <Bus className="w-5 h-5" />,
+    industry: "City bus fleets",
+    title: "Smoother rides, lower fuel use, safer school zones",
+    problem: "Aggressive pull-aways waste fuel and are uncomfortable for passengers.",
+    response: "Gradual throttle response plus 20 km/h geofences over school zones.",
+    result: "Passengers are more comfortable, fuel use drops, and school zones are protected automatically.",
+    plan: "Cloud Platform + Sentinel",
+  },
+];
+
+const DRAGONFLY_SPECS: [string, string, string][] = [
+  ["Supply voltage", "9-36 V DC", "9-36 V DC"],
+  ["Operating temperature", "-40 to 80 °C", "-40 to 80 °C"],
+  ["CPU", "Qualcomm A7 1.3 GHz", "Qualcomm A7 1.3 GHz"],
+  ["Storage", "8 GB eMMC", "16 GB eMMC"],
+  ["IMU", "-", "6 DoF"],
+  ["CAN / RS-232 / RS-485", "2 / 1 / via adapter", "2 / 1 / 1 native"],
+  ["Digital I/O / Analog in", "4-4 / 2", "4-4 / 2"],
+  ["Ethernet", "-", "10/100/1000"],
+  ["Modem", "LTE Cat-1 regional", "LTE Cat-4 global"],
+  ["SIM", "uSIM", "Dual SIM, uSIM, eSIM"],
+  ["GNSS", "GPS, Galileo, GLONASS", "GPS, Galileo, GLONASS"],
+  ["Backup power", "2600 mAh + supercaps", "2600 mAh + supercaps"],
+  ["Enclosure", "IP65", "IP65"],
+];
+
+function CbmPlanBuilder() {
+  const [picked, setPicked] = React.useState<CbmAddonKey[]>([]);
+  const [assets, setAssets] = React.useState("");
+
+  const toggle = (k: CbmAddonKey) =>
+    setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
+
+  const exact = CBM_BUNDLES.find(
+    (b) => b.addons.length === picked.length && picked.every((k) => b.addons.includes(k))
+  );
+  const covering = CBM_BUNDLES.filter((b) => picked.every((k) => b.addons.includes(k))).sort(
+    (a, b) => a.addons.length - b.addons.length
+  )[0];
+
+  let planLabel = "Cloud Platform";
+  let hint = "Start with the Cloud Platform. Add modules any time; they deploy remotely with no site visit.";
+  if (picked.length > 0) {
+    planLabel = "Cloud Platform + " + picked.map(cbmAddonName).join(" + ");
+    if (exact) {
+      hint = `That's our ${exact.name} bundle. Bundled modules cost less than buying them separately.`;
+    } else if (covering && picked.length >= 2) {
+      hint = `Tip: the ${covering.name} bundle includes everything you picked and usually costs less.`;
+    } else {
+      hint = "Add a second module to qualify for bundle pricing.";
+    }
+  }
+
+  const planMailto = buildMailto(
+    "info@northboundengineering.com",
+    "Real-Time CBM Subscription Quote",
+    `Hello Northbound Engineering Services,
+
+I'd like a quote for a Real-Time CBM subscription.
+
+Plan: ${exact ? exact.name + " bundle (" + planLabel + ")" : planLabel}
+Approx. number of assets: ${assets}
+Asset types (trucks, gensets, pumps...):
+Main pain point (NPT, remote sites, repeat failures, safety...):
+
+Name/Company:
+Contact Information:
+
+Thank you,
+`
+  );
+
+  return (
+    <div className="p-6 md:p-8 rounded-3xl bg-slate-900/70 border border-slate-800">
+      <div className="grid md:grid-cols-2 gap-8">
+        <div>
+          <div className="text-white font-semibold text-lg">1. Cloud Platform is always included</div>
+          <div className="mt-3 flex items-center gap-3 p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-200">
+            <Check className="w-5 h-5 shrink-0" />
+            <span>Cloud Platform: leased Dragonfly, dashboards, edge analytics, reliability engineering</span>
+          </div>
+
+          <div className="mt-6 text-white font-semibold text-lg">2. Add what you need</div>
+          <div className="mt-3 grid sm:grid-cols-2 gap-3">
+            {CBM_ADDONS.map((a) => {
+              const on = picked.includes(a.key);
+              return (
+                <button
+                  key={a.key}
+                  type="button"
+                  onClick={() => toggle(a.key)}
+                  aria-pressed={on}
+                  className={`text-left p-4 rounded-2xl border transition flex gap-3 items-start ${
+                    on
+                      ? "bg-cyan-500/10 border-cyan-400 text-white"
+                      : "bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-600"
+                  }`}
+                >
+                  <span
+                    className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${
+                      on ? "bg-cyan-400 border-cyan-400 text-slate-900" : "border-slate-600"
+                    }`}
+                  >
+                    {on && <Check className="w-4 h-4" />}
+                  </span>
+                  <span>
+                    <span className="block font-medium">{a.name}</span>
+                    <span className="block text-xs text-slate-400 mt-0.5">{a.poweredBy}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <div className="text-white font-semibold text-lg">3. Your plan</div>
+          <div className="mt-3 p-5 rounded-2xl bg-slate-950 border border-slate-800 flex-1 flex flex-col">
+            {exact && (
+              <span className="self-start inline-flex items-center gap-2 rounded-full bg-cyan-400/10 text-cyan-300 px-3 py-1 text-xs border border-cyan-500/30 mb-3">
+                <BadgePercent className="w-4 h-4" /> {exact.name} bundle
+              </span>
+            )}
+            <div className="text-2xl font-semibold text-white leading-snug">{planLabel}</div>
+            <p className="mt-3 text-sm text-slate-300">{hint}</p>
+
+            <label className="mt-5 block text-sm text-slate-400" htmlFor="cbm-assets">
+              Approx. number of assets
+            </label>
+            <input
+              id="cbm-assets"
+              inputMode="numeric"
+              value={assets}
+              onChange={(e) => setAssets(e.target.value.replace(/[^0-9]/g, ""))}
+              placeholder="e.g. 25"
+              className="mt-2 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-2 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
+            />
+
+            <div className="mt-auto pt-6">
+              <a
+                href={planMailto}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
+              >
+                Request a Quote <ArrowRight className="w-4 h-4" />
+              </a>
+              <p className="mt-3 text-xs text-slate-500 text-center">
+                Priced per asset, per month. Hardware lease included.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RealTimeCbmPage() {
+  const pilotMailto = buildMailto(
+    "info@northboundengineering.com",
+    "Real-Time CBM Pilot Request",
+    `Hello Northbound Engineering Services,
+
+I'd like to discuss a Real-Time Condition-Based Maintenance pilot.
+
+Name/Company:
+Asset types and approx. quantity:
+Main pain point (downtime, remote sites, repeat failures, safety, fuel...):
+Contact Information:
+
+Thank you,
+`
+  );
+
+  const inBundle = (b: { addons: CbmAddonKey[] }, k: CbmAddonKey) => b.addons.includes(k);
+
+  return (
+    <PageShell>
+      <Seo
+        title="Real Time. Real Predictions. Condition-Based Maintenance | Northbound Engineering Services"
+        description="Reliability as a subscription: leased edge hardware, live condition monitoring and Northbound engineering to cut unplanned downtime. Add remote diagnostics, fault recording, remote OEM tools and speed control as you need them."
+        image="/images/og-cover.png"
+        type="article"
+      />
+
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=2000&auto=format&fit=crop"
+            alt="Heavy equipment in operation"
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
+        </div>
+
+        <Container>
+          <div className="relative py-24 md:py-32 max-w-4xl">
+            <div className="flex flex-wrap gap-3">
+              <Pill>
+                <Radio className="w-4 h-4" /> Real-Time Condition-Based Maintenance
+              </Pill>
+              <Pill>
+                <Repeat className="w-4 h-4" /> Subscription service
+              </Pill>
+            </div>
+
+            <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
+              Real Time. Real Predictions.
+              <span className="block text-cyan-400">See it coming. Fix it remotely.</span>
+            </h1>
+
+            <p className="mt-6 text-lg text-slate-300 max-w-3xl">
+              You don't buy hardware. You subscribe to reliability. We put your engines, pumps, generators and fleets
+              on live condition monitoring, and our engineers turn that data into a better maintenance strategy and
+              less unplanned downtime. Choose the modules you need, bundle and save, and scale when the results show.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Pill><PiggyBank className="w-4 h-4" /> No CAPEX: hardware leased</Pill>
+              <Pill><TrendingUp className="w-4 h-4" /> Built to cut NPT</Pill>
+              <Pill><Layers className="w-4 h-4" /> Pick modules, bundle and save</Pill>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#cbm-plans"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
+              >
+                Build Your Plan <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href="#cbm-scenarios"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
+              >
+                See it in action
+              </a>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* THE PROBLEM */}
+      <Section
+        title="Why Traditional Maintenance Misses Failures"
+        subtitle="Most failures give warning signs first. The problem is that nobody sees the data in time, or the right tool isn't on site."
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          <Card icon={<Timer className="w-5 h-5" />} title="Calendar, Not Condition">
+            Fixed-interval PMs replace healthy parts and miss the ones that are failing. Cost goes up and failures
+            continue.
+          </Card>
+          <Card icon={<Eye className="w-5 h-5" />} title="Snapshots, Not the Full Picture">
+            Diagnostic tools capture one moment when a code appears. By the time someone looks, the evidence is gone.
+          </Card>
+          <Card icon={<Truck className="w-5 h-5" />} title="Truck Rolls for Every Lamp">
+            Every warning means a site visit, often without the right diagnosis, part, or laptop. Remote sites make it
+            worse.
+          </Card>
+        </div>
+      </Section>
+
+      {/* WHAT YOU BUY */}
+      <Section
+        title="What You're Buying"
+        subtitle="Not devices. Not software licenses. Outcomes that show up in your maintenance KPIs."
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          <Card icon={<TrendingUp className="w-5 h-5" />} title="Less Unplanned Downtime">
+            Failures caught as trends, warnings validated remotely, and repairs planned instead of rushed. NPT drops
+            because fewer stops are surprises.
+          </Card>
+          <Card icon={<Wrench className="w-5 h-5" />} title="A Better Maintenance Strategy">
+            Real operating data replaces guesswork: PM intervals are set by condition, and each failure mode gets the
+            right monitoring and response.
+          </Card>
+          <Card icon={<Gauge className="w-5 h-5" />} title="Higher Reliability">
+            Root causes found and fixed, repeat failures eliminated, and MTBF tracked every month with our engineers.
+          </Card>
+        </div>
+      </Section>
+
+      {/* CORE + ADD-ONS */}
+      <Section
+        id="cbm-services"
+        title="How the Subscription Works"
+        subtitle="One Cloud Platform subscription per asset, plus the add-on modules your operation needs."
+      >
+        {/* CORE */}
+        <div className="p-6 md:p-8 rounded-3xl bg-slate-900 border border-cyan-500/40 shadow-lg">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3 text-cyan-300">
+              <Router className="w-6 h-6" />
+              <span className="text-2xl font-semibold text-white">Cloud Platform</span>
+            </div>
+            <span className="text-xs text-cyan-300 border border-cyan-500/30 bg-cyan-400/10 rounded-full px-3 py-1">
+              Base subscription, required
+            </span>
+          </div>
+          <p className="mt-3 text-slate-300 max-w-3xl">
+            Everything you need to move from reactive to condition-based maintenance, including the hardware. No
+            purchase and no capital approval needed.
+          </p>
+          <ul className="mt-6 grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm text-slate-300">
+            {CBM_CORE_FEATURES.map((t, i) => (
+              <li key={i} className="flex gap-3 items-start">
+                <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0" />
+                <span className="leading-snug">{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* ADD-ONS */}
+        <div className="mt-10 flex items-center gap-3">
+          <Plus className="w-5 h-5 text-cyan-400" />
+          <div className="text-xl font-semibold text-white">Add-on modules</div>
+        </div>
+        <div className="mt-6 grid md:grid-cols-2 gap-6">
+          {CBM_ADDONS.map((s) => (
+            <div key={s.key} className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg flex flex-col">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-cyan-300">
+                  {s.icon}
+                  <span className="font-medium text-lg">{s.name}</span>
+                </div>
+                <span className="text-xs text-slate-400 border border-slate-800 rounded-full px-3 py-1">Add-on</span>
+              </div>
+              <div className="mt-1 text-sm text-slate-500">{s.poweredBy}</div>
+              <div className="mt-3 text-white font-semibold leading-snug">{s.tagline}</div>
+              <ul className="mt-4 space-y-2 text-sm text-slate-300">
+                {s.points.map((p, j) => (
+                  <li key={j} className="flex gap-3 items-start">
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                    <span className="leading-snug">{p}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto pt-5">
+                <div className="pt-4 border-t border-slate-800 text-sm">
+                  <span className="text-slate-400">Outcome: </span>
+                  <span className="text-slate-200">{s.outcome}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* BUNDLES */}
+      <Section
+        id="cbm-plans"
+        title="Bundle and Save"
+        subtitle="Bundles are priced below the sum of their modules. Pick one, or build your own plan below."
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          {CBM_BUNDLES.map((b) => (
+            <div
+              key={b.name}
+              className={`p-6 rounded-2xl border flex flex-col ${
+                b.highlight ? "bg-slate-900 border-cyan-400 shadow-lg shadow-cyan-500/10" : "bg-slate-900 border-slate-800"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-cyan-300">
+                  {b.icon}
+                  <span className="font-medium">Bundle</span>
+                </div>
+                {b.highlight && (
+                  <span className="text-xs text-slate-900 bg-cyan-400 rounded-full px-3 py-1 font-semibold">
+                    Best value
+                  </span>
+                )}
+              </div>
+              <div className="mt-3 text-2xl font-semibold text-white">{b.name}</div>
+              <p className="mt-2 text-sm text-slate-300">{b.forWho}</p>
+              <ul className="mt-5 space-y-2 text-sm">
+                <li className="flex gap-3 items-center text-slate-200">
+                  <Check className="w-4 h-4 text-cyan-400 shrink-0" /> Cloud Platform
+                </li>
+                {CBM_ADDONS.map((a) => (
+                  <li
+                    key={a.key}
+                    className={`flex gap-3 items-center ${inBundle(b, a.key) ? "text-slate-200" : "text-slate-600 line-through"}`}
+                  >
+                    <Check className={`w-4 h-4 shrink-0 ${inBundle(b, a.key) ? "text-cyan-400" : "text-slate-700"}`} />
+                    {a.name}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto pt-6">
+                <div className="flex items-center gap-2 text-sm text-cyan-300">
+                  <BadgePercent className="w-4 h-4" /> Bundle pricing
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10">
+          <CbmPlanBuilder />
+        </div>
+      </Section>
+
+      {/* SCENARIOS */}
+      <Section
+        id="cbm-scenarios"
+        title="Real-Time CBM in Action"
+        subtitle="Scenarios from mining, oil & gas, power generation, logistics and public transport, with the plan that solves each one."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          {CBM_SCENARIOS.map((c, i) => (
+            <div key={i} className="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-cyan-300">
+                  {c.icon}
+                  <span className="font-medium text-sm">{c.industry}</span>
+                </div>
+                <span className="text-xs text-cyan-300 border border-cyan-500/30 bg-cyan-400/10 rounded-full px-3 py-1 whitespace-nowrap">
+                  {c.plan}
+                </span>
+              </div>
+              <div className="mt-3 text-lg font-semibold text-white leading-snug">{c.title}</div>
+              <div className="mt-4 space-y-3 text-sm">
+                <div>
+                  <span className="text-slate-400 uppercase tracking-wide text-xs">Problem</span>
+                  <p className="text-slate-300 mt-1">{c.problem}</p>
+                </div>
+                <div>
+                  <span className="text-slate-400 uppercase tracking-wide text-xs">Response</span>
+                  <p className="text-slate-300 mt-1">{c.response}</p>
+                </div>
+                <div className="flex gap-3 items-start pt-3 border-t border-slate-800">
+                  <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0" />
+                  <span className="text-slate-100">{c.result}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* WHO */}
+      <Section title="Who It's For" subtitle="One subscription model, three kinds of value.">
+        <div className="grid md:grid-cols-3 gap-6">
+          <Card icon={<Users className="w-5 h-5" />} title="Fleet & Plant Operators">
+            <ul className="space-y-2 text-sm">
+              <li>Less unplanned downtime and fewer emergency call-outs</li>
+              <li>Condition-based PMs instead of fixed intervals</li>
+              <li>An operating expense, not a capital project</li>
+            </ul>
+          </Card>
+          <Card icon={<Building2 className="w-5 h-5" />} title="Dealers & Distributors">
+            <ul className="space-y-2 text-sm">
+              <li>Usage history that shows misuse and keeps warranty claims under control</li>
+              <li>Remote support you can resell to your own customers</li>
+              <li>Faster repairs on contract units, with fewer misdiagnoses</li>
+            </ul>
+          </Card>
+          <Card icon={<Factory className="w-5 h-5" />} title="OEMs & Manufacturers">
+            <ul className="space-y-2 text-sm">
+              <li>Health of every deployed unit, in the field</li>
+              <li>Fewer warranty claims through accurate pre-intervention diagnosis</li>
+              <li>Real operating data for R&D and design validation</li>
+            </ul>
+          </Card>
+        </div>
+      </Section>
+
+      {/* HARDWARE */}
+      <Section
+        id="cbm-hardware"
+        title="Hardware Included, Not Purchased"
+        subtitle="Every Cloud Platform subscription includes a leased emd Dragonfly industrial gateway. We install it, maintain it and replace it."
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <Card icon={<KeyRound className="w-5 h-5" />} title="Leased with your subscription">
+              <ul className="space-y-2 text-sm">
+                <li>No upfront hardware cost and no capital approval</li>
+                <li>Installation, commissioning and replacement included</li>
+                <li>Add-on modules are software: they turn on remotely, with no new hardware or site visit</li>
+              </ul>
+            </Card>
+            <Card icon={<Router className="w-5 h-5" />} title="Built for harsh environments">
+              <ul className="space-y-2 text-sm">
+                <li>4G LTE, Wi-Fi, Bluetooth and Ethernet connectivity</li>
+                <li>IP65 enclosure, -40 to 80 °C, 9-36 V DC supply</li>
+                <li>Built-in battery and supercapacitors keep recording through power loss</li>
+                <li>Rules and logging run on the device, so it keeps working when coverage is poor</li>
+              </ul>
+            </Card>
+            <Card icon={<ShieldCheck className="w-5 h-5" />} title="Secure by design">
+              <ul className="space-y-2 text-sm">
+                <li>Hardened, fully auditable Linux OS, penetration-tested by third-party security firms</li>
+                <li>Secure Boot and dedicated cryptographic hardware</li>
+                <li>Encrypted peer-to-peer tunnels for all remote sessions; your DBC files stay with you</li>
+              </ul>
+            </Card>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-slate-800 self-start">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-900 text-slate-300">
+                <tr>
+                  <th className="p-3 font-medium">Specification</th>
+                  <th className="p-3 font-medium">Dragonfly-Lite</th>
+                  <th className="p-3 font-medium">Dragonfly</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800 text-slate-300">
+                {DRAGONFLY_SPECS.map(([k, a, b], i) => (
+                  <tr key={i}>
+                    <td className="p-3 text-slate-400">{k}</td>
+                    <td className="p-3">{a}</td>
+                    <td className="p-3">{b}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* DRAFT NOTE: emd's published figures - confirm with emd before publishing */}
+        <div className="mt-10 grid md:grid-cols-4 gap-6">
+          <Stat label="Units deployed by emd" value="8,000+" />
+          <Stat label="Countries in operation" value="14+" />
+          <Stat label="Data points processed" value="600B" />
+          <Stat label="Recording resolution" value="ms" />
+        </div>
+      </Section>
+
+      {/* HOW TO START */}
+      <Section title="How to Start" subtitle="Start small on the assets that hurt most, prove the value, then scale.">
+        <div className="grid md:grid-cols-4 gap-6">
+          {[
+            {
+              icon: <Search className="w-5 h-5" />,
+              title: "1. Assess",
+              text: "We identify critical assets, dominant failure modes and the modules that address them.",
+            },
+            {
+              icon: <Rocket className="w-5 h-5" />,
+              title: "2. Pilot",
+              text: "A small group of assets on the Cloud Platform plus the add-ons you need. After 90 days we review the results together.",
+            },
+            {
+              icon: <Settings2 className="w-5 h-5" />,
+              title: "3. Tune",
+              text: "Rules, triggers and dashboards are refined; PM intervals are redesigned around real condition data.",
+            },
+            {
+              icon: <Layers className="w-5 h-5" />,
+              title: "4. Scale",
+              text: "Roll out across the fleet. Add or remove modules each month as your needs change.",
+            },
+          ].map((s, i) => (
+            <Card key={i} icon={s.icon} title={s.title}>
+              <p className="text-sm">{s.text}</p>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-10 relative p-8 md:p-12 rounded-3xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 text-cyan-300">
+              <NBELogo />
+              <span className="font-semibold">Northbound Engineering Services</span>
+            </div>
+            <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">
+              Put your most critical assets online
+            </h3>
+            <p className="mt-2 text-slate-300 max-w-2xl">
+              Tell us which assets cost you the most when they stop. We'll propose a pilot, a plan, and the expected
+              impact on your downtime.
+            </p>
+          </div>
+          <a
+            href={pilotMailto}
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition whitespace-nowrap"
+          >
+            Request a Pilot
+          </a>
+        </div>
+
+        <p className="mt-10 text-xs text-slate-500 max-w-4xl">
+          Hardware and platform by Electronic Minds Group (emd). Dragonfly, Remote Technician, CanGuard, Warp and
+          Sentinel are products of emd. INSITE, InPower, Electronic Technician and DiagnosticLink are trademarks of
+          their respective owners. All trademarks are the property of their respective owners. Northbound Engineering
+          Services is not affiliated with or endorsed by these OEMs.
+        </p>
+      </Section>
+
+      <UseCaseFooterNav />
+    </PageShell>
+  );
+}
+
+
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
@@ -3045,6 +3919,7 @@ export default function App() {
         <Route path="/use-case-8" element={<UseCase8Page />} />
         <Route path="/use-case-9" element={<UseCase9Page />} />
         <Route path="/reliability-enablement" element={<ReliabilityEnablementPage />} />
+        <Route path="/real-time-cbm" element={<RealTimeCbmPage />} />
       </Routes>
     </BrowserRouter>
   );
