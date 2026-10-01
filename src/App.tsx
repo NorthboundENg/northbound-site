@@ -54,6 +54,7 @@ import {
   KeyRound,
   Repeat,
 } from "lucide-react";
+import { tx, tf, isEs, LangProvider, LanguageSwitcher, useLang } from "./i18n";
 
 /**
  * NOTE
@@ -171,7 +172,7 @@ const Section = ({
         transition={{ duration: 0.6 }}
         className="text-3xl md:text-4xl font-semibold text-white"
       >
-        {title}
+        {tx(title)}
       </motion.h2>
       {subtitle && (
         <motion.p
@@ -181,7 +182,7 @@ const Section = ({
           transition={{ duration: 0.6, delay: 0.05 }}
           className="mt-2 text-slate-300 max-w-3xl"
         >
-          {subtitle}
+          {tx(subtitle)}
         </motion.p>
       )}
       <div className="mt-10">{children}</div>
@@ -191,8 +192,8 @@ const Section = ({
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
   <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg backdrop-blur">
-    <div className="text-3xl font-bold text-white">{value}</div>
-    <div className="text-slate-400 mt-1">{label}</div>
+    <div className="text-3xl font-bold text-white">{tx(value)}</div>
+    <div className="text-slate-400 mt-1">{tx(label)}</div>
   </div>
 );
 
@@ -214,7 +215,7 @@ const Card = ({
   <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
     <div className="flex items-center gap-2 text-cyan-300">
       {icon}
-      <span className="font-medium">{title}</span>
+      <span className="font-medium">{tx(title)}</span>
     </div>
     <div className="mt-3 text-slate-300 space-y-3">{children}</div>
   </div>
@@ -239,32 +240,29 @@ const UseCaseCard = ({
     <div className="flex items-center justify-between gap-3">
       <div className="flex items-center gap-2 text-cyan-300">
         {icon}
-        <span className="font-medium">{tag}</span>
+        <span className="font-medium">{tx(tag)}</span>
       </div>
-      <span className="text-xs text-slate-400 border border-slate-800 rounded-full px-3 py-1">Case Study</span>
+      <span className="text-xs text-slate-400 border border-slate-800 rounded-full px-3 py-1">{tx("Case Study")}</span>
     </div>
 
-    <div className="mt-4 text-xl font-semibold text-white leading-snug">{title}</div>
-    <p className="mt-2 text-slate-300">{context}</p>
+    <div className="mt-4 text-xl font-semibold text-white leading-snug">{tx(title)}</div>
+    <p className="mt-2 text-slate-300">{tx(context)}</p>
 
     <ul className="mt-4 space-y-2 text-sm text-slate-300">
       {outcomes.map((t, i) => (
   <li key={i} className="flex gap-3 items-start">
     <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-    <span className="leading-snug">{t}</span>
+    <span className="leading-snug">{tx(t)}</span>
   </li>
 ))}
     </ul>
 
     <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
-      <span className="text-sm text-slate-400">Read the full story</span>
+      <span className="text-sm text-slate-400">{tx("Read the full story")}</span>
       <Link
   to={to.startsWith("/") ? to : `/${to}`}
   className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
->
-
-        View
-        <ArrowRight className="w-4 h-4" />
+>{tx("View")}<ArrowRight className="w-4 h-4" />
       </Link>
     </div>
   </div>
@@ -273,36 +271,27 @@ const UseCaseCard = ({
 const TopNav = () => (
   <header className="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950 backdrop-blur">
     <Container>
-      <div className="h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
+      <div className="h-16 flex items-center justify-between gap-4">
+        <Link to="/" className="flex items-center gap-3 min-w-0">
           <NBELogo />
-          <div className="font-semibold text-white tracking-wide">Northbound Engineering Services</div>
+          <div className="font-semibold text-white tracking-wide md:hidden xl:block">{tx("Northbound Engineering Services")}</div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-  <Link to="/" className="hover:text-white text-slate-300">
-    Home
-  </Link>
+        <nav className="hidden md:flex items-center gap-4 xl:gap-6 text-sm whitespace-nowrap ml-auto">
+  <Link to="/" className="hover:text-white text-slate-300">{tx("Home")}</Link>
   
-  <Link to="/reliability-enablement" className="hover:text-white text-slate-300">
-    Reliability Enablement
-  </Link>
+  <Link to="/reliability-enablement" className="hover:text-white text-slate-300">{tx("Reliability Enablement")}</Link>
 
 
-  <Link to="/real-time-cbm" className="hover:text-white text-slate-300">
-    Real-Time CBM
-  </Link>
+  <Link to="/real-time-cbm" className="hover:text-white text-slate-300">{tx("Real-Time CBM")}</Link>
 
-  <Link to="/use-cases" className="hover:text-white text-slate-300">
-    Use Cases
-  </Link>
+  <Link to="/use-cases" className="hover:text-white text-slate-300">{tx("Use Cases")}</Link>
 
-  <Link to={{ pathname: "/", hash: "#contact" }} className="hover:text-white text-slate-300">
-  Contact Us
-</Link>
+  <Link to={{ pathname: "/", hash: "#contact" }} className="hover:text-white text-slate-300">{tx("Contact Us")}</Link>
 
 </nav>
 
+        <LanguageSwitcher className="shrink-0" />
       </div>
     </Container>
   </header>
@@ -315,20 +304,12 @@ const Footer = () => (
         <div className="flex items-center gap-3">
           <NBELogo />
           <span>
-            &copy; {new Date().getFullYear()} Northbound Engineering Services • Engineering reality. Predictable
-            performance.
-          </span>
+            &copy; {new Date().getFullYear()}{tx(" Northbound Engineering Services • Engineering reality. Predictable performance.")}</span>
         </div>
         <div className="flex gap-4">
-          <Link to="/" className="hover:text-slate-200">
-            Home
-          </Link>
-          <Link to="/real-time-cbm" className="hover:text-slate-200">
-            Real-Time CBM
-          </Link>
-          <Link to="/use-cases" className="hover:text-slate-200">
-            Use Cases
-          </Link>
+          <Link to="/" className="hover:text-slate-200">{tx("Home")}</Link>
+          <Link to="/real-time-cbm" className="hover:text-slate-200">{tx("Real-Time CBM")}</Link>
+          <Link to="/use-cases" className="hover:text-slate-200">{tx("Use Cases")}</Link>
         </div>
       </div>
     </Container>
@@ -350,81 +331,81 @@ function UseCasesGrid() {
     <div className="grid md:grid-cols-3 gap-6">
       <UseCaseCard
         icon={<Factory className="w-5 h-5" />}
-        tag="Use Case 1"
-        title="Zero Service Quality Losses in 6 Months"
-        context="Cementing plant manufacturing - shifted from PM compliance to failure-mode maintenance effectiveness."
+        tag={tx("Use Case 1")}
+        title={tx("Zero Service Quality Losses in 6 Months")}
+        context={tx("Cementing plant manufacturing - shifted from PM compliance to failure-mode maintenance effectiveness.")}
         outcomes={["MTBF tripled in 3 months", "6 months with zero equipment-driven quality losses", "Costs reduced after repeat failures were eliminated"]}
         to="/use-case-1"
       />
 
       <UseCaseCard
         icon={<Building2 className="w-5 h-5" />}
-        tag="Use Case 2"
-        title="From Availability Obsession to Capital Discipline"
-        context="3,500-asset construction fleet - redefined utilization economically using telematics and ROI by project."
+        tag={tx("Use Case 2")}
+        title={tx("From Availability Obsession to Capital Discipline")}
+        context={tx("3,500-asset construction fleet - redefined utilization economically using telematics and ROI by project.")}
         outcomes={["CAPEX growth reduced by a minumum of 50%", "Rental strategy increased to about 30% for flexibility", "Standby cost exposed the price of just-in-case assets"]}
         to="/use-case-2"
       />
 
       <UseCaseCard
         icon={<Waves className="w-5 h-5" />}
-        tag="Use Case 3"
-        title="IIoT for Mobile Energy Operations"
-        context="Mobile plants up to 50,000 HP - edge-first IIoT enabled predictive insights under changing conditions."
+        tag={tx("Use Case 3")}
+        title={tx("IIoT for Mobile Oil and Gas Operations")}
+        context={tx("Mobile plants up to 50,000 HP - edge-first IIoT enabled predictive insights under changing conditions.")}
         outcomes={["Production increased up to 30%", "NPT reduced by about 50%", "ROI about 5x in 6 months"]}
         to="/use-case-3"
       />
 
       <UseCaseCard
         icon={<ClipboardList className="w-5 h-5" />}
-        tag="Use Case 4"
-        title="Vendor SLAs That Turn Outsourcing Into Reliability"
-        context="Energy assets with heavy contractor use - introduced enforceable SLAs and governance to stabilize maintenance quality."
+        tag={tx("Use Case 4")}
+        title={tx("Vendor SLAs That Turn Outsourcing Into Reliability")}
+        context={tx("Oil and Gas assets with heavy contractor use - introduced enforceable SLAs and governance to stabilize maintenance quality.")}
         outcomes={["Reduced contractor-driven quality issues and rework", "Clear acceptance criteria, warranty, and scope boundaries", "More predictable maintenance outcomes without adding headcount"]}
         to="/use-case-4"
       />
 
       <UseCaseCard
         icon={<TrendingUp className="w-5 h-5" />}
-        tag="Use Case 5"
-        title="Life-Stage Maintenance That Cut CAPEX 30% YoY"
-        context="Large distributed vehicle and equipment fleet - aligned deployment, risk, and maintenance using telemetry data."
+        tag={tx("Use Case 5")}
+        title={tx("Life-Stage Maintenance That Cut CAPEX 30% YoY")}
+        context={tx("Large distributed vehicle and equipment fleet - aligned deployment, risk, and maintenance using telemetry data.")}
         outcomes={["30% year-over-year reduction in capital requirements", "Extended economic life with controlled risk", "Deployment aligned to environment aggressiveness and life stage"]}
         to="/use-case-5"
       />
 
       <UseCaseCard
         icon={<PlugZap className="w-5 h-5" />}
-        tag="Use Case 6"
-        title="Local Refurbishment That Delivered $12M in Value"
-        context="Pandemic supply-chain disruption - qualified a local refurbishment path under strict IP and QA governance."
+        tag={tx("Use Case 6")}
+        title={tx("Local Refurbishment That Delivered $12M in Value")}
+        context={tx("Pandemic supply-chain disruption - qualified a local refurbishment path under strict IP and QA governance.")}
         outcomes={["Lead time reduced from ~8 months to ~3 weeks", "Refurbished parts achieved ~120% original life", "Crisis solution became a scalable standard"]}
         to="/use-case-6"
       />
 
       <UseCaseCard
         icon={<Calculator className="w-5 h-5" />}
-        tag="Use Case 7"
-        title="TCO Business Case Unlocking $50M+ Savings"
-        context="Critical component failures normalized over time - TCO and operating-point validation enabled a defensible redesign."
+        tag={tx("Use Case 7")}
+        title={tx("TCO Business Case Unlocking $50M+ Savings")}
+        context={tx("Critical component failures normalized over time - TCO and operating-point validation enabled a defensible redesign.")}
         outcomes={["Maintenance cost avoidance > $50M", "Fewer unscheduled events and higher stability", "Modern components enabled better sensing and CBM"]}
         to="/use-case-7"
       />
 
       <UseCaseCard
         icon={<Layers className="w-5 h-5" />}
-        tag="Use Case 8"
-        title="Global Maintenance Maturity: MTBF x3 Without CAPEX"
-        context="Global Oil & Gas service company - assessed People, Process, Technology and delivered a phased maturity roadmap."
+        tag={tx("Use Case 8")}
+        title={tx("Global Maintenance Maturity: MTBF x3 Without CAPEX")}
+        context={tx("Global Oil & Gas service company - assessed People, Process, Technology and delivered a phased maturity roadmap.")}
         outcomes={["Pilot tripled MTBF", "Record-low service quality issues", "10% maintenance cost reduction with no capital investment"]}
         to="/use-case-8"
       />
 
       <UseCaseCard
         icon={<Wrench className="w-5 h-5" />}
-        tag="Use Case 9"
-        title="Hydraulic Sanitization Restoring Plant Reliability"
-        context="Sand refinement plant - contamination control and sanitation practices stopped repetitive hydraulic failures."
+        tag={tx("Use Case 9")}
+        title={tx("Hydraulic Sanitization Restoring Plant Reliability")}
+        context={tx("Sand refinement plant - contamination control and sanitation practices stopped repetitive hydraulic failures.")}
         outcomes={["Hydraulic MTBF improved up to 600%", "Utilization rose from 42% to ~60%", "Maintenance costs reduced about by 20% and repeat pump failures eliminated"]}
         to="/use-case-9"
       />
@@ -435,8 +416,18 @@ function UseCasesGrid() {
 function HomePage() {
   const assessmentMailto = buildMailto(
     "info@northboundengineering.com",
-    "Assessment Request",
-    `Hello Northbound Engineering Services,
+    isEs() ? "Solicitud de evaluación" : "Assessment Request",
+    isEs()
+      ? `Hola Northbound Engineering Services,
+
+Me gustaría solicitar una evaluación de preparación en confiabilidad.
+
+Nombre/Empresa:
+Datos de contacto:
+
+Gracias,
+`
+      : `Hello Northbound Engineering Services,
 
 I’d like to request a reliability readiness assessment.
 
@@ -449,12 +440,17 @@ Thank you,
 
   return (
     <PageShell>
+      <Seo
+        title={tx("Northbound Engineering Services | Capital-Efficient Reliability")}
+        description={tx("Northbound Engineering Services helps asset-intensive operators turn engineering reality into predictable performance, reducing unplanned downtime, optimizing maintenance cost, and improving capital efficiency.")}
+        type="website"
+      />
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?q=80&w=2000&auto=format&fit=crop"
-            alt="Industrial operations"
+            alt={tx("Industrial operations")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/40 to-slate-950" />
@@ -463,27 +459,17 @@ Thank you,
           <div className="relative py-28 md:py-36">
             <div className="max-w-3xl">
               <Pill>
-                <Cpu className="w-4 h-4" /> From reactive to generative reliability
-              </Pill>
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                From Reactive to <span className="text-cyan-400">Generative Reliability</span>
+                <Cpu className="w-4 h-4" />{tx(" From reactive to generative reliability")}</Pill>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("From Reactive to ")}<span className="text-cyan-400">{tx("Generative Reliability")}</span>
               </h1>
-              <p className="mt-5 text-lg text-slate-300 max-w-2xl">
-                Maintenance excellence starts with <span className="font-semibold text-white">engineering reality </span>
-                and scales into predictable business performance. We combine decades of hands-on leadership, advanced
-                digital technologies, and practical common sense to deliver forecast accuracy, predictable OPEX and
-                Capex, optimal asset utilization, and clear operational visibility.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-2xl">{tx("Maintenance excellence starts with ")}<span className="font-semibold text-white">{tx("engineering reality ")}</span>{tx("and scales into predictable business performance. We combine decades of hands-on leadership, advanced digital technologies, and practical common sense to deliver forecast accuracy, predictable OPEX and Capex, optimal asset utilization, and clear operational visibility.")}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <Gauge className="w-4 h-4" /> 30-70% less unplanned downtime
-                </Pill>
+                  <Gauge className="w-4 h-4" />{tx(" 30-70% less unplanned downtime")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> 20-40% cost optimization
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" 20-40% cost optimization")}</Pill>
                 <Pill>
-                  <ShieldAlert className="w-4 h-4" /> Alarm governance for safer ops
-                </Pill>
+                  <ShieldAlert className="w-4 h-4" />{tx(" Alarm governance for safer ops")}</Pill>
               </div>
             </div>
           </div>
@@ -491,32 +477,24 @@ Thank you,
       </section>
          {/* SUMMARY */}
       <Section
-        title="Executive Summary"
-        subtitle="Maintenance efficiency is no longer a future aspiration - it is a mandatory competitive advantage."
+        title={tx("Executive Summary")}
+        subtitle={tx("Maintenance efficiency is no longer a future aspiration - it is a mandatory competitive advantage.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
-          <Stat label="Unplanned downtime (NPT)" value="-30-70%" />
-          <Stat label="Maintenance cost" value="-20-40%" />
-          <Stat label="Productivity" value="+15-40%" />
+          <Stat label={tx("Unplanned downtime (NPT)")} value="-30-70%" />
+          <Stat label={tx("Maintenance cost")} value="-20-40%" />
+          <Stat label={tx("Productivity")} value="+15-40%" />
         </div>
 
         <div className="mt-10 grid md:grid-cols-2 gap-6">
           <img
             src="/images/executive-summary.jpg"
-            alt="Control room"
+            alt={tx("Control room")}
             className="rounded-2xl shadow-2xl border border-slate-800"
           />
           <div className="space-y-4 text-slate-300">
-            <p>
-              In asset-intensive industries, maintenance is not a support function; it is the foundation for stable
-              operations, predictable performance and controlled risk. Healthy equipment delivers high uptime, reduced
-              operational and safety risk, consistent quality and disciplined processes.
-            </p>
-            <p>
-              We partner from the operating floor to top management, strengthening processes, applying the right
-              technologies and developing human capabilities to turn maintenance excellence into measurable business
-              performance.
-            </p>
+            <p>{tx("In asset-intensive industries, maintenance is not a support function; it is the foundation for stable operations, predictable performance and controlled risk. Healthy equipment delivers high uptime, reduced operational and safety risk, consistent quality and disciplined processes.")}</p>
+            <p>{tx("We partner from the operating floor to top management, strengthening processes, applying the right technologies and developing human capabilities to turn maintenance excellence into measurable business performance.")}</p>
             <ul className="space-y-2">
               {[
                 "Enhanced HSE compliance through alarm governance",
@@ -525,7 +503,7 @@ Thank you,
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -535,8 +513,8 @@ Thank you,
 
       {/* CHALLENGES */}
       <Section
-        title="Industrial Challenges"
-        subtitle="Common failure patterns that erode quality, uptime, and capital efficiency."
+        title={tx("Industrial Challenges")}
+        subtitle={tx("Common failure patterns that erode quality, uptime, and capital efficiency.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
           {[
@@ -574,9 +552,9 @@ Thank you,
             <div key={i} className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
               <div className="flex items-center gap-2 text-cyan-300">
                 {c.icon}
-                <span className="font-medium">{c.title}</span>
+                <span className="font-medium">{tx(c.title)}</span>
               </div>
-              <p className="mt-2 text-slate-300">{c.text}</p>
+              <p className="mt-2 text-slate-300">{tx(c.text)}</p>
             </div>
           ))}
         </div>
@@ -585,8 +563,8 @@ Thank you,
       {/* USE CASES (CARDS) */}
       <Section
         id="use-cases"
-        title="Use Cases"
-        subtitle="Nine real-world transformations - summarized for fast scanning."
+        title={tx("Use Cases")}
+        subtitle={tx("Nine real-world transformations - summarized for fast scanning.")}
       >
         <UseCasesGrid />
       </Section>
@@ -594,23 +572,23 @@ Thank you,
 {/* DIGITAL RELIABILITY (HOME BITE) */}
 <Section
   id="digital-reliability"
-  title="Digital Reliability-as-a-Service"
-  subtitle="Engineering-led edge intelligence that upgrades maintenance maturity—without selling devices."
+  title={tx("Digital Reliability-as-a-Service")}
+  subtitle={tx("Engineering-led edge intelligence that upgrades maintenance maturity—without selling devices.")}
 >
   <div className="grid md:grid-cols-2 gap-6">
     {/* Left: hybrid visual */}
     <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
       <img
         src="/images/digital-reliability.png"
-        alt="Industrial equipment with digital overlay"
+        alt={tx("Industrial equipment with digital overlay")}
         className="w-full h-full object-cover opacity-70"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-slate-950/40 to-slate-950/80" />
       <div className="absolute bottom-0 p-6">
         <div className="flex flex-wrap gap-2">
-          <Pill><Network className="w-4 h-4" /> Edge-first intelligence</Pill>
-          <Pill><Bell className="w-4 h-4" /> Stop pre-visibility</Pill>
-          <Pill><Wrench className="w-4 h-4" /> Maintenance maturity upgrade</Pill>
+          <Pill><Network className="w-4 h-4" />{tx(" Edge-first intelligence")}</Pill>
+          <Pill><Bell className="w-4 h-4" />{tx(" Stop pre-visibility")}</Pill>
+          <Pill><Wrench className="w-4 h-4" />{tx(" Maintenance maturity upgrade")}</Pill>
         </div>
       </div>
     </div>
@@ -618,16 +596,12 @@ Thank you,
     {/* Right: content */}
     <div className="space-y-4 text-slate-300">
       <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-        <div className="text-white font-medium">What it is</div>
-        <p className="mt-2">
-          We embed industrial edge intelligence into your critical assets and convert operating signals into
-          decision-grade reliability insight. This is not a device sale—it's a structured reliability improvement
-          model supported by engineering discipline and adoption.
-        </p>
+        <div className="text-white font-medium">{tx("What it is")}</div>
+        <p className="mt-2">{tx("We embed industrial edge intelligence into your critical assets and convert operating signals into decision-grade reliability insight. This is not a device sale—it's a structured reliability improvement model supported by engineering discipline and adoption.")}</p>
       </div>
 
       <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-        <div className="text-white font-medium">What it enables</div>
+        <div className="text-white font-medium">{tx("What it enables")}</div>
         <ul className="mt-3 space-y-2 text-sm">
           {[
             "Condition-based maintenance and predictive intervention",
@@ -637,7 +611,7 @@ Thank you,
           ].map((t, i) => (
             <li key={i} className="flex gap-3">
               <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-              <span>{t}</span>
+              <span>{tx(t)}</span>
             </li>
           ))}
         </ul>
@@ -646,15 +620,13 @@ Thank you,
           <Link
             to="/reliability-enablement"
             className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-          >
-            Learn More <ArrowRight className="w-4 h-4" />
+          >{tx("Learn More ")}<ArrowRight className="w-4 h-4" />
           </Link>
 
           <Link
             to={{ pathname: "/", hash: "#contact" }}
             className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
-          >
-            Request an Assessment <ArrowRight className="w-4 h-4" />
+          >{tx("Request an Assessment ")}<ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
@@ -666,8 +638,8 @@ Thank you,
 {/* REAL-TIME CBM (HOME BITE) - DRAFT */}
 <Section
   id="real-time-cbm"
-  title="Real Time. Real Predictions."
-  subtitle="See it coming, fix it remotely. Reliability as a subscription. Live condition monitoring and Northbound engineering to cut unplanned downtime, with hardware leased so there is nothing to buy."
+  title={tx("Real Time. Real Predictions.")}
+  subtitle={tx("See it coming, fix it remotely. Reliability as a subscription. Live condition monitoring and Northbound engineering to cut unplanned downtime, with hardware leased so there is nothing to buy.")}
 >
   <div className="grid md:grid-cols-3 gap-6">
     {[
@@ -688,32 +660,30 @@ Thank you,
       },
     ].map((c, i) => (
       <Card key={i} icon={c.icon} title={c.title}>
-        <p className="text-sm">{c.text}</p>
+        <p className="text-sm">{tx(c.text)}</p>
       </Card>
     ))}
   </div>
 
   <div className="mt-6 flex flex-wrap items-center gap-3">
-    <Pill><PiggyBank className="w-4 h-4" /> No CAPEX</Pill>
-    <Pill><Pickaxe className="w-4 h-4" /> Mining</Pill>
-    <Pill><Flame className="w-4 h-4" /> Oil & gas</Pill>
-    <Pill><Zap className="w-4 h-4" /> Power generation</Pill>
-    <Pill><Truck className="w-4 h-4" /> Logistics</Pill>
-    <Pill><Bus className="w-4 h-4" /> Public transport</Pill>
+    <Pill><PiggyBank className="w-4 h-4" />{tx(" No CAPEX")}</Pill>
+    <Pill><Pickaxe className="w-4 h-4" />{tx(" Mining")}</Pill>
+    <Pill><Flame className="w-4 h-4" />{tx(" Oil & gas")}</Pill>
+    <Pill><Zap className="w-4 h-4" />{tx(" Power generation")}</Pill>
+    <Pill><Truck className="w-4 h-4" />{tx(" Logistics")}</Pill>
+    <Pill><Bus className="w-4 h-4" />{tx(" Public transport")}</Pill>
   </div>
 
   <div className="mt-8 flex flex-wrap gap-3">
     <Link
       to="/real-time-cbm"
       className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-    >
-      Explore Real-Time CBM <ArrowRight className="w-4 h-4" />
+    >{tx("Explore Real-Time CBM ")}<ArrowRight className="w-4 h-4" />
     </Link>
     <Link
       to={{ pathname: "/real-time-cbm", hash: "#cbm-plans" }}
       className="inline-flex items-center gap-2 rounded-full px-5 py-2 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
-    >
-      See Plans & Bundles <ArrowRight className="w-4 h-4" />
+    >{tx("See Plans & Bundles ")}<ArrowRight className="w-4 h-4" />
     </Link>
   </div>
 </Section>
@@ -721,27 +691,22 @@ Thank you,
       {/* CONTACT */}
 <Section
   id="contact"
-  title="Request an Assessment"
-  subtitle="Start with a quick readiness assessment to identify value pockets, align governance, and build a roadmap to predictable performance."
+  title={tx("Request an Assessment")}
+  subtitle={tx("Start with a quick readiness assessment to identify value pockets, align governance, and build a roadmap to predictable performance.")}
 >
   <div className="relative p-8 md:p-12 rounded-3xl bg-slate-900/70 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
     <div>
       <div className="flex items-center gap-3 text-cyan-300">
         <NBELogo />
-        <span className="font-semibold">Northbound Engineering Services</span>
+        <span className="font-semibold">{tx("Northbound Engineering Services")}</span>
       </div>
 
-      <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">Let’s evaluate your reliability readiness</h3>
+      <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">{tx("Let’s evaluate your reliability readiness")}</h3>
 
-      <p className="mt-2 text-slate-300 max-w-2xl">
-        Email us to schedule an initial assessment and discuss your current constraints, data readiness, and highest-impact opportunities.
-      </p>
+      <p className="mt-2 text-slate-300 max-w-2xl">{tx("Email us to schedule an initial assessment and discuss your current constraints, data readiness, and highest-impact opportunities.")}</p>
 
-      <p className="mt-4 text-sm text-slate-400">
-        Email:{" "}
-        <a href={assessmentMailto} className="underline hover:text-white">
-  Request an Assessment
-</a>
+      <p className="mt-4 text-sm text-slate-400">{tx("Email:")}{" "}
+        <a href={assessmentMailto} className="underline hover:text-white">{tx("Request an Assessment")}</a>
 
 
       </p>
@@ -750,9 +715,7 @@ Thank you,
     <a
   href={assessmentMailto}
   className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
->
-  Request an Assessment
-</a>
+>{tx("Request an Assessment")}</a>
 
   </div>
 </Section>
@@ -765,20 +728,15 @@ Thank you,
             <div>
               <div className="flex items-center gap-3 text-cyan-300">
                 <NBELogo />
-                <span className="font-semibold">Northbound Engineering Services</span>
+                <span className="font-semibold">{tx("Northbound Engineering Services")}</span>
               </div>
-              <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">Begin your reliability transformation</h3>
-              <p className="mt-2 text-slate-300 max-w-2xl">
-                Start with a readiness assessment to identify value pockets, align governance, and build a roadmap to
-                predictable performance.
-              </p>
+              <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">{tx("Begin your reliability transformation")}</h3>
+              <p className="mt-2 text-slate-300 max-w-2xl">{tx("Start with a readiness assessment to identify value pockets, align governance, and build a roadmap to predictable performance.")}</p>
             </div>
             <Link
               to="/use-cases"
               className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-            >
-              View Use Cases
-            </Link>
+            >{tx("View Use Cases")}</Link>
           </div>
         </Container>
       </section>
@@ -789,11 +747,16 @@ Thank you,
 function UseCasesPage() {
   return (
     <PageShell>
+      <Seo
+        title={tx("Use Cases | Northbound Engineering Services")}
+        description={tx("Nine transformations across manufacturing, fleet, mobile operations, vendor governance, component TCO, maturity roadmaps, and hydraulic reliability.")}
+        type="website"
+      />
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2000&auto=format&fit=crop"
-            alt="Operations"
+            alt={tx("Operations")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -802,21 +765,16 @@ function UseCasesPage() {
           <div className="relative py-24 md:py-32">
             <div className="max-w-4xl">
               <Pill>
-                <Target className="w-4 h-4" /> Case studies
-              </Pill>
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Use Cases That Prove <span className="text-cyan-400">Capital-Efficient Reliability</span>
+                <Target className="w-4 h-4" />{tx(" Case studies")}</Pill>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Use Cases That Prove ")}<span className="text-cyan-400">{tx("Capital-Efficient Reliability")}</span>
               </h1>
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                Nine transformations across manufacturing, fleet, mobile operations, vendor governance, component TCO,
-                maturity roadmaps, and hydraulic reliability.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("Nine transformations across manufacturing, fleet, mobile operations, vendor governance, component TCO, maturity roadmaps, and hydraulic reliability.")}</p>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="All Use Cases" subtitle="Open any case to view the full story, structure, and outcomes.">
+      <Section title={tx("All Use Cases")} subtitle={tx("Open any case to view the full story, structure, and outcomes.")}>
         <UseCasesGrid />
       </Section>
     </PageShell>
@@ -834,38 +792,32 @@ function UseCaseFooterNav({ prev, next }: { prev?: string; next?: string }) {
                 to={prev}
                 className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
               >
-                <ArrowRight className="w-4 h-4 rotate-180" /> Prev
-              </Link>
+                <ArrowRight className="w-4 h-4 rotate-180" />{tx(" Prev")}</Link>
             ) : (
               <Link
                 to="/use-cases"
                 className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
               >
-                <ArrowRight className="w-4 h-4 rotate-180" /> All Use Cases
-              </Link>
+                <ArrowRight className="w-4 h-4 rotate-180" />{tx(" All Use Cases")}</Link>
             )}
 
             <Link
               to="/"
               className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
-            >
-              Home
-            </Link>
+            >{tx("Home")}</Link>
           </div>
 
           {next ? (
             <Link
               to={next}
               className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
-            >
-              Next <ArrowRight className="w-4 h-4" />
+            >{tx("Next ")}<ArrowRight className="w-4 h-4" />
             </Link>
           ) : (
             <Link
               to="/use-cases"
               className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-slate-950 border border-slate-800 hover:bg-slate-900 transition"
-            >
-              All Use Cases <ArrowRight className="w-4 h-4" />
+            >{tx("All Use Cases ")}<ArrowRight className="w-4 h-4" />
             </Link>
           )}
         </div>
@@ -879,8 +831,8 @@ function UseCase1Page() {
   return (
     <PageShell>
       <Seo
-  title="Use Case 1 — Zero Service Quality Losses | Northbound Engineering Services"
-  description="How maintenance effectiveness (not response speed) delivered six months of zero equipment-driven quality losses and tripled MTBF in a service-critical manufacturing facility."
+  title={tx("Use Case 1 — Zero Service Quality Losses | Northbound Engineering Services")}
+  description={tx("How maintenance effectiveness (not response speed) delivered six months of zero equipment-driven quality losses and tripled MTBF in a service-critical manufacturing facility.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -889,7 +841,7 @@ function UseCase1Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1581091215367-59ab6b46b1b9?q=80&w=2000&auto=format&fit=crop"
-            alt="Manufacturing operations"
+            alt={tx("Manufacturing operations")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -900,37 +852,26 @@ function UseCase1Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <Factory className="w-4 h-4" /> Use Case 1
-                </Pill>
+                  <Factory className="w-4 h-4" />{tx(" Use Case 1")}</Pill>
                 <Pill>
-                  <ClipboardList className="w-4 h-4" /> Maintenance Effectiveness
-                </Pill>
+                  <ClipboardList className="w-4 h-4" />{tx(" Maintenance Effectiveness")}</Pill>
                 <Pill>
-                  <ShieldAlert className="w-4 h-4" /> Quality Stability
-                </Pill>
+                  <ShieldAlert className="w-4 h-4" />{tx(" Quality Stability")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Achieving <span className="text-cyan-400">Zero Service Quality Losses</span>
-                <span className="block">in Six Months Through Maintenance Effectiveness</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Achieving ")}<span className="text-cyan-400">{tx("Zero Service Quality Losses")}</span>
+                <span className="block">{tx("in Six Months Through Maintenance Effectiveness")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                A cementing plant manufacturing facility in Texas proved that maintenance effectiveness - not reaction
-                speed - is the foundation of service quality. NBE redesigned the maintenance system around failure
-                modes, adopted effectiveness KPIs, and delivered sustained quality stability.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("A cementing plant manufacturing facility in Texas proved that maintenance effectiveness - not reaction speed - is the foundation of service quality. NBE redesigned the maintenance system around failure modes, adopted effectiveness KPIs, and delivered sustained quality stability.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> MTBF tripled (3 months)
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" MTBF tripled (3 months)")}</Pill>
                 <Pill>
-                  <ShieldAlert className="w-4 h-4" /> 6 months zero quality losses
-                </Pill>
+                  <ShieldAlert className="w-4 h-4" />{tx(" 6 months zero quality losses")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> Cost reduction followed reliability
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" Cost reduction followed reliability")}</Pill>
               </div>
             </div>
           </div>
@@ -938,33 +879,26 @@ function UseCase1Page() {
       </section>
 
       <Section
-        title="1) Industry and Operational Context"
-        subtitle="A service-critical manufacturing operation where quality depends on equipment reliability."
+        title={tx("1) Industry and Operational Context")}
+        subtitle={tx("A service-critical manufacturing operation where quality depends on equipment reliability.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The organization operates a cementing plant manufacturing facility in Texas, supporting service-critical
-              operations where equipment reliability directly impacts service quality and customer commitments.
-            </p>
-            <p>
-              The plant operated with high production pressure and increasing market demand, requiring uninterrupted and
-              stable performance from its assets. At the time of engagement, the maintenance organization was perceived
-              as highly mature, with strong execution discipline and rapid response capabilities.
-            </p>
+            <p>{tx("The organization operates a cementing plant manufacturing facility in Texas, supporting service-critical operations where equipment reliability directly impacts service quality and customer commitments.")}</p>
+            <p>{tx("The plant operated with high production pressure and increasing market demand, requiring uninterrupted and stable performance from its assets. At the time of engagement, the maintenance organization was perceived as highly mature, with strong execution discipline and rapid response capabilities.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Environment" value="High demand" />
-            <Stat label="Risk" value="Quality losses" />
-            <Stat label="Perception" value="Highly mature" />
-            <Stat label="Reality" value="Repeat failures" />
+            <Stat label={tx("Environment")} value={tx("High demand")} />
+            <Stat label={tx("Risk")} value={tx("Quality losses")} />
+            <Stat label={tx("Perception")} value={tx("Highly mature")} />
+            <Stat label={tx("Reality")} value={tx("Repeat failures")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Challenges" subtitle="Great responsiveness was masking low maintenance effectiveness.">
+      <Section title={tx("2) Challenges")} subtitle={tx("Great responsiveness was masking low maintenance effectiveness.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<CheckCircle2 className="w-5 h-5" />} title="Strong execution metrics">
+          <Card icon={<CheckCircle2 className="w-5 h-5" />} title={tx("Strong execution metrics")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Very high preventive maintenance plan compliance",
@@ -974,20 +908,17 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Business performance contradicted">
-            <p>
-              Service quality losses were increasing, and equipment failures ranked as the leading cause. Failures were
-              frequent, repetitive, and directly impacting service delivery.
-            </p>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Business performance contradicted")}>
+            <p>{tx("Service quality losses were increasing, and equipment failures ranked as the leading cause. Failures were frequent, repetitive, and directly impacting service delivery.")}</p>
           </Card>
 
-          <Card icon={<GitCompare className="w-5 h-5" />} title="The contradiction">
+          <Card icon={<GitCompare className="w-5 h-5" />} title={tx("The contradiction")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Failures were repaired quickly",
@@ -997,7 +928,7 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1005,12 +936,12 @@ function UseCase1Page() {
         </div>
       </Section>
 
-      <Section title="3) Objectives" subtitle="Shift from cosmetic KPIs to real reliability and quality stability.">
+      <Section title={tx("3) Objectives")} subtitle={tx("Shift from cosmetic KPIs to real reliability and quality stability.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <div className="flex items-center gap-2 text-cyan-300">
               <Target className="w-5 h-5" />
-              <span className="font-medium">Leadership expectations</span>
+              <span className="font-medium">{tx("Leadership expectations")}</span>
             </div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1022,38 +953,32 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <div className="text-white font-medium">Priority</div>
-            <p>
-              The priority was not improved reporting or superficial metrics - it was reliability, quality stability,
-              and confidence through demand growth.
-            </p>
+            <div className="text-white font-medium">{tx("Priority")}</div>
+            <p>{tx("The priority was not improved reporting or superficial metrics - it was reliability, quality stability, and confidence through demand growth.")}</p>
             <div className="mt-2 p-4 rounded-2xl bg-slate-950/50 border border-slate-800">
-              <div className="text-white font-medium">Key reframe</div>
-              <p className="mt-2 text-sm">Measure and manage maintenance effectiveness - not speed of reaction.</p>
+              <div className="text-white font-medium">{tx("Key reframe")}</div>
+              <p className="mt-2 text-sm">{tx("Measure and manage maintenance effectiveness - not speed of reaction.")}</p>
             </div>
           </div>
         </div>
       </Section>
 
-      <Section title="4) Approach and Solution" subtitle="Failure-mode strategy redesign and effectiveness-based work.">
+      <Section title={tx("4) Approach and Solution")} subtitle={tx("Failure-mode strategy redesign and effectiveness-based work.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <ClipboardList className="w-5 h-5" />
-              <span className="font-medium">What NBE analyzed</span>
+              <span className="font-medium">{tx("What NBE analyzed")}</span>
             </div>
-            <p>
-              NBE performed a focused but deep analysis of historical maintenance and failure records using an FMEA
-              approach to identify dominant failure mechanisms.
-            </p>
-            <div className="text-white font-medium">Findings</div>
+            <p>{tx("NBE performed a focused but deep analysis of historical maintenance and failure records using an FMEA approach to identify dominant failure mechanisms.")}</p>
+            <div className="text-white font-medium">{tx("Findings")}</div>
             <ul className="space-y-2 text-sm">
               {[
                 "Time-based preventive maintenance was ineffective",
@@ -1062,7 +987,7 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1071,7 +996,7 @@ function UseCase1Page() {
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <Wrench className="w-5 h-5" />
-              <span className="font-medium">Strategy redesign</span>
+              <span className="font-medium">{tx("Strategy redesign")}</span>
             </div>
             <ul className="space-y-2 text-sm">
               {[
@@ -1082,30 +1007,24 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-3 p-4 rounded-2xl bg-slate-950/50 border border-slate-800">
-              <div className="text-white font-medium">Turning point KPI</div>
-              <p className="mt-2 text-sm">
-                MTBF measured against the last preventive intervention - linking maintenance actions directly to
-                reliability outcomes.
-              </p>
+              <div className="text-white font-medium">{tx("Turning point KPI")}</div>
+              <p className="mt-2 text-sm">{tx("MTBF measured against the last preventive intervention - linking maintenance actions directly to reliability outcomes.")}</p>
             </div>
           </div>
         </div>
       </Section>
 
-      <Section title="5) Change Management and Adoption" subtitle="Shift behavior from responsiveness to prevention value.">
+      <Section title={tx("5) Change Management and Adoption")} subtitle={tx("Shift behavior from responsiveness to prevention value.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Activity className="w-5 h-5" />} title="Mindset shift">
-            <p>
-              Technicians and supervisors were used to being measured on response time and compliance. The transition
-              required redefining what good looked like.
-            </p>
+          <Card icon={<Activity className="w-5 h-5" />} title={tx("Mindset shift")}>
+            <p>{tx("Technicians and supervisors were used to being measured on response time and compliance. The transition required redefining what good looked like.")}</p>
           </Card>
-          <Card icon={<BarChart3 className="w-5 h-5" />} title="Enable adoption">
+          <Card icon={<BarChart3 className="w-5 h-5" />} title={tx("Enable adoption")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Task-specific work instructions",
@@ -1114,33 +1033,30 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
-          <Card icon={<ShieldAlert className="w-5 h-5" />} title="Behavioral reframe">
-            <p>Preventing failures delivers more value than repairing them quickly.</p>
+          <Card icon={<ShieldAlert className="w-5 h-5" />} title={tx("Behavioral reframe")}>
+            <p>{tx("Preventing failures delivers more value than repairing them quickly.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="6) Results and Outcomes" subtitle="Rapid improvements with sustained stability.">
+      <Section title={tx("6) Results and Outcomes")} subtitle={tx("Rapid improvements with sustained stability.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="MTBF" value="x3" />
-          <Stat label="Quality losses" value="0 (6 mo)" />
-          <Stat label="Operational volume" value="Peak" />
-          <Stat label="Maintenance cost" value="Down (3 mo)" />
+          <Stat label={tx("MTBF")} value={tx("x3")} />
+          <Stat label={tx("Quality losses")} value={tx("0 (6 mo)")} />
+          <Stat label={tx("Operational volume")} value={tx("Peak")} />
+          <Stat label={tx("Maintenance cost")} value={tx("Down (3 mo)")} />
         </div>
       </Section>
 
-      <Section title="7) Business Impact" subtitle="Maintenance became a strategic quality enabler.">
+      <Section title={tx("7) Business Impact")} subtitle={tx("Maintenance became a strategic quality enabler.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <p>
-              The initiative demonstrated that maintenance effectiveness - not responsiveness - is the foundation of
-              service quality. Stability increased confidence to meet higher demand while reducing operational risk.
-            </p>
+            <p>{tx("The initiative demonstrated that maintenance effectiveness - not responsiveness - is the foundation of service quality. Stability increased confidence to meet higher demand while reducing operational risk.")}</p>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "Stable and predictable service performance",
@@ -1151,13 +1067,13 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Key takeaways</div>
+            <div className="text-white font-medium">{tx("Key takeaways")}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "High PM compliance does not guarantee high reliability",
@@ -1168,7 +1084,7 @@ function UseCase1Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1186,8 +1102,8 @@ function UseCase2Page() {
   return (
     <PageShell>
       <Seo
-  title="Use Case 2 — From Availability to Capital Discipline | Northbound Engineering Services"
-  description="How telematics and ROI dashboards reframed utilization economically, reduced CAPEX growth by ~50%, and increased fleet flexibility through a disciplined rental strategy."
+  title={tx("Use Case 2 — From Availability to Capital Discipline | Northbound Engineering Services")}
+  description={tx("How telematics and ROI dashboards reframed utilization economically, reduced CAPEX growth by ~50%, and increased fleet flexibility through a disciplined rental strategy.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -1196,7 +1112,7 @@ function UseCase2Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=2000&auto=format&fit=crop"
-            alt="Construction fleet"
+            alt={tx("Construction fleet")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -1207,37 +1123,26 @@ function UseCase2Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <Building2 className="w-4 h-4" /> Use Case 2
-                </Pill>
+                  <Building2 className="w-4 h-4" />{tx(" Use Case 2")}</Pill>
                 <Pill>
-                  <BarChart3 className="w-4 h-4" /> Capital Discipline
-                </Pill>
+                  <BarChart3 className="w-4 h-4" />{tx(" Capital Discipline")}</Pill>
                 <Pill>
-                  <Satellite className="w-4 h-4" /> Telematics and BI
-                </Pill>
+                  <Satellite className="w-4 h-4" />{tx(" Telematics and BI")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                From Availability Obsession to <span className="text-cyan-400">Capital Discipline</span>
-                <span className="block">Reframing Maintenance and Asset Management</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("From Availability Obsession to ")}<span className="text-cyan-400">{tx("Capital Discipline")}</span>
+                <span className="block">{tx("Reframing Maintenance and Asset Management")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                A capital-intensive Latin American construction business transformed asset decisions by redefining
-                utilization economically using telematics, ROI by project, and transparent dashboards. The operating
-                model shifted from availability-driven behavior to capital-efficiency discipline.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("A capital-intensive Latin American construction business transformed asset decisions by redefining utilization economically using telematics, ROI by project, and transparent dashboards. The operating model shifted from availability-driven behavior to capital-efficiency discipline.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> CAPEX growth down 50%
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" CAPEX growth down 50%")}</Pill>
                 <Pill>
-                  <GitCompare className="w-4 h-4" /> Rental share about 30%
-                </Pill>
+                  <GitCompare className="w-4 h-4" />{tx(" Rental share about 30%")}</Pill>
                 <Pill>
-                  <Calculator className="w-4 h-4" /> Hourly cost of capital model
-                </Pill>
+                  <Calculator className="w-4 h-4" />{tx(" Hourly cost of capital model")}</Pill>
               </div>
             </div>
           </div>
@@ -1245,39 +1150,29 @@ function UseCase2Page() {
       </section>
 
       <Section
-        title="1) Background and Context"
-        subtitle="Availability pressure often drives excess owned fleets - at the expense of capital efficiency."
+        title={tx("1) Background and Context")}
+        subtitle={tx("Availability pressure often drives excess owned fleets - at the expense of capital efficiency.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              Capital-intensive construction businesses operate under constant execution pressure: schedules are
-              aggressive, margins are tight, and delays translate directly into financial losses. Equipment availability
-              is often treated as the primary risk.
-            </p>
-            <p>
-              The company generated about USD 350M in annual revenue, ran about 25 projects in parallel, and owned about
-              3,500 assets. More than 95% of the fleet was owned, with high-capacity units exceeding USD 1.5M each.
-            </p>
+            <p>{tx("Capital-intensive construction businesses operate under constant execution pressure: schedules are aggressive, margins are tight, and delays translate directly into financial losses. Equipment availability is often treated as the primary risk.")}</p>
+            <p>{tx("The company generated about USD 350M in annual revenue, ran about 25 projects in parallel, and owned about 3,500 assets. More than 95% of the fleet was owned, with high-capacity units exceeding USD 1.5M each.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Annual revenue" value="~$350M" />
-            <Stat label="Projects" value="~25" />
-            <Stat label="Fleet size" value="~3,500" />
-            <Stat label="Owned share" value=">95%" />
+            <Stat label={tx("Annual revenue")} value={tx("~$350M")} />
+            <Stat label={tx("Projects")} value="~25" />
+            <Stat label={tx("Fleet size")} value="~3,500" />
+            <Stat label={tx("Owned share")} value=">95%" />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Initial Problem Statement" subtitle="Maintenance was blamed - until data showed a deeper constraint.">
+      <Section title={tx("2) Initial Problem Statement")} subtitle={tx("Maintenance was blamed - until data showed a deeper constraint.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Wrench className="w-5 h-5" />} title="Leadership narrative">
-            <p>
-              Project teams argued that low availability forced expensive rentals, eroding margins. Utilization metrics
-              were below 60% (defined as assigned to a project).
-            </p>
+          <Card icon={<Wrench className="w-5 h-5" />} title={tx("Leadership narrative")}>
+            <p>{tx("Project teams argued that low availability forced expensive rentals, eroding margins. Utilization metrics were below 60% (defined as assigned to a project).")}</p>
           </Card>
-          <Card icon={<CheckCircle2 className="w-5 h-5" />} title="Maintenance response">
+          <Card icon={<CheckCircle2 className="w-5 h-5" />} title={tx("Maintenance response")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Preventive maintenance discipline",
@@ -1287,74 +1182,57 @@ function UseCase2Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Contradiction">
-            <p>
-              Availability improved and reported utilization rose to about 95%, yet asset requests persisted and rentals
-              did not decline. If availability was no longer the constraint, why did demand keep growing?
-            </p>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Contradiction")}>
+            <p>{tx("Availability improved and reported utilization rose to about 95%, yet asset requests persisted and rentals did not decline. If availability was no longer the constraint, why did demand keep growing?")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Turning Insight" subtitle="Availability was masking planning inefficiency and capital risk.">
+      <Section title={tx("3) Turning Insight")} subtitle={tx("Availability was masking planning inefficiency and capital risk.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              Service records suggested many assets accumulated far fewer productive hours than expected. The pattern
-              was systemic and created resistance. Finance recognized the capital risk: with the equipment base
-              approaching USD 200M, small inefficiencies destroyed large value.
-            </p>
+            <p>{tx("Service records suggested many assets accumulated far fewer productive hours than expected. The pattern was systemic and created resistance. Finance recognized the capital risk: with the equipment base approaching USD 200M, small inefficiencies destroyed large value.")}</p>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Key insight</div>
-            <p className="mt-3">
-              The organization was not suffering from lack of availability; it was suffering from lack of capital
-              discipline and resource planning. Equipment was requested just in case to compensate for uncertainty,
-              poor coordination, and risk aversion.
-            </p>
+            <div className="text-white font-medium">{tx("Key insight")}</div>
+            <p className="mt-3">{tx("The organization was not suffering from lack of availability; it was suffering from lack of capital discipline and resource planning. Equipment was requested just in case to compensate for uncertainty, poor coordination, and risk aversion.")}</p>
           </div>
         </div>
       </Section>
 
-      <Section title="4) Telematics and Economic Utilization" subtitle="Measure productive hours, not administrative assignment.">
+      <Section title={tx("4) Telematics and Economic Utilization")} subtitle={tx("Measure productive hours, not administrative assignment.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Satellite className="w-5 h-5" />} title="Rollout">
-            <p>
-              Implemented aftermarket telematics to capture equipment location and operating hours under limited site
-              connectivity.
-            </p>
+          <Card icon={<Satellite className="w-5 h-5" />} title={tx("Rollout")}>
+            <p>{tx("Implemented aftermarket telematics to capture equipment location and operating hours under limited site connectivity.")}</p>
             <ul className="mt-3 space-y-2 text-sm">
               {["About 8 months rollout", "About 6 months to build trust", "About 18 months adoption"].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<GitCompare className="w-5 h-5" />} title="New definition">
-            <p>
-              Telematics exposed the gap between assigned utilization and economic utilization. Many assets were on-site
-              but idle while still generating depreciation, capital cost, and maintenance.
-            </p>
+          <Card icon={<GitCompare className="w-5 h-5" />} title={tx("New definition")}>
+            <p>{tx("Telematics exposed the gap between assigned utilization and economic utilization. Many assets were on-site but idle while still generating depreciation, capital cost, and maintenance.")}</p>
           </Card>
 
-          <Card icon={<Calculator className="w-5 h-5" />} title="Utilization reframed">
-            <p>Utilization became productive operating hours relative to capital employed, comparable to rentals.</p>
+          <Card icon={<Calculator className="w-5 h-5" />} title={tx("Utilization reframed")}>
+            <p>{tx("Utilization became productive operating hours relative to capital employed, comparable to rentals.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="5) Capital Allocation and ROI Model" subtitle="Make idle capital visible with a project-level cost of capital.">
+      <Section title={tx("5) Capital Allocation and ROI Model")} subtitle={tx("Make idle capital visible with a project-level cost of capital.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <div className="text-white font-medium">Project capital model</div>
+            <div className="text-white font-medium">{tx("Project capital model")}</div>
             <ul className="space-y-2 text-sm">
               {[
                 "Calculate capital allocated per project (age-adjusted inventory value)",
@@ -1364,22 +1242,22 @@ function UseCase2Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Decision question changed</div>
-            <p className="mt-3">From: Do we have enough equipment?</p>
-            <p className="mt-2">To: Can this project economically justify the capital it is consuming?</p>
+            <div className="text-white font-medium">{tx("Decision question changed")}</div>
+            <p className="mt-3">{tx("From: Do we have enough equipment?")}</p>
+            <p className="mt-2">{tx("To: Can this project economically justify the capital it is consuming?")}</p>
           </div>
         </div>
       </Section>
 
-      <Section title="6) BI and Transparency" subtitle="Public, comparable metrics shifted behavior faster than policy.">
+      <Section title={tx("6) BI and Transparency")} subtitle={tx("Public, comparable metrics shifted behavior faster than policy.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<BarChart3 className="w-5 h-5" />} title="Monthly dashboard">
+          <Card icon={<BarChart3 className="w-5 h-5" />} title={tx("Monthly dashboard")}>
             <ul className="space-y-2 text-sm">
               {[
                 "ROI by project",
@@ -1389,34 +1267,28 @@ function UseCase2Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Resistance">
-            <p>Site leadership resisted initially, but economic exposure created the decisive shift.</p>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Resistance")}>
+            <p>{tx("Site leadership resisted initially, but economic exposure created the decisive shift.")}</p>
           </Card>
-          <Card icon={<TrendingUp className="w-5 h-5" />} title="Behavior change">
-            <p>Requests became economically justified rather than precautionary, improving planning discipline.</p>
+          <Card icon={<TrendingUp className="w-5 h-5" />} title={tx("Behavior change")}>
+            <p>{tx("Requests became economically justified rather than precautionary, improving planning discipline.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="7) Illustrative Example" subtitle="High-capacity cranes: from excess capacity to high-utilization execution.">
+      <Section title={tx("7) Illustrative Example")} subtitle={tx("High-capacity cranes: from excess capacity to high-utilization execution.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              One project planned continuous use of five cranes (about USD 1.5M each) and still rented additional cranes
-              due to perceived availability risk. Maintenance ensured availability.
-            </p>
-            <p>
-              Telematics showed utilization was far below expectations. After ROI exposure, execution was restructured
-              around three owned cranes at high utilization plus selective rental, and idle cranes were redeployed.
-            </p>
+            <p>{tx("One project planned continuous use of five cranes (about USD 1.5M each) and still rented additional cranes due to perceived availability risk. Maintenance ensured availability.")}</p>
+            <p>{tx("Telematics showed utilization was far below expectations. After ROI exposure, execution was restructured around three owned cranes at high utilization plus selective rental, and idle cranes were redeployed.")}</p>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Outcome</div>
+            <div className="text-white font-medium">{tx("Outcome")}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "Cost savings",
@@ -1426,7 +1298,7 @@ function UseCase2Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1434,16 +1306,16 @@ function UseCase2Page() {
         </div>
       </Section>
 
-      <Section title="8) Results and Business Impact" subtitle="A multi-year shift from availability to capital efficiency.">
+      <Section title={tx("8) Results and Business Impact")} subtitle={tx("A multi-year shift from availability to capital efficiency.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="CAPEX growth" value="Down 50%" />
-          <Stat label="Rental share" value="About 30%" />
-          <Stat label="Some classes" value="100% rental" />
-          <Stat label="Adoption" value="About 18 months" />
+          <Stat label={tx("CAPEX growth")} value={tx("Down 50%")} />
+          <Stat label={tx("Rental share")} value={tx("About 30%")} />
+          <Stat label={tx("Some classes")} value={tx("100% rental")} />
+          <Stat label={tx("Adoption")} value={tx("About 18 months")} />
         </div>
       </Section>
 
-      <Section title="9) Lessons Learned" subtitle="What this case proves for asset-intensive businesses.">
+      <Section title={tx("9) Lessons Learned")} subtitle={tx("What this case proves for asset-intensive businesses.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -1456,28 +1328,22 @@ function UseCase2Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <div className="text-white font-medium">Design principle</div>
-            <p>
-              Use telematics to measure productive hours, then govern capital with ROI dashboards that make idle assets
-              visible.
-            </p>
+            <div className="text-white font-medium">{tx("Design principle")}</div>
+            <p>{tx("Use telematics to measure productive hours, then govern capital with ROI dashboards that make idle assets visible.")}</p>
             <div className="mt-2 flex flex-wrap gap-3">
               <Pill>
-                <Satellite className="w-4 h-4" /> Telematics
-              </Pill>
+                <Satellite className="w-4 h-4" />{tx(" Telematics")}</Pill>
               <Pill>
-                <BarChart3 className="w-4 h-4" /> ROI dashboards
-              </Pill>
+                <BarChart3 className="w-4 h-4" />{tx(" ROI dashboards")}</Pill>
               <Pill>
-                <Calculator className="w-4 h-4" /> Cost of capital
-              </Pill>
+                <Calculator className="w-4 h-4" />{tx(" Cost of capital")}</Pill>
             </div>
           </div>
         </div>
@@ -1493,8 +1359,8 @@ function UseCase3Page() {
   return (
     <PageShell>
     <Seo
-  title="Use Case 3 — IIoT for Mobile Energy Operations | Northbound Engineering Services"
-  description="How an edge-first IIoT reliability platform with alarm governance improved production up to 30%, reduced NPT ~50%, and achieved ~5x ROI in six months under intermittent connectivity."
+  title={tx("Use Case 3 — IIoT for Mobile Oil and Gas Operations | Northbound Engineering Services")}
+  description={tx("How an edge-first IIoT reliability platform with alarm governance improved production up to 30%, reduced NPT ~50%, and achieved ~5x ROI in six months under intermittent connectivity.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -1504,7 +1370,7 @@ function UseCase3Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=2000&auto=format&fit=crop"
-            alt="Mobile energy operations"
+            alt={tx("Mobile Oil and Gas operations")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -1515,37 +1381,25 @@ function UseCase3Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <Waves className="w-4 h-4" /> Use Case 3
-                </Pill>
+                  <Waves className="w-4 h-4" />{tx(" Use Case 3")}</Pill>
                 <Pill>
-                  <Network className="w-4 h-4" /> IIoT Platform
-                </Pill>
+                  <Network className="w-4 h-4" />{tx(" IIoT Platform")}</Pill>
                 <Pill>
-                  <Bell className="w-4 h-4" /> Alarm Governance
-                </Pill>
+                  <Bell className="w-4 h-4" />{tx(" Alarm Governance")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                IIoT Driving <span className="text-cyan-400">Peak Efficiency</span>, Reliability,
-                <span className="block">and Cultural Transformation in Mobile Energy Operations</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("IIoT Driving ")}<span className="text-cyan-400">{tx("Peak Efficiency")}</span>{tx(", Reliability,")}<span className="block">{tx("and Cultural Transformation in Mobile Oil and Gas Operations")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                Mobile and dismountable plants, mobilizing up to 50,000 horsepower, operate in remote environments with
-                changing conditions and intermittent connectivity. NBE implemented an edge-first IIoT reliability
-                platform with adaptive predictive intelligence and strong alarm governance.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("Mobile and dismountable plants, mobilizing up to 50,000 horsepower, operate in remote environments with changing conditions and intermittent connectivity. NBE implemented an edge-first IIoT reliability platform with adaptive predictive intelligence and strong alarm governance.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> Production up to +30%
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" Production up to +30%")}</Pill>
                 <Pill>
-                  <Gauge className="w-4 h-4" /> NPT about -50%
-                </Pill>
+                  <Gauge className="w-4 h-4" />{tx(" NPT about -50%")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> ROI about 5x (6 months)
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" ROI about 5x (6 months)")}</Pill>
               </div>
             </div>
           </div>
@@ -1553,33 +1407,26 @@ function UseCase3Page() {
       </section>
 
       <Section
-        title="1) Industry and Operational Context"
-        subtitle="Mobile field operations where reliability depends on coordinated assets and controls."
+        title={tx("1) Industry and Operational Context")}
+        subtitle={tx("Mobile field operations where reliability depends on coordinated assets and controls.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The organization is an energy-sector service provider whose core business depends on mobilizing high-power
-              industrial equipment to deliver complex field services. Operations can require coordinated deployment of
-              up to 50,000 horsepower, assembled as mobile and dismountable plants.
-            </p>
-            <p>
-              These operations rely on precise interaction of multiple assets, control systems, and power units under
-              changing environmental, operational, and connectivity conditions.
-            </p>
+            <p>{tx("The organization is an Oil and Gas service provider whose core business depends on mobilizing high-power industrial equipment to deliver complex field services. Operations can require coordinated deployment of up to 50,000 horsepower, assembled as mobile and dismountable plants.")}</p>
+            <p>{tx("These operations rely on precise interaction of multiple assets, control systems, and power units under changing environmental, operational, and connectivity conditions.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Scale" value="Up to 50,000 HP" />
-            <Stat label="Environment" value="Remote and dynamic" />
-            <Stat label="Connectivity" value="Intermittent" />
-            <Stat label="Constraint" value="Coordination" />
+            <Stat label={tx("Scale")} value={tx("Up to 50,000 HP")} />
+            <Stat label={tx("Environment")} value={tx("Remote and dynamic")} />
+            <Stat label={tx("Connectivity")} value={tx("Intermittent")} />
+            <Stat label={tx("Constraint")} value={tx("Coordination")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Challenges" subtitle="Operational complexity plus changing edge conditions plus limited bandwidth.">
+      <Section title={tx("2) Challenges")} subtitle={tx("Operational complexity plus changing edge conditions plus limited bandwidth.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<PlugZap className="w-5 h-5" />} title="Operational complexity">
+          <Card icon={<PlugZap className="w-5 h-5" />} title={tx("Operational complexity")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Mobilize, interconnect, and commission repeatedly",
@@ -1588,13 +1435,13 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<Network className="w-5 h-5" />} title="Connectivity constraints">
+          <Card icon={<Network className="w-5 h-5" />} title={tx("Connectivity constraints")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Internet often limited, unstable, or unavailable",
@@ -1603,13 +1450,13 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Predictive limits">
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Predictive limits")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Traditional models struggle with changing conditions",
@@ -1618,7 +1465,7 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1626,12 +1473,12 @@ function UseCase3Page() {
         </div>
       </Section>
 
-      <Section title="3) Objectives" subtitle="Improve efficiency and reliability without creating alarm fatigue or overload.">
+      <Section title={tx("3) Objectives")} subtitle={tx("Improve efficiency and reliability without creating alarm fatigue or overload.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <div className="flex items-center gap-2 text-cyan-300">
               <Target className="w-5 h-5" />
-              <span className="font-medium">Program objectives</span>
+              <span className="font-medium">{tx("Program objectives")}</span>
             </div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1644,28 +1491,25 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <div className="text-white font-medium">Success criteria</div>
-            <p>
-              Predictive maintenance needed to be actionable in dynamic field conditions without overwhelming crews.
-              Edge-first contextualization and governance were mandatory.
-            </p>
+            <div className="text-white font-medium">{tx("Success criteria")}</div>
+            <p>{tx("Predictive maintenance needed to be actionable in dynamic field conditions without overwhelming crews. Edge-first contextualization and governance were mandatory.")}</p>
           </div>
         </div>
       </Section>
 
-      <Section title="4) Approach and Solution" subtitle="Edge-first integration designed for low-bandwidth environments.">
+      <Section title={tx("4) Approach and Solution")} subtitle={tx("Edge-first integration designed for low-bandwidth environments.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <Network className="w-5 h-5" />
-              <span className="font-medium">Platform design</span>
+              <span className="font-medium">{tx("Platform design")}</span>
             </div>
             <ul className="space-y-2 text-sm">
               {[
@@ -1676,7 +1520,7 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1685,7 +1529,7 @@ function UseCase3Page() {
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
             <div className="flex items-center gap-2 text-cyan-300">
               <Layers className="w-5 h-5" />
-              <span className="font-medium">Why edge-first</span>
+              <span className="font-medium">{tx("Why edge-first")}</span>
             </div>
             <ul className="space-y-2 text-sm">
               {[
@@ -1696,7 +1540,7 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1704,81 +1548,78 @@ function UseCase3Page() {
         </div>
       </Section>
 
-      <Section title="5) Predictive Intelligence and Alarm Governance" subtitle="Adaptive prediction plus discipline to prevent alarm fatigue.">
+      <Section title={tx("5) Predictive Intelligence and Alarm Governance")} subtitle={tx("Adaptive prediction plus discipline to prevent alarm fatigue.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<LineChart className="w-5 h-5" />} title="Predictive build">
+          <Card icon={<LineChart className="w-5 h-5" />} title={tx("Predictive build")}>
             <ul className="space-y-2 text-sm">
               {["Identify critical variables and relationships", "Correlate conditions to failure behavior", "Create about 150 predictive algorithms"].map(
                 (t, i) => (
                   <li key={i} className="flex gap-3">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                    <span>{t}</span>
+                    <span>{tx(t)}</span>
                   </li>
                 )
               )}
             </ul>
           </Card>
-          <Card icon={<Bell className="w-5 h-5" />} title="Governance">
+          <Card icon={<Bell className="w-5 h-5" />} title={tx("Governance")}>
             <ul className="space-y-2 text-sm">
               {["Classify alarms by risk and impact", "Prioritize and escalate based on context", "Eliminate nuisance and low-value alarms"].map(
                 (t, i) => (
                   <li key={i} className="flex gap-3">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                    <span>{t}</span>
+                    <span>{tx(t)}</span>
                   </li>
                 )
               )}
             </ul>
           </Card>
-          <Card icon={<ShieldAlert className="w-5 h-5" />} title="Outcome">
-            <p>
-              Predictive insights supported decision-making rather than overwhelming operators, building trust and
-              sustained adoption.
-            </p>
+          <Card icon={<ShieldAlert className="w-5 h-5" />} title={tx("Outcome")}>
+            <p>{tx("Predictive insights supported decision-making rather than overwhelming operators, building trust and sustained adoption.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="6) Change Management and Adoption" subtitle="Reliability improvement accelerated trust in remote monitoring.">
+      <Section title={tx("6) Change Management and Adoption")} subtitle={tx("Reliability improvement accelerated trust in remote monitoring.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Activity className="w-5 h-5" />} title="Initial skepticism">
+          <Card icon={<Activity className="w-5 h-5" />} title={tx("Initial skepticism")}>
             <ul className="space-y-2 text-sm">
               {["Remote monitoring", "Centralized decision support", "Algorithm-driven recommendations"].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
-          <Card icon={<TrendingUp className="w-5 h-5" />} title="Trust built">
+          <Card icon={<TrendingUp className="w-5 h-5" />} title={tx("Trust built")}>
             <ul className="space-y-2 text-sm">
               {["Operations teams trusted predictive alerts", "Maintenance shifted proactive", "Remote control center became an operational partner"].map(
                 (t, i) => (
                   <li key={i} className="flex gap-3">
                     <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                    <span>{t}</span>
+                    <span>{tx(t)}</span>
                   </li>
                 )
               )}
             </ul>
           </Card>
-          <Card icon={<CheckCircle2 className="w-5 h-5" />} title="Cultural outcome">
-            <p>Moved from experience-driven reaction to data-supported execution without losing local expertise.</p>
+          <Card icon={<CheckCircle2 className="w-5 h-5" />} title={tx("Cultural outcome")}>
+            <p>{tx("Moved from experience-driven reaction to data-supported execution without losing local expertise.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="7) Results and Outcomes" subtitle="Operational gains with scalability across operations.">
+      <Section title={tx("7) Results and Outcomes")} subtitle={tx("Operational gains with scalability across operations.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="Production" value="+30%" />
-          <Stat label="NPT" value="Down 50%" />
-          <Stat label="Predictive algorithms" value="~150" />
-          <Stat label="Scalability" value="Proven" />
+          <Stat label={tx("Production")} value="+30%" />
+          <Stat label={tx("NPT")} value={tx("Down 50%")} />
+          <Stat label={tx("Predictive algorithms")} value="~150" />
+          <Stat label={tx("Scalability")} value={tx("Proven")} />
         </div>
       </Section>
 
-      <Section title="8) Business Impact" subtitle="IIoT evolved from experimental to a core operational capability.">
+      <Section title={tx("8) Business Impact")} subtitle={tx("IIoT evolved from experimental to a core operational capability.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -1791,14 +1632,14 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Key takeaways</div>
+            <div className="text-white font-medium">{tx("Key takeaways")}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "IIoT value depends on integration, not sensors alone",
@@ -1809,7 +1650,7 @@ function UseCase3Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1827,8 +1668,8 @@ function UseCase4Page() {
   return (
     <PageShell>
 <Seo
-  title="Use Case 4 — Vendor SLAs & Reliability Governance | Northbound Engineering Services"
-  description="How performance-based SLAs and governance turned outsourcing into a controlled reliability capability—reducing rework, clarifying scope boundaries, and stabilizing maintenance outcomes."
+  title={tx("Use Case 4 — Vendor SLAs & Reliability Governance | Northbound Engineering Services")}
+  description={tx("How performance-based SLAs and governance turned outsourcing into a controlled reliability capability—reducing rework, clarifying scope boundaries, and stabilizing maintenance outcomes.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -1838,7 +1679,7 @@ function UseCase4Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1581092160607-ee22731c2f54?q=80&w=2000&auto=format&fit=crop"
-            alt="Maintenance governance"
+            alt={tx("Maintenance governance")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -1849,91 +1690,67 @@ function UseCase4Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <ClipboardList className="w-4 h-4" /> Use Case 4
-                </Pill>
+                  <ClipboardList className="w-4 h-4" />{tx(" Use Case 4")}</Pill>
                 <Pill>
-                  <ShieldAlert className="w-4 h-4" /> Vendor Governance
-                </Pill>
+                  <ShieldAlert className="w-4 h-4" />{tx(" Vendor Governance")}</Pill>
                 <Pill>
-                  <Target className="w-4 h-4" /> Quality Outcomes
-                </Pill>
+                  <Target className="w-4 h-4" />{tx(" Quality Outcomes")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Vendor SLAs That Turn <span className="text-cyan-400">Outsourcing</span>
-                <span className="block">Into a Reliable, Governed Capability</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Vendor SLAs That Turn ")}<span className="text-cyan-400">{tx("Outsourcing")}</span>
+                <span className="block">{tx("Into a Reliable, Governed Capability")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                In volatile labor markets, outsourcing can stabilize staffing - but it can also import quality risk.
-                NBE built a vendor SLA and governance framework that defined expectations, acceptance criteria, and
-                accountability, reducing rework and stabilizing maintenance outcomes.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("In volatile labor markets, outsourcing can stabilize staffing - but it can also import quality risk. NBE built a vendor SLA and governance framework that defined expectations, acceptance criteria, and accountability, reducing rework and stabilizing maintenance outcomes.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <CheckCircle2 className="w-4 h-4" /> Fewer contractor-driven quality issues
-                </Pill>
+                  <CheckCircle2 className="w-4 h-4" />{tx(" Fewer contractor-driven quality issues")}</Pill>
                 <Pill>
-                  <ClipboardList className="w-4 h-4" /> Enforceable scope and warranty boundaries
-                </Pill>
+                  <ClipboardList className="w-4 h-4" />{tx(" Enforceable scope and warranty boundaries")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> More predictable outcomes
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" More predictable outcomes")}</Pill>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="1) Context" subtitle="Outsourcing was necessary - but outcomes were inconsistent.">
+      <Section title={tx("1) Context")} subtitle={tx("Outsourcing was necessary - but outcomes were inconsistent.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The organization operated energy assets where maintenance quality directly impacted safety, availability,
-              and service performance. Workforce volatility forced the company to supplement internal capability with
-              external labor-force providers.
-            </p>
-            <p>
-              The intent was not to eliminate outsourcing, but to make it reliable, controllable, and aligned to
-              operational risk.
-            </p>
+            <p>{tx("The organization operated Oil and Gas assets where maintenance quality directly impacted safety, availability, and service performance. Workforce volatility forced the company to supplement internal capability with external labor-force providers.")}</p>
+            <p>{tx("The intent was not to eliminate outsourcing, but to make it reliable, controllable, and aligned to operational risk.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Constraint" value="Labor volatility" />
-            <Stat label="Risk" value="Quality variation" />
-            <Stat label="Need" value="Governed outsourcing" />
-            <Stat label="Goal" value="Predictable outcomes" />
+            <Stat label={tx("Constraint")} value={tx("Labor volatility")} />
+            <Stat label={tx("Risk")} value={tx("Quality variation")} />
+            <Stat label={tx("Need")} value={tx("Governed outsourcing")} />
+            <Stat label={tx("Goal")} value={tx("Predictable outcomes")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Challenges" subtitle="Contracts defined hours and tasks - not outcomes.">
+      <Section title={tx("2) Challenges")} subtitle={tx("Contracts defined hours and tasks - not outcomes.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Inconsistent quality">
-            <p>
-              Rework, repeat failures, and service-quality issues traced back to contractor-executed maintenance.
-            </p>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Inconsistent quality")}>
+            <p>{tx("Rework, repeat failures, and service-quality issues traced back to contractor-executed maintenance.")}</p>
           </Card>
-          <Card icon={<ClipboardList className="w-5 h-5" />} title="No enforceable expectations">
-            <p>
-              Quality expectations, acceptance criteria, and responsibility boundaries were unclear or missing.
-            </p>
+          <Card icon={<ClipboardList className="w-5 h-5" />} title={tx("No enforceable expectations")}>
+            <p>{tx("Quality expectations, acceptance criteria, and responsibility boundaries were unclear or missing.")}</p>
           </Card>
-          <Card icon={<ShieldAlert className="w-5 h-5" />} title="Risk stayed with operations">
-            <p>
-              The company carried operational risk of underperformance without contractual levers to enforce quality.
-            </p>
+          <Card icon={<ShieldAlert className="w-5 h-5" />} title={tx("Risk stayed with operations")}>
+            <p>{tx("The company carried operational risk of underperformance without contractual levers to enforce quality.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Objectives" subtitle="Control outsourcing without increasing complexity.">
+      <Section title={tx("3) Objectives")} subtitle={tx("Control outsourcing without increasing complexity.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <div className="flex items-center gap-2 text-cyan-300">
               <Target className="w-5 h-5" />
-              <span className="font-medium">What leadership needed</span>
+              <span className="font-medium">{tx("What leadership needed")}</span>
             </div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
@@ -1944,29 +1761,26 @@ function UseCase4Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <div className="text-white font-medium">Key principle</div>
-            <p>
-              Vendor management is a reliability discipline. Shift the relationship from time-based contracting to
-              performance-based outcomes.
-            </p>
+            <div className="text-white font-medium">{tx("Key principle")}</div>
+            <p>{tx("Vendor management is a reliability discipline. Shift the relationship from time-based contracting to performance-based outcomes.")}</p>
             <div className="mt-2 p-4 rounded-2xl bg-slate-950/50 border border-slate-800">
-              <div className="text-white font-medium">Reframe</div>
-              <p className="mt-2 text-sm">Outsourcing without governance transfers risk, not responsibility.</p>
+              <div className="text-white font-medium">{tx("Reframe")}</div>
+              <p className="mt-2 text-sm">{tx("Outsourcing without governance transfers risk, not responsibility.")}</p>
             </div>
           </div>
         </div>
       </Section>
 
-      <Section title="4) Approach and Solution" subtitle="SLA definition built from failure modes, risk, and task criticality.">
+      <Section title={tx("4) Approach and Solution")} subtitle={tx("SLA definition built from failure modes, risk, and task criticality.")}>
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<ClipboardList className="w-5 h-5" />} title="SLA framework">
+          <Card icon={<ClipboardList className="w-5 h-5" />} title={tx("SLA framework")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Analyze failure frequency, modes, and criticality",
@@ -1976,13 +1790,13 @@ function UseCase4Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<Layers className="w-5 h-5" />} title="Outsourcing boundaries">
+          <Card icon={<Layers className="w-5 h-5" />} title={tx("Outsourcing boundaries")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Fully outsourced: low/medium complexity end-to-end",
@@ -1991,7 +1805,7 @@ function UseCase4Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -1999,16 +1813,16 @@ function UseCase4Page() {
         </div>
       </Section>
 
-      <Section title="5) Results and Business Impact" subtitle="Outsourcing became a controlled operational lever.">
+      <Section title={tx("5) Results and Business Impact")} subtitle={tx("Outsourcing became a controlled operational lever.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Stat label="Rework" value="Down" />
-          <Stat label="Quality issues" value="Reduced" />
-          <Stat label="Predictability" value="Improved" />
+          <Stat label={tx("Rework")} value={tx("Down")} />
+          <Stat label={tx("Quality issues")} value={tx("Reduced")} />
+          <Stat label={tx("Predictability")} value={tx("Improved")} />
         </div>
 
         <div className="mt-10 grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">What changed</div>
+            <div className="text-white font-medium">{tx("What changed")}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "Contractors clearly understood expectations",
@@ -2017,14 +1831,14 @@ function UseCase4Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Key takeaways</div>
+            <div className="text-white font-medium">{tx("Key takeaways")}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "Performance-based contracts outperform time-based models",
@@ -2033,7 +1847,7 @@ function UseCase4Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -2051,8 +1865,8 @@ function UseCase5Page() {
   return (
     <PageShell>
  <Seo
-  title="Use Case 5 — Life-Stage Maintenance & -30% CAPEX YoY | Northbound Engineering Services"
-  description="How telemetry-enabled life-stage strategy aligned deployment, maintenance depth, and risk—cutting capital requirements ~30% year over year without compromising safety or service quality."
+  title={tx("Use Case 5 — Life-Stage Maintenance & -30% CAPEX YoY | Northbound Engineering Services")}
+  description={tx("How telemetry-enabled life-stage strategy aligned deployment, maintenance depth, and risk—cutting capital requirements ~30% year over year without compromising safety or service quality.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -2061,7 +1875,7 @@ function UseCase5Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=2000&auto=format&fit=crop"
-            alt="Fleet strategy"
+            alt={tx("Fleet strategy")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -2072,88 +1886,63 @@ function UseCase5Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> Use Case 5
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" Use Case 5")}</Pill>
                 <Pill>
-                  <Satellite className="w-4 h-4" /> Telemetry Enabled
-                </Pill>
+                  <Satellite className="w-4 h-4" />{tx(" Telemetry Enabled")}</Pill>
                 <Pill>
-                  <Calculator className="w-4 h-4" /> Capital Efficiency
-                </Pill>
+                  <Calculator className="w-4 h-4" />{tx(" Capital Efficiency")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Life-Stage Maintenance That Cut
-                <span className="block"><span className="text-cyan-400">Capital Requirements</span> by 30% YoY</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Life-Stage Maintenance That Cut")}<span className="block"><span className="text-cyan-400">{tx("Capital Requirements")}</span>{tx(" by 30% YoY")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                A geographically distributed fleet improved capital efficiency by aligning maintenance strategy,
-                deployment, and business risk with asset life stage. The result: a 30% year-over-year reduction in
-                capital requirements without compromising safety or service quality.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("A geographically distributed fleet improved capital efficiency by aligning maintenance strategy, deployment, and business risk with asset life stage. The result: a 30% year-over-year reduction in capital requirements without compromising safety or service quality.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> -30% capital YoY
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" -30% capital YoY")}</Pill>
                 <Pill>
-                  <GitCompare className="w-4 h-4" /> Risk-aligned deployment
-                </Pill>
+                  <GitCompare className="w-4 h-4" />{tx(" Risk-aligned deployment")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> Better predictability
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" Better predictability")}</Pill>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="1) Context" subtitle="Telemetry existed - but strategy and capital decisions were disconnected.">
+      <Section title={tx("1) Context")} subtitle={tx("Telemetry existed - but strategy and capital decisions were disconnected.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The client operated light-duty vehicles, trucks, and construction machinery supporting mission-critical
-              services across diverse environments. Basic condition monitoring existed, but it was not driving
-              maintenance, utilization, or capital allocation decisions.
-            </p>
-            <p>
-              Maintenance, deployment, and replacement were treated as separate processes - limiting economic returns.
-            </p>
+            <p>{tx("The client operated light-duty vehicles, trucks, and construction machinery supporting mission-critical services across diverse environments. Basic condition monitoring existed, but it was not driving maintenance, utilization, or capital allocation decisions.")}</p>
+            <p>{tx("Maintenance, deployment, and replacement were treated as separate processes - limiting economic returns.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Fleet" value="Distributed" />
-            <Stat label="Data" value="Telemetry" />
-            <Stat label="Problem" value="Uniform strategy" />
-            <Stat label="Pressure" value="Rising CAPEX" />
+            <Stat label={tx("Fleet")} value={tx("Distributed")} />
+            <Stat label={tx("Data")} value={tx("Telemetry")} />
+            <Stat label={tx("Problem")} value={tx("Uniform strategy")} />
+            <Stat label={tx("Pressure")} value={tx("Rising CAPEX")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Challenges" subtitle="Uniform maintenance drove accelerated replacement cycles.">
+      <Section title={tx("2) Challenges")} subtitle={tx("Uniform maintenance drove accelerated replacement cycles.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Capital pressure">
-            <p>
-              Conservative depreciation and shortened replacement cycles increased capital requirements year over year.
-            </p>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Capital pressure")}>
+            <p>{tx("Conservative depreciation and shortened replacement cycles increased capital requirements year over year.")}</p>
           </Card>
-          <Card icon={<GitCompare className="w-5 h-5" />} title="Misaligned deployment">
-            <p>
-              New assets were sometimes underutilized in low-risk environments, while aging assets were exposed to
-              high-stress operations.
-            </p>
+          <Card icon={<GitCompare className="w-5 h-5" />} title={tx("Misaligned deployment")}>
+            <p>{tx("New assets were sometimes underutilized in low-risk environments, while aging assets were exposed to high-stress operations.")}</p>
           </Card>
-          <Card icon={<Wrench className="w-5 h-5" />} title="One-size-fits-all maintenance">
-            <p>
-              The same maintenance strategy was applied across environments with very different aggressiveness and risk.
-            </p>
+          <Card icon={<Wrench className="w-5 h-5" />} title={tx("One-size-fits-all maintenance")}>
+            <p>{tx("The same maintenance strategy was applied across environments with very different aggressiveness and risk.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Approach" subtitle="Define economic life stages and align maintenance and deployment.">
+      <Section title={tx("3) Approach")} subtitle={tx("Define economic life stages and align maintenance and deployment.")}>
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<Satellite className="w-5 h-5" />} title="Data-driven life stages">
+          <Card icon={<Satellite className="w-5 h-5" />} title={tx("Data-driven life stages")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Capture utilization, idle time, and route/environment severity",
@@ -2163,13 +1952,13 @@ function UseCase5Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<GitCompare className="w-5 h-5" />} title="Utilization rebalancing">
+          <Card icon={<GitCompare className="w-5 h-5" />} title={tx("Utilization rebalancing")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Assign newer assets to high-aggressiveness environments",
@@ -2179,7 +1968,7 @@ function UseCase5Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -2187,16 +1976,16 @@ function UseCase5Page() {
         </div>
       </Section>
 
-      <Section title="4) Results" subtitle="Lower capital intensity with controlled reliability and risk.">
+      <Section title={tx("4) Results")} subtitle={tx("Lower capital intensity with controlled reliability and risk.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="Capital requirements" value="-30% YoY" />
-          <Stat label="Asset life" value="Extended" />
-          <Stat label="Risk exposure" value="Reduced" />
-          <Stat label="Decision confidence" value="Higher" />
+          <Stat label={tx("Capital requirements")} value={tx("-30% YoY")} />
+          <Stat label={tx("Asset life")} value={tx("Extended")} />
+          <Stat label={tx("Risk exposure")} value={tx("Reduced")} />
+          <Stat label={tx("Decision confidence")} value={tx("Higher")} />
         </div>
       </Section>
 
-      <Section title="5) Key takeaways" subtitle="Capital efficiency emerges when maintenance, risk, and deployment act as one system.">
+      <Section title={tx("5) Key takeaways")} subtitle={tx("Capital efficiency emerges when maintenance, risk, and deployment act as one system.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -2208,27 +1997,21 @@ function UseCase5Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Design principle</div>
-            <p className="mt-3">
-              Define life stages, then explicitly map environments, maintenance depth, and replacement timing to risk and
-              profitability.
-            </p>
+            <div className="text-white font-medium">{tx("Design principle")}</div>
+            <p className="mt-3">{tx("Define life stages, then explicitly map environments, maintenance depth, and replacement timing to risk and profitability.")}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Pill>
-                <Satellite className="w-4 h-4" /> Utilization
-              </Pill>
+                <Satellite className="w-4 h-4" />{tx(" Utilization")}</Pill>
               <Pill>
-                <GitCompare className="w-4 h-4" /> Risk alignment
-              </Pill>
+                <GitCompare className="w-4 h-4" />{tx(" Risk alignment")}</Pill>
               <Pill>
-                <Calculator className="w-4 h-4" /> Economic life
-              </Pill>
+                <Calculator className="w-4 h-4" />{tx(" Economic life")}</Pill>
             </div>
           </div>
         </div>
@@ -2244,8 +2027,8 @@ function UseCase6Page() {
   return (
     <PageShell>
 <Seo
-  title="Use Case 6 — $12M Value via Local Refurbishment | Northbound Engineering Services"
-  description="How a governed local refurbishment path reduced lead time from ~8 months to ~3 weeks, achieved ~120% of original life, and delivered ~$12M value during supply-chain disruption."
+  title={tx("Use Case 6 — $12M Value via Local Refurbishment | Northbound Engineering Services")}
+  description={tx("How a governed local refurbishment path reduced lead time from ~8 months to ~3 weeks, achieved ~120% of original life, and delivered ~$12M value during supply-chain disruption.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -2254,7 +2037,7 @@ function UseCase6Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1586521995568-39abaa0c2311?q=80&w=2000&auto=format&fit=crop"
-            alt="Supply chain"
+            alt={tx("Supply chain")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -2265,88 +2048,70 @@ function UseCase6Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <PlugZap className="w-4 h-4" /> Use Case 6
-                </Pill>
+                  <PlugZap className="w-4 h-4" />{tx(" Use Case 6")}</Pill>
                 <Pill>
-                  <ShieldAlert className="w-4 h-4" /> Crisis Response
-                </Pill>
+                  <ShieldAlert className="w-4 h-4" />{tx(" Crisis Response")}</Pill>
                 <Pill>
-                  <ClipboardList className="w-4 h-4" /> IP + QA Governance
-                </Pill>
+                  <ClipboardList className="w-4 h-4" />{tx(" IP + QA Governance")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Crisis Partnership Delivering <span className="text-cyan-400">$12M</span> in Value
-                <span className="block">Through Local Refurbishment Capability</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Crisis Partnership Delivering ")}<span className="text-cyan-400">{tx("$12M")}</span>{tx(" in Value")}<span className="block">{tx("Through Local Refurbishment Capability")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                During pandemic-era disruption, an Oil & Gas services company faced severe lead-time risk on proprietary
-                spare parts manufactured exclusively in the U.S. NBE enabled a controlled, temporary local refurbishment
-                solution that became a strategic standard.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("During pandemic-era disruption, an Oil & Gas services company faced severe lead-time risk on proprietary spare parts manufactured exclusively in the U.S. NBE enabled a controlled, temporary local refurbishment solution that became a strategic standard.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> Lead time: ~8 months to ~3 weeks
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" Lead time: ~8 months to ~3 weeks")}</Pill>
                 <Pill>
-                  <Wrench className="w-4 h-4" /> Life achieved: ~120% of original
-                </Pill>
+                  <Wrench className="w-4 h-4" />{tx(" Life achieved: ~120% of original")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> $12M cost avoidance
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" $12M cost avoidance")}</Pill>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="1) Context" subtitle="Centralized manufacturing became a critical risk under global disruption.">
+      <Section title={tx("1) Context")} subtitle={tx("Centralized manufacturing became a critical risk under global disruption.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The client depended on specialized, IP-protected components manufactured exclusively in the U.S. Global
-              logistics disruption and border restrictions exposed Latin American operations to service interruptions,
-              contractual exposure, and reputational risk.
-            </p>
-            <p>
-              The mandate was intentionally narrow: implement a temporary local solution until logistics normalized.
-            </p>
+            <p>{tx("The client depended on specialized, IP-protected components manufactured exclusively in the U.S. Global logistics disruption and border restrictions exposed Latin American operations to service interruptions, contractual exposure, and reputational risk.")}</p>
+            <p>{tx("The mandate was intentionally narrow: implement a temporary local solution until logistics normalized.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Constraint" value="Supply chain" />
-            <Stat label="Dependency" value="Proprietary spares" />
-            <Stat label="Risk" value="Service disruption" />
-            <Stat label="Scope" value="Temporary" />
+            <Stat label={tx("Constraint")} value={tx("Supply chain")} />
+            <Stat label={tx("Dependency")} value={tx("Proprietary spares")} />
+            <Stat label={tx("Risk")} value={tx("Service disruption")} />
+            <Stat label={tx("Scope")} value={tx("Temporary")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Approach" subtitle="Fast, controlled engineering response with legal and QA containment.">
+      <Section title={tx("2) Approach")} subtitle={tx("Fast, controlled engineering response with legal and QA containment.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<ClipboardList className="w-5 h-5" />} title="IP boundaries">
-            <p>Defined strict disclosure limits and legal frameworks to protect proprietary designs.</p>
+          <Card icon={<ClipboardList className="w-5 h-5" />} title={tx("IP boundaries")}>
+            <p>{tx("Defined strict disclosure limits and legal frameworks to protect proprietary designs.")}</p>
           </Card>
-          <Card icon={<Wrench className="w-5 h-5" />} title="Technical scope">
-            <p>Defined refurbishment processes and acceptance criteria aligned to operational requirements.</p>
+          <Card icon={<Wrench className="w-5 h-5" />} title={tx("Technical scope")}>
+            <p>{tx("Defined refurbishment processes and acceptance criteria aligned to operational requirements.")}</p>
           </Card>
-          <Card icon={<ShieldAlert className="w-5 h-5" />} title="Qualification">
-            <p>Qualified the local supplier; validated procedures and testing with independent technical institutions.</p>
+          <Card icon={<ShieldAlert className="w-5 h-5" />} title={tx("Qualification")}>
+            <p>{tx("Qualified the local supplier; validated procedures and testing with independent technical institutions.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Results" subtitle="A contingency solution exceeded expectations.">
+      <Section title={tx("3) Results")} subtitle={tx("A contingency solution exceeded expectations.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="Lead time" value="~3 weeks" />
-          <Stat label="Prior lead time" value="~8 months" />
-          <Stat label="Life achieved" value="~120%" />
-          <Stat label="Value" value="~$12M" />
+          <Stat label={tx("Lead time")} value={tx("~3 weeks")} />
+          <Stat label={tx("Prior lead time")} value={tx("~8 months")} />
+          <Stat label={tx("Life achieved")} value="~120%" />
+          <Stat label={tx("Value")} value={tx("~$12M")} />
         </div>
       </Section>
 
-      <Section title="4) Business impact" subtitle="Temporary crisis mitigation became a permanent operational standard.">
+      <Section title={tx("4) Business impact")} subtitle={tx("Temporary crisis mitigation became a permanent operational standard.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -2358,13 +2123,13 @@ function UseCase6Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Key takeaways</div>
+            <div className="text-white font-medium">{tx("Key takeaways")}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {[
                 "Crisis solutions can reveal structural opportunities",
@@ -2373,7 +2138,7 @@ function UseCase6Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -2391,8 +2156,8 @@ function UseCase7Page() {
   return (
     <PageShell>
 <Seo
-  title="Use Case 7 — TCO Business Case Delivering $50M+ Savings | Northbound Engineering Services"
-  description="How operating-point validation, lifecycle cost modeling, and pilot proof created a defensible redesign decision—unlocking $50M+ savings and improving stability with better sensing and CBM readiness."
+  title={tx("Use Case 7 — TCO Business Case Delivering $50M+ Savings | Northbound Engineering Services")}
+  description={tx("How operating-point validation, lifecycle cost modeling, and pilot proof created a defensible redesign decision—unlocking $50M+ savings and improving stability with better sensing and CBM readiness.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -2402,7 +2167,7 @@ function UseCase7Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=2000&auto=format&fit=crop"
-            alt="Engineering analysis"
+            alt={tx("Engineering analysis")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -2413,81 +2178,63 @@ function UseCase7Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <Calculator className="w-4 h-4" /> Use Case 7
-                </Pill>
+                  <Calculator className="w-4 h-4" />{tx(" Use Case 7")}</Pill>
                 <Pill>
-                  <GitCompare className="w-4 h-4" /> TCO Business Case
-                </Pill>
+                  <GitCompare className="w-4 h-4" />{tx(" TCO Business Case")}</Pill>
                 <Pill>
-                  <CircuitBoard className="w-4 h-4" /> Modernization
-                </Pill>
+                  <CircuitBoard className="w-4 h-4" />{tx(" Modernization")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Major Component TCO Evaluation
-                <span className="block">Delivering <span className="text-cyan-400">$50M+</span> in Savings</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Major Component TCO Evaluation")}<span className="block">{tx("Delivering ")}<span className="text-cyan-400">{tx("$50M+")}</span>{tx(" in Savings")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                A global energy provider faced persistent failures of a critical component that had gradually drifted
-                outside its original design sweet spot. NBE validated the true failure drivers, quantified TCO, and
-                built a defensible investment case - enabling deployment of an alternative solution.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("A global energy provider faced persistent failures of a critical component that had gradually drifted outside its original design sweet spot. NBE validated the true failure drivers, quantified TCO, and built a defensible investment case - enabling deployment of an alternative solution.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <LineChart className="w-4 h-4" /> Cost avoidance &gt; $50M
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" Cost avoidance > $50M")}</Pill>
                 <Pill>
-                  <AlertTriangle className="w-4 h-4" /> Fewer unscheduled events
-                </Pill>
+                  <AlertTriangle className="w-4 h-4" />{tx(" Fewer unscheduled events")}</Pill>
                 <Pill>
-                  <CircuitBoard className="w-4 h-4" /> Better sensing + CBM
-                </Pill>
+                  <CircuitBoard className="w-4 h-4" />{tx(" Better sensing + CBM")}</Pill>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="1) Context" subtitle="Gradual degradation normalized underperformance.">
+      <Section title={tx("1) Context")} subtitle={tx("Gradual degradation normalized underperformance.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The component was deployed globally and was critical to production continuity. Operating boundaries had
-              evolved over time due to technology and process changes, progressively pushing the component outside its
-              original design conditions.
-            </p>
-            <p>
-              Because the shift was gradual, reduced life expectancy and increasing failures became accepted as normal.
-            </p>
+            <p>{tx("The component was deployed globally and was critical to production continuity. Operating boundaries had evolved over time due to technology and process changes, progressively pushing the component outside its original design conditions.")}</p>
+            <p>{tx("Because the shift was gradual, reduced life expectancy and increasing failures became accepted as normal.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Failure cost" value="High" />
-            <Stat label="Frequency" value="Increasing" />
-            <Stat label="Impact" value="Availability" />
-            <Stat label="Problem" value="Normalized" />
+            <Stat label={tx("Failure cost")} value={tx("High")} />
+            <Stat label={tx("Frequency")} value={tx("Increasing")} />
+            <Stat label={tx("Impact")} value={tx("Availability")} />
+            <Stat label={tx("Problem")} value={tx("Normalized")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Objectives" subtitle="Validate drivers, quantify TCO, and justify change.">
+      <Section title={tx("2) Objectives")} subtitle={tx("Validate drivers, quantify TCO, and justify change.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Target className="w-5 h-5" />} title="Technical truth">
-            <p>Establish a fact-based understanding of dominant failure modes and operating-point drivers.</p>
+          <Card icon={<Target className="w-5 h-5" />} title={tx("Technical truth")}>
+            <p>{tx("Establish a fact-based understanding of dominant failure modes and operating-point drivers.")}</p>
           </Card>
-          <Card icon={<Calculator className="w-5 h-5" />} title="TCO economics">
-            <p>Quantify the lifecycle cost impact and expose hidden cost drivers beyond unit replacement.</p>
+          <Card icon={<Calculator className="w-5 h-5" />} title={tx("TCO economics")}>
+            <p>{tx("Quantify the lifecycle cost impact and expose hidden cost drivers beyond unit replacement.")}</p>
           </Card>
-          <Card icon={<GitCompare className="w-5 h-5" />} title="Defensible decision">
-            <p>Evaluate alternatives and create a performance-based business case leadership could approve.</p>
+          <Card icon={<GitCompare className="w-5 h-5" />} title={tx("Defensible decision")}>
+            <p>{tx("Evaluate alternatives and create a performance-based business case leadership could approve.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Methodology" subtitle="Three-phase validation: life data, correlation, and alternatives.">
+      <Section title={tx("3) Methodology")} subtitle={tx("Three-phase validation: life data, correlation, and alternatives.")}>
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<ClipboardList className="w-5 h-5" />} title="Phased approach">
+          <Card icon={<ClipboardList className="w-5 h-5" />} title={tx("Phased approach")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Validate historical life-cycle data across regions",
@@ -2497,35 +2244,32 @@ function UseCase7Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<CircuitBoard className="w-5 h-5" />} title="Pilot validation">
-            <p>
-              A controlled six-month pilot validated the selected alternative under real conditions, providing both
-              technical confidence and financial proof.
-            </p>
+          <Card icon={<CircuitBoard className="w-5 h-5" />} title={tx("Pilot validation")}>
+            <p>{tx("A controlled six-month pilot validated the selected alternative under real conditions, providing both technical confidence and financial proof.")}</p>
             <div className="mt-4 p-4 rounded-2xl bg-slate-950/50 border border-slate-800">
-              <div className="text-white font-medium">Why it worked</div>
-              <p className="mt-2 text-sm">Operating-point alignment + lifecycle economics + measurable field proof.</p>
+              <div className="text-white font-medium">{tx("Why it worked")}</div>
+              <p className="mt-2 text-sm">{tx("Operating-point alignment + lifecycle economics + measurable field proof.")}</p>
             </div>
           </Card>
         </div>
       </Section>
 
-      <Section title="4) Results and impact" subtitle="Approved deployment delivered large TCO reduction.">
+      <Section title={tx("4) Results and impact")} subtitle={tx("Approved deployment delivered large TCO reduction.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="Cost avoidance" value=">$50M" />
-          <Stat label="Unscheduled work" value="Down" />
-          <Stat label="Stability" value="Up" />
-          <Stat label="Digital readiness" value="Improved" />
+          <Stat label={tx("Cost avoidance")} value={tx(">$50M")} />
+          <Stat label={tx("Unscheduled work")} value={tx("Down")} />
+          <Stat label={tx("Stability")} value={tx("Up")} />
+          <Stat label={tx("Digital readiness")} value={tx("Improved")} />
         </div>
       </Section>
 
-      <Section title="5) Key takeaways" subtitle="Lifecycle performance economics beats unit-cost thinking.">
+      <Section title={tx("5) Key takeaways")} subtitle={tx("Lifecycle performance economics beats unit-cost thinking.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -2537,14 +2281,14 @@ function UseCase7Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Design principle</div>
-            <p className="mt-3">Decide using lifecycle performance under actual operating points - not design assumptions.</p>
+            <div className="text-white font-medium">{tx("Design principle")}</div>
+            <p className="mt-3">{tx("Decide using lifecycle performance under actual operating points - not design assumptions.")}</p>
           </div>
         </div>
       </Section>
@@ -2560,8 +2304,8 @@ function UseCase8Page() {
     <PageShell>
 
 <Seo
-  title="Use Case 8 — Global Maintenance Maturity (MTBF x3) | Northbound Engineering Services"
-  description="How a People–Process–Technology maturity assessment and phased roadmap delivered a pilot MTBF x3, record-low service-quality issues, and ~10% maintenance cost reduction with no CAPEX."
+  title={tx("Use Case 8 — Global Maintenance Maturity (MTBF x3) | Northbound Engineering Services")}
+  description={tx("How a People–Process–Technology maturity assessment and phased roadmap delivered a pilot MTBF x3, record-low service-quality issues, and ~10% maintenance cost reduction with no CAPEX.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -2570,7 +2314,7 @@ function UseCase8Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1581092334651-ddf26d9b6b4b?q=80&w=2000&auto=format&fit=crop"
-            alt="Global operations"
+            alt={tx("Global operations")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -2581,83 +2325,63 @@ function UseCase8Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <Layers className="w-4 h-4" /> Use Case 8
-                </Pill>
+                  <Layers className="w-4 h-4" />{tx(" Use Case 8")}</Pill>
                 <Pill>
-                  <Target className="w-4 h-4" /> Maturity Roadmap
-                </Pill>
+                  <Target className="w-4 h-4" />{tx(" Maturity Roadmap")}</Pill>
                 <Pill>
-                  <BarChart3 className="w-4 h-4" /> MTBF + Cost
-                </Pill>
+                  <BarChart3 className="w-4 h-4" />{tx(" MTBF + Cost")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Global Maintenance Maturity Transformation
-                <span className="block">Tripling <span className="text-cyan-400">MTBF</span> Without CAPEX</span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Global Maintenance Maturity Transformation")}<span className="block">{tx("Tripling ")}<span className="text-cyan-400">{tx("MTBF")}</span>{tx(" Without CAPEX")}</span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                A global Oil & Gas service company faced high variability, rising costs, and service-quality issues.
-                Instead of relying on capital replacement, NBE assessed maturity across People, Process, and Technology,
-                then executed a phased roadmap. The pilot delivered MTBF x3 and 10% cost reduction with no capital
-                investment.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("A global Oil & Gas service company faced high variability, rising costs, and service-quality issues. Instead of relying on capital replacement, NBE assessed maturity across People, Process, and Technology, then executed a phased roadmap. The pilot delivered MTBF x3 and 10% cost reduction with no capital investment.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> MTBF x3
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" MTBF x3")}</Pill>
                 <Pill>
-                  <ShieldAlert className="w-4 h-4" /> Record-low quality issues
-                </Pill>
+                  <ShieldAlert className="w-4 h-4" />{tx(" Record-low quality issues")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> -10% maintenance cost
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" -10% maintenance cost")}</Pill>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="1) Business context" subtitle="Leaders needed reliability and predictability across regions.">
+      <Section title={tx("1) Business context")} subtitle={tx("Leaders needed reliability and predictability across regions.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              With a large and aging asset base, the organization experienced inconsistent maintenance outcomes,
-              recurrent failures, and limited transparency into true asset health. An ambitious CAPEX plan emerged as a
-              default solution - but financial constraints demanded a better answer.
-            </p>
-            <p>
-              Leadership asked a different question: can maintenance maturity unlock latent performance in existing
-              assets?
-            </p>
+            <p>{tx("With a large and aging asset base, the organization experienced inconsistent maintenance outcomes, recurrent failures, and limited transparency into true asset health. An ambitious CAPEX plan emerged as a default solution - but financial constraints demanded a better answer.")}</p>
+            <p>{tx("Leadership asked a different question: can maintenance maturity unlock latent performance in existing assets?")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Footprint" value="Global" />
-            <Stat label="Issue" value="Variability" />
-            <Stat label="Risk" value="Service quality" />
-            <Stat label="Default plan" value="CAPEX" />
+            <Stat label={tx("Footprint")} value={tx("Global")} />
+            <Stat label={tx("Issue")} value={tx("Variability")} />
+            <Stat label={tx("Risk")} value={tx("Service quality")} />
+            <Stat label={tx("Default plan")} value={tx("CAPEX")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Framework" subtitle="People, Process, Technology - four maturity stages.">
+      <Section title={tx("2) Framework")} subtitle={tx("People, Process, Technology - four maturity stages.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Activity className="w-5 h-5" />} title="People">
-            <p>Roles, competencies, leadership behaviors, decision ownership, and cross-functional collaboration.</p>
+          <Card icon={<Activity className="w-5 h-5" />} title={tx("People")}>
+            <p>{tx("Roles, competencies, leadership behaviors, decision ownership, and cross-functional collaboration.")}</p>
           </Card>
-          <Card icon={<ClipboardList className="w-5 h-5" />} title="Process">
-            <p>Strategy, planning and scheduling, governance, reliability engineering, and continuous improvement.</p>
+          <Card icon={<ClipboardList className="w-5 h-5" />} title={tx("Process")}>
+            <p>{tx("Strategy, planning and scheduling, governance, reliability engineering, and continuous improvement.")}</p>
           </Card>
-          <Card icon={<CircuitBoard className="w-5 h-5" />} title="Technology">
-            <p>CMMS/EAM usage, data quality, analytics, reporting, and decision support tools.</p>
+          <Card icon={<CircuitBoard className="w-5 h-5" />} title={tx("Technology")}>
+            <p>{tx("CMMS/EAM usage, data quality, analytics, reporting, and decision support tools.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Assessment and roadmap" subtitle="Combine surveys, workshops, interviews, and data audits.">
+      <Section title={tx("3) Assessment and roadmap")} subtitle={tx("Combine surveys, workshops, interviews, and data audits.")}>
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<BarChart3 className="w-5 h-5" />} title="What was assessed">
+          <Card icon={<BarChart3 className="w-5 h-5" />} title={tx("What was assessed")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Mass surveys across maintenance and operations",
@@ -2667,12 +2391,12 @@ function UseCase8Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
-          <Card icon={<Layers className="w-5 h-5" />} title="Phased deployment">
+          <Card icon={<Layers className="w-5 h-5" />} title={tx("Phased deployment")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Single-region pilot to prove impact",
@@ -2681,7 +2405,7 @@ function UseCase8Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -2689,16 +2413,16 @@ function UseCase8Page() {
         </div>
       </Section>
 
-      <Section title="4) Pilot results" subtitle="Improvement without capital investment.">
+      <Section title={tx("4) Pilot results")} subtitle={tx("Improvement without capital investment.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="MTBF" value="x3" />
-          <Stat label="Service quality issues" value="Record low" />
-          <Stat label="Maintenance cost" value="-10%" />
-          <Stat label="CAPEX" value="Deferred" />
+          <Stat label={tx("MTBF")} value={tx("x3")} />
+          <Stat label={tx("Service quality issues")} value={tx("Record low")} />
+          <Stat label={tx("Maintenance cost")} value="-10%" />
+          <Stat label={tx("CAPEX")} value={tx("Deferred")} />
         </div>
       </Section>
 
-      <Section title="5) Key takeaways" subtitle="Often, the constraint is discipline - not asset age.">
+      <Section title={tx("5) Key takeaways")} subtitle={tx("Often, the constraint is discipline - not asset age.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -2710,14 +2434,14 @@ function UseCase8Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Design principle</div>
-            <p className="mt-3">Before replacing assets, validate whether maturity improvements can unlock performance.</p>
+            <div className="text-white font-medium">{tx("Design principle")}</div>
+            <p className="mt-3">{tx("Before replacing assets, validate whether maturity improvements can unlock performance.")}</p>
           </div>
         </div>
       </Section>
@@ -2732,8 +2456,8 @@ function ReliabilityEnablementPage() {
   return (
     <PageShell>
       <Seo
-        title="Digital Reliability Enablement | Northbound Engineering Services"
-        description="A Reliability-as-a-Service model combining edge data processing and engineering expertise to transition from reactive maintenance to condition-based and predictive operations."
+        title={tx("Digital Reliability Enablement | Northbound Engineering Services")}
+        description={tx("A Reliability-as-a-Service model combining edge data processing and engineering expertise to transition from reactive maintenance to condition-based and predictive operations.")}
         image="/images/og-cover.png"
         type="article"
       />
@@ -2743,7 +2467,7 @@ function ReliabilityEnablementPage() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=2000&auto=format&fit=crop"
-            alt="Industrial digital reliability"
+            alt={tx("Industrial digital reliability")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -2753,29 +2477,20 @@ function ReliabilityEnablementPage() {
           <div className="relative py-24 md:py-32 max-w-4xl">
             <div className="flex flex-wrap gap-3">
               <Pill>
-                <Network className="w-4 h-4" /> Digital Reliability Enablement
-              </Pill>
+                <Network className="w-4 h-4" />{tx(" Digital Reliability Enablement")}</Pill>
               <Pill>
-                <Layers className="w-4 h-4" /> Reliability-as-a-Service
-              </Pill>
+                <Layers className="w-4 h-4" />{tx(" Reliability-as-a-Service")}</Pill>
             </div>
 
-            <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-              Technology-Enabled
-              <span className="block text-cyan-400">Reliability Transformation</span>
+            <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Technology-Enabled")}<span className="block text-cyan-400">{tx("Reliability Transformation")}</span>
             </h1>
 
-            <p className="mt-6 text-lg text-slate-300 max-w-3xl">
-              We do not sell devices. We deliver measurable reliability improvement.
-              Our Reliability-as-a-Service model combines edge data acquisition,
-              multi-protocol integration, and engineering expertise to transition
-              operations from reactive maintenance to condition-based and predictive execution.
-            </p>
+            <p className="mt-6 text-lg text-slate-300 max-w-3xl">{tx("We do not sell devices. We deliver measurable reliability improvement. Our Reliability-as-a-Service model combines edge data acquisition, multi-protocol integration, and engineering expertise to transition operations from reactive maintenance to condition-based and predictive execution.")}</p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Pill><TrendingUp className="w-4 h-4" /> Reduced unplanned downtime</Pill>
-              <Pill><Gauge className="w-4 h-4" /> Higher asset availability</Pill>
-              <Pill><Calculator className="w-4 h-4" /> Lower maintenance cost</Pill>
+              <Pill><TrendingUp className="w-4 h-4" />{tx(" Reduced unplanned downtime")}</Pill>
+              <Pill><Gauge className="w-4 h-4" />{tx(" Higher asset availability")}</Pill>
+              <Pill><Calculator className="w-4 h-4" />{tx(" Lower maintenance cost")}</Pill>
             </div>
           </div>
         </Container>
@@ -2783,66 +2498,54 @@ function ReliabilityEnablementPage() {
 
       {/* WHY THIS MODEL */}
       <Section
-        title="Why This Model Exists"
-        subtitle="Small and medium industrial companies often lack structured reliability systems."
+        title={tx("Why This Model Exists")}
+        subtitle={tx("Small and medium industrial companies often lack structured reliability systems.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Reactive Maintenance">
-            Equipment is repaired after failure. Visibility is limited. Planning is reactive.
-          </Card>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Reactive Maintenance")}>{tx("Equipment is repaired after failure. Visibility is limited. Planning is reactive.")}</Card>
 
-          <Card icon={<CircuitBoard className="w-5 h-5" />} title="Limited Data Infrastructure">
-            Most companies do not have structured cloud environments or usable equipment analytics.
-          </Card>
+          <Card icon={<CircuitBoard className="w-5 h-5" />} title={tx("Limited Data Infrastructure")}>{tx("Most companies do not have structured cloud environments or usable equipment analytics.")}</Card>
 
-          <Card icon={<GitCompare className="w-5 h-5" />} title="Maturity Gap">
-            Data exists in machines — but not in decision processes.
-          </Card>
+          <Card icon={<GitCompare className="w-5 h-5" />} title={tx("Maturity Gap")}>{tx("Data exists in machines — but not in decision processes.")}</Card>
         </div>
       </Section>
 
       {/* HOW IT WORKS */}
       <Section
-        title="How the Reliability-as-a-Service Model Works"
-        subtitle="Edge-first, engineering-driven, maturity-focused."
+        title={tx("How the Reliability-as-a-Service Model Works")}
+        subtitle={tx("Edge-first, engineering-driven, maturity-focused.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
 
-          <Card icon={<PlugZap className="w-5 h-5" />} title="1. Multi-Protocol Data Ingestion">
+          <Card icon={<PlugZap className="w-5 h-5" />} title={tx("1. Multi-Protocol Data Ingestion")}>
             <ul className="space-y-2 text-sm">
-              <li>CAN (J1939)</li>
-              <li>Modbus RTU / TCP</li>
-              <li>Analog (4-20mA, voltage)</li>
-              <li>Digital I/O</li>
-              <li>OEM controllers</li>
+              <li>{tx("CAN (J1939)")}</li>
+              <li>{tx("Modbus RTU / TCP")}</li>
+              <li>{tx("Analog (4-20mA, voltage)")}</li>
+              <li>{tx("Digital I/O")}</li>
+              <li>{tx("OEM controllers")}</li>
             </ul>
-            <p className="mt-3 text-sm">
-              Designed for heterogeneous industrial environments.
-            </p>
+            <p className="mt-3 text-sm">{tx("Designed for heterogeneous industrial environments.")}</p>
           </Card>
 
-          <Card icon={<Cpu className="w-5 h-5" />} title="2. Edge Processing">
+          <Card icon={<Cpu className="w-5 h-5" />} title={tx("2. Edge Processing")}>
             <ul className="space-y-2 text-sm">
-              <li>Local contextualization of signals</li>
-              <li>Failure-mode-based monitoring</li>
-              <li>Health scoring logic</li>
-              <li>Low-bandwidth friendly</li>
+              <li>{tx("Local contextualization of signals")}</li>
+              <li>{tx("Failure-mode-based monitoring")}</li>
+              <li>{tx("Health scoring logic")}</li>
+              <li>{tx("Low-bandwidth friendly")}</li>
             </ul>
-            <p className="mt-3 text-sm">
-              Works even when cloud connectivity is limited or unavailable.
-            </p>
+            <p className="mt-3 text-sm">{tx("Works even when cloud connectivity is limited or unavailable.")}</p>
           </Card>
 
-          <Card icon={<BarChart3 className="w-5 h-5" />} title="3. Engineering Translation">
+          <Card icon={<BarChart3 className="w-5 h-5" />} title={tx("3. Engineering Translation")}>
             <ul className="space-y-2 text-sm">
-              <li>Condition-based maintenance plans</li>
-              <li>Predictive alerts with governance</li>
-              <li>Material planning foresight</li>
-              <li>Maintenance strategy redesign</li>
+              <li>{tx("Condition-based maintenance plans")}</li>
+              <li>{tx("Predictive alerts with governance")}</li>
+              <li>{tx("Material planning foresight")}</li>
+              <li>{tx("Maintenance strategy redesign")}</li>
             </ul>
-            <p className="mt-3 text-sm">
-              Insights are translated into process improvement.
-            </p>
+            <p className="mt-3 text-sm">{tx("Insights are translated into process improvement.")}</p>
           </Card>
 
         </div>
@@ -2850,66 +2553,49 @@ function ReliabilityEnablementPage() {
 
       {/* SENSOR FLEXIBILITY */}
       <Section
-        title="Tailored Sensor Strategy"
-        subtitle="Technology follows failure modes — not the opposite."
+        title={tx("Tailored Sensor Strategy")}
+        subtitle={tx("Technology follows failure modes — not the opposite.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<Activity className="w-5 h-5" />} title="Failure-Mode Driven Instrumentation">
-            After studying your dominant failure patterns, we may introduce:
-            <ul className="mt-3 space-y-2 text-sm">
-              <li>Vibration monitoring</li>
-              <li>Ultrasonic detection</li>
-              <li>Oil cleanliness sensing</li>
-              <li>Pressure / flow monitoring</li>
-              <li>Temperature mapping</li>
+          <Card icon={<Activity className="w-5 h-5" />} title={tx("Failure-Mode Driven Instrumentation")}>{tx("After studying your dominant failure patterns, we may introduce:")}<ul className="mt-3 space-y-2 text-sm">
+              <li>{tx("Vibration monitoring")}</li>
+              <li>{tx("Ultrasonic detection")}</li>
+              <li>{tx("Oil cleanliness sensing")}</li>
+              <li>{tx("Pressure / flow monitoring")}</li>
+              <li>{tx("Temperature mapping")}</li>
             </ul>
           </Card>
 
-          <Card icon={<Layers className="w-5 h-5" />} title="Scalable Architecture">
-            The system is modular and adaptable. New sensors and logic blocks can be added
-            as maturity evolves — without redesigning the full architecture.
-          </Card>
+          <Card icon={<Layers className="w-5 h-5" />} title={tx("Scalable Architecture")}>{tx("The system is modular and adaptable. New sensors and logic blocks can be added as maturity evolves — without redesigning the full architecture.")}</Card>
         </div>
       </Section>
 
       {/* CLOUD OPTIONAL */}
       <Section
-        title="Cloud Integration (Optional)"
-        subtitle="If data already exists in the cloud, we can integrate. If not, edge-first is enough."
+        title={tx("Cloud Integration (Optional)")}
+        subtitle={tx("If data already exists in the cloud, we can integrate. If not, edge-first is enough.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<Network className="w-5 h-5" />} title="Edge-First Default">
-            Most small and mid-sized companies operate without structured cloud pipelines.
-            Our architecture delivers value locally first.
-          </Card>
+          <Card icon={<Network className="w-5 h-5" />} title={tx("Edge-First Default")}>{tx("Most small and mid-sized companies operate without structured cloud pipelines. Our architecture delivers value locally first.")}</Card>
 
-          <Card icon={<LineChart className="w-5 h-5" />} title="Pipeline Capability">
-            When needed, we can integrate structured data pipelines into existing
-            cloud environments to support dashboards and enterprise visibility.
-          </Card>
+          <Card icon={<LineChart className="w-5 h-5" />} title={tx("Pipeline Capability")}>{tx("When needed, we can integrate structured data pipelines into existing cloud environments to support dashboards and enterprise visibility.")}</Card>
         </div>
       </Section>
 
       {/* BUSINESS MODEL */}
       <Section
-        title="What You Are Actually Buying"
-        subtitle="Not hardware. Not software. Measurable reliability improvement."
+        title={tx("What You Are Actually Buying")}
+        subtitle={tx("Not hardware. Not software. Measurable reliability improvement.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
-          <Stat label="Outcome Focus" value="Reliability" />
-          <Stat label="Model" value="Service-Based" />
-          <Stat label="Approach" value="Engineering-Led" />
+          <Stat label={tx("Outcome Focus")} value={tx("Reliability")} />
+          <Stat label={tx("Model")} value={tx("Service-Based")} />
+          <Stat label={tx("Approach")} value={tx("Engineering-Led")} />
         </div>
 
         <div className="mt-10 grid md:grid-cols-2 gap-6 text-slate-300">
-          <p>
-            This model combines enabling technology with maintenance engineering,
-            process redesign, and cultural adoption support.
-          </p>
-          <p>
-            The objective is to elevate maintenance maturity — from reactive to
-            condition-based and predictive — while improving availability and reducing cost.
-          </p>
+          <p>{tx("This model combines enabling technology with maintenance engineering, process redesign, and cultural adoption support.")}</p>
+          <p>{tx("The objective is to elevate maintenance maturity — from reactive to condition-based and predictive — while improving availability and reducing cost.")}</p>
         </div>
       </Section>
 
@@ -2924,8 +2610,8 @@ function UseCase9Page() {
   return (
     <PageShell>
 <Seo
-  title="Use Case 9 — Hydraulic System Sanitization & Reliability | Northbound Engineering Services"
-  description="How contamination control, monitoring, standardized cleaning procedures, and technician training eliminated repeat pump failures—improving hydraulic MTBF up to 600% and raising utilization from 42% to ~60%."
+  title={tx("Use Case 9 — Hydraulic System Sanitization & Reliability | Northbound Engineering Services")}
+  description={tx("How contamination control, monitoring, standardized cleaning procedures, and technician training eliminated repeat pump failures—improving hydraulic MTBF up to 600% and raising utilization from 42% to ~60%.")}
   image="/images/og-cover.png"
   type="article"
 />
@@ -2935,7 +2621,7 @@ function UseCase9Page() {
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=2000&auto=format&fit=crop"
-            alt="Hydraulic maintenance"
+            alt={tx("Hydraulic maintenance")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -2946,81 +2632,63 @@ function UseCase9Page() {
             <div className="max-w-4xl">
               <div className="flex flex-wrap items-center gap-3">
                 <Pill>
-                  <Wrench className="w-4 h-4" /> Use Case 9
-                </Pill>
+                  <Wrench className="w-4 h-4" />{tx(" Use Case 9")}</Pill>
                 <Pill>
-                  <AlertTriangle className="w-4 h-4" /> Root Cause Reliability
-                </Pill>
+                  <AlertTriangle className="w-4 h-4" />{tx(" Root Cause Reliability")}</Pill>
                 <Pill>
-                  <Activity className="w-4 h-4" /> Contamination Control
-                </Pill>
+                  <Activity className="w-4 h-4" />{tx(" Contamination Control")}</Pill>
               </div>
 
-              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-                Restoring Reliability Through
-                <span className="block"><span className="text-cyan-400">Hydraulic System Sanitization</span></span>
+              <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Restoring Reliability Through")}<span className="block"><span className="text-cyan-400">{tx("Hydraulic System Sanitization")}</span></span>
               </h1>
 
-              <p className="mt-5 text-lg text-slate-300 max-w-3xl">
-                A sand refinement treatment plant suffered chronic hydraulic failures that collapsed utilization.
-                NBE proved the system design was sound - the weakness was sanitation discipline. By implementing
-                monitoring, connection points, standardized cleaning procedures, and technician training, the plant
-                restored stability within weeks.
-              </p>
+              <p className="mt-5 text-lg text-slate-300 max-w-3xl">{tx("A sand refinement treatment plant suffered chronic hydraulic failures that collapsed utilization. NBE proved the system design was sound - the weakness was sanitation discipline. By implementing monitoring, connection points, standardized cleaning procedures, and technician training, the plant restored stability within weeks.")}</p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Pill>
-                  <TrendingUp className="w-4 h-4" /> MTBF up to +600%
-                </Pill>
+                  <TrendingUp className="w-4 h-4" />{tx(" MTBF up to +600%")}</Pill>
                 <Pill>
-                  <Gauge className="w-4 h-4" /> Utilization: 42% to ~60%
-                </Pill>
+                  <Gauge className="w-4 h-4" />{tx(" Utilization: 42% to ~60%")}</Pill>
                 <Pill>
-                  <LineChart className="w-4 h-4" /> Maintenance cost: -20%
-                </Pill>
+                  <LineChart className="w-4 h-4" />{tx(" Maintenance cost: -20%")}</Pill>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Section title="1) Context" subtitle="Closed-loop hydraulics under high pressure and tight tolerances.">
+      <Section title={tx("1) Context")} subtitle={tx("Closed-loop hydraulics under high pressure and tight tolerances.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 space-y-4">
-            <p>
-              The plant relied on hydraulically driven systems for continuous industrial production. Reliability depended
-              not only on equipment design, but on oil cleanliness, sanitation, and contamination control.
-            </p>
-            <p>
-              Even minor deviations propagated failures across multiple components, degrading availability.
-            </p>
+            <p>{tx("The plant relied on hydraulically driven systems for continuous industrial production. Reliability depended not only on equipment design, but on oil cleanliness, sanitation, and contamination control.")}</p>
+            <p>{tx("Even minor deviations propagated failures across multiple components, degrading availability.")}</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            <Stat label="Plant type" value="Continuous" />
-            <Stat label="System" value="Closed-loop hydraulics" />
-            <Stat label="Failure driver" value="Contamination" />
-            <Stat label="Impact" value="Throughput" />
+            <Stat label={tx("Plant type")} value={tx("Continuous")} />
+            <Stat label={tx("System")} value={tx("Closed-loop hydraulics")} />
+            <Stat label={tx("Failure driver")} value={tx("Contamination")} />
+            <Stat label={tx("Impact")} value={tx("Throughput")} />
           </div>
         </div>
       </Section>
 
-      <Section title="2) Challenges" subtitle="Replacing components did not solve systemic failure propagation.">
+      <Section title={tx("2) Challenges")} subtitle={tx("Replacing components did not solve systemic failure propagation.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<AlertTriangle className="w-5 h-5" />} title="Chronic failures">
-            <p>Utilization dropped to 42% and MTBF reached record lows despite repeated component replacements.</p>
+          <Card icon={<AlertTriangle className="w-5 h-5" />} title={tx("Chronic failures")}>
+            <p>{tx("Utilization dropped to 42% and MTBF reached record lows despite repeated component replacements.")}</p>
           </Card>
-          <Card icon={<Wrench className="w-5 h-5" />} title="Reactive maintenance">
-            <p>Effort focused on restoration after failure rather than eliminating root causes.</p>
+          <Card icon={<Wrench className="w-5 h-5" />} title={tx("Reactive maintenance")}>
+            <p>{tx("Effort focused on restoration after failure rather than eliminating root causes.")}</p>
           </Card>
-          <Card icon={<CircuitBoard className="w-5 h-5" />} title="Systemic root cause">
-            <p>Oil contamination progressively damaged circuits operating in parallel, spreading failures.</p>
+          <Card icon={<CircuitBoard className="w-5 h-5" />} title={tx("Systemic root cause")}>
+            <p>{tx("Oil contamination progressively damaged circuits operating in parallel, spreading failures.")}</p>
           </Card>
         </div>
       </Section>
 
-      <Section title="3) Approach" subtitle="Prove design validity, then fix sanitation and monitoring discipline.">
+      <Section title={tx("3) Approach")} subtitle={tx("Prove design validity, then fix sanitation and monitoring discipline.")}>
         <div className="grid md:grid-cols-2 gap-6">
-          <Card icon={<ClipboardList className="w-5 h-5" />} title="Diagnosis">
+          <Card icon={<ClipboardList className="w-5 h-5" />} title={tx("Diagnosis")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Analyze historical failure records and trends",
@@ -3030,13 +2698,13 @@ function UseCase9Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card icon={<Activity className="w-5 h-5" />} title="Corrective program">
+          <Card icon={<Activity className="w-5 h-5" />} title={tx("Corrective program")}>
             <ul className="space-y-2 text-sm">
               {[
                 "Add dedicated connection points for sampling and online monitoring",
@@ -3046,7 +2714,7 @@ function UseCase9Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
@@ -3054,16 +2722,16 @@ function UseCase9Page() {
         </div>
       </Section>
 
-      <Section title="4) Results" subtitle="Rapid stability in three months.">
+      <Section title={tx("4) Results")} subtitle={tx("Rapid stability in three months.")}>
         <div className="grid md:grid-cols-4 gap-6">
-          <Stat label="Hydraulic MTBF" value="Up to +600%" />
-          <Stat label="Utilization" value="42% → ~60%" />
-          <Stat label="Maintenance cost" value="-20%" />
-          <Stat label="Repeat pump failures" value="Eliminated" />
+          <Stat label={tx("Hydraulic MTBF")} value={tx("Up to +600%")} />
+          <Stat label={tx("Utilization")} value="42% → ~60%" />
+          <Stat label={tx("Maintenance cost")} value="-20%" />
+          <Stat label={tx("Repeat pump failures")} value={tx("Eliminated")} />
         </div>
       </Section>
 
-      <Section title="5) Key takeaways" subtitle="Cleanliness is a reliability parameter - not a secondary concern.">
+      <Section title={tx("5) Key takeaways")} subtitle={tx("Cleanliness is a reliability parameter - not a secondary concern.")}>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
             <ul className="space-y-2 text-sm">
@@ -3075,17 +2743,14 @@ function UseCase9Page() {
               ].map((t, i) => (
                 <li key={i} className="flex gap-3">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400" />
-                  <span>{t}</span>
+                  <span>{tx(t)}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300">
-            <div className="text-white font-medium">Customer feedback</div>
-            <p className="mt-3">
-              "We did not understand how important hydraulic sanitization was until we had to repeatedly pay for broken
-              pumps. Now, with proper control in place, I feel confident asking the plant for higher productivity."
-            </p>
+            <div className="text-white font-medium">{tx("Customer feedback")}</div>
+            <p className="mt-3">{tx("\"We did not understand how important hydraulic sanitization was until we had to repeatedly pay for broken pumps. Now, with proper control in place, I feel confident asking the plant for higher productivity.\"")}</p>
           </div>
         </div>
       </Section>
@@ -3324,23 +2989,38 @@ function CbmPlanBuilder() {
     (a, b) => a.addons.length - b.addons.length
   )[0];
 
-  let planLabel = "Cloud Platform";
-  let hint = "Start with the Cloud Platform. Add modules any time; they deploy remotely with no site visit.";
+  let planLabel = tx("Cloud Platform");
+  let hint = tx("Start with the Cloud Platform. Add modules any time; they deploy remotely with no site visit.");
   if (picked.length > 0) {
-    planLabel = "Cloud Platform + " + picked.map(cbmAddonName).join(" + ");
+    planLabel = tx("Cloud Platform +") + " " + picked.map(cbmAddonName).join(" + ");
     if (exact) {
-      hint = `That's our ${exact.name} bundle. Bundled modules cost less than buying them separately.`;
+      hint = tf("That's our {0} bundle. Bundled modules cost less than buying them separately.", tx(exact.name));
     } else if (covering && picked.length >= 2) {
-      hint = `Tip: the ${covering.name} bundle includes everything you picked and usually costs less.`;
+      hint = tf("Tip: the {0} bundle includes everything you picked and usually costs less.", tx(covering.name));
     } else {
-      hint = "Add a second module to qualify for bundle pricing.";
+      hint = tx("Add a second module to qualify for bundle pricing.");
     }
   }
 
   const planMailto = buildMailto(
     "info@northboundengineering.com",
-    "Real-Time CBM Subscription Quote",
-    `Hello Northbound Engineering Services,
+    isEs() ? "Cotización de suscripción a CBM en Tiempo Real" : "Real-Time CBM Subscription Quote",
+    isEs()
+      ? `Hola Northbound Engineering Services,
+
+Me gustaría recibir una cotización para una suscripción a CBM en Tiempo Real.
+
+Plan: ${exact ? tf("{0} bundle", tx(exact.name)) + " (" + planLabel + ")" : planLabel}
+Cantidad aproximada de activos: ${assets}
+Tipos de activos (camiones, grupos electrógenos, bombas...):
+Principal problema (NPT, sitios remotos, fallas repetitivas, seguridad...):
+
+Nombre/Empresa:
+Datos de contacto:
+
+Gracias,
+`
+      : `Hello Northbound Engineering Services,
 
 I'd like a quote for a Real-Time CBM subscription.
 
@@ -3360,13 +3040,13 @@ Thank you,
     <div className="p-6 md:p-8 rounded-3xl bg-slate-900/70 border border-slate-800">
       <div className="grid md:grid-cols-2 gap-8">
         <div>
-          <div className="text-white font-semibold text-lg">1. Cloud Platform is always included</div>
+          <div className="text-white font-semibold text-lg">{tx("1. Cloud Platform is always included")}</div>
           <div className="mt-3 flex items-center gap-3 p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-200">
             <Check className="w-5 h-5 shrink-0" />
-            <span>Cloud Platform: leased Dragonfly, dashboards, edge analytics, reliability engineering</span>
+            <span>{tx("Cloud Platform: leased Dragonfly, dashboards, edge analytics, reliability engineering")}</span>
           </div>
 
-          <div className="mt-6 text-white font-semibold text-lg">2. Add what you need</div>
+          <div className="mt-6 text-white font-semibold text-lg">{tx("2. Add what you need")}</div>
           <div className="mt-3 grid sm:grid-cols-2 gap-3">
             {CBM_ADDONS.map((a) => {
               const on = picked.includes(a.key);
@@ -3390,8 +3070,8 @@ Thank you,
                     {on && <Check className="w-4 h-4" />}
                   </span>
                   <span>
-                    <span className="block font-medium">{a.name}</span>
-                    <span className="block text-xs text-slate-400 mt-0.5">{a.poweredBy}</span>
+                    <span className="block font-medium">{tx(a.name)}</span>
+                    <span className="block text-xs text-slate-400 mt-0.5">{tx(a.poweredBy)}</span>
                   </span>
                 </button>
               );
@@ -3400,25 +3080,22 @@ Thank you,
         </div>
 
         <div className="flex flex-col">
-          <div className="text-white font-semibold text-lg">3. Your plan</div>
+          <div className="text-white font-semibold text-lg">{tx("3. Your plan")}</div>
           <div className="mt-3 p-5 rounded-2xl bg-slate-950 border border-slate-800 flex-1 flex flex-col">
             {exact && (
               <span className="self-start inline-flex items-center gap-2 rounded-full bg-cyan-400/10 text-cyan-300 px-3 py-1 text-xs border border-cyan-500/30 mb-3">
-                <BadgePercent className="w-4 h-4" /> {exact.name} bundle
-              </span>
+                <BadgePercent className="w-4 h-4" /> {tf("{0} bundle", tx(exact.name))}</span>
             )}
-            <div className="text-2xl font-semibold text-white leading-snug">{planLabel}</div>
-            <p className="mt-3 text-sm text-slate-300">{hint}</p>
+            <div className="text-2xl font-semibold text-white leading-snug">{tx(planLabel)}</div>
+            <p className="mt-3 text-sm text-slate-300">{tx(hint)}</p>
 
-            <label className="mt-5 block text-sm text-slate-400" htmlFor="cbm-assets">
-              Approx. number of assets
-            </label>
+            <label className="mt-5 block text-sm text-slate-400" htmlFor="cbm-assets">{tx("Approx. number of assets")}</label>
             <input
               id="cbm-assets"
               inputMode="numeric"
               value={assets}
               onChange={(e) => setAssets(e.target.value.replace(/[^0-9]/g, ""))}
-              placeholder="e.g. 25"
+              placeholder={tx("e.g. 25")}
               className="mt-2 w-full rounded-xl bg-slate-900 border border-slate-700 px-4 py-2 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
             />
 
@@ -3426,12 +3103,9 @@ Thank you,
               <a
                 href={planMailto}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-              >
-                Request a Quote <ArrowRight className="w-4 h-4" />
+              >{tx("Request a Quote ")}<ArrowRight className="w-4 h-4" />
               </a>
-              <p className="mt-3 text-xs text-slate-500 text-center">
-                Priced per asset, per month. Hardware lease included.
-              </p>
+              <p className="mt-3 text-xs text-slate-500 text-center">{tx("Priced per asset, per month. Hardware lease included.")}</p>
             </div>
           </div>
         </div>
@@ -3443,8 +3117,20 @@ Thank you,
 function RealTimeCbmPage() {
   const pilotMailto = buildMailto(
     "info@northboundengineering.com",
-    "Real-Time CBM Pilot Request",
-    `Hello Northbound Engineering Services,
+    isEs() ? "Solicitud de piloto de CBM en Tiempo Real" : "Real-Time CBM Pilot Request",
+    isEs()
+      ? `Hola Northbound Engineering Services,
+
+Me gustaría conversar sobre un piloto de Mantenimiento Basado en Condición en Tiempo Real.
+
+Nombre/Empresa:
+Tipos de activos y cantidad aproximada:
+Principal problema (paradas, sitios remotos, fallas repetitivas, seguridad, combustible...):
+Datos de contacto:
+
+Gracias,
+`
+      : `Hello Northbound Engineering Services,
 
 I'd like to discuss a Real-Time Condition-Based Maintenance pilot.
 
@@ -3462,8 +3148,8 @@ Thank you,
   return (
     <PageShell>
       <Seo
-        title="Real Time. Real Predictions. Condition-Based Maintenance | Northbound Engineering Services"
-        description="Reliability as a subscription: leased edge hardware, live condition monitoring and Northbound engineering to cut unplanned downtime. Add remote diagnostics, fault recording, remote OEM tools and speed control as you need them."
+        title={tx("Real Time. Real Predictions. Condition-Based Maintenance | Northbound Engineering Services")}
+        description={tx("Reliability as a subscription: leased edge hardware, live condition monitoring and Northbound engineering to cut unplanned downtime. Add remote diagnostics, fault recording, remote OEM tools and speed control as you need them.")}
         image="/images/og-cover.png"
         type="article"
       />
@@ -3473,7 +3159,7 @@ Thank you,
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=2000&auto=format&fit=crop"
-            alt="Heavy equipment in operation"
+            alt={tx("Heavy equipment in operation")}
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/45 to-slate-950" />
@@ -3483,43 +3169,32 @@ Thank you,
           <div className="relative py-24 md:py-32 max-w-4xl">
             <div className="flex flex-wrap gap-3">
               <Pill>
-                <Radio className="w-4 h-4" /> Real-Time Condition-Based Maintenance
-              </Pill>
+                <Radio className="w-4 h-4" />{tx(" Real-Time Condition-Based Maintenance")}</Pill>
               <Pill>
-                <Repeat className="w-4 h-4" /> Subscription service
-              </Pill>
+                <Repeat className="w-4 h-4" />{tx(" Subscription service")}</Pill>
             </div>
 
-            <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">
-              Real Time. Real Predictions.
-              <span className="block text-cyan-400">See it coming. Fix it remotely.</span>
+            <h1 className="mt-4 text-4xl md:text-6xl font-semibold text-white leading-tight">{tx("Real Time. Real Predictions.")}<span className="block text-cyan-400">{tx("See it coming. Fix it remotely.")}</span>
             </h1>
 
-            <p className="mt-6 text-lg text-slate-300 max-w-3xl">
-              You don't buy hardware. You subscribe to reliability. We put your engines, pumps, generators and fleets
-              on live condition monitoring, and our engineers turn that data into a better maintenance strategy and
-              less unplanned downtime. Choose the modules you need, bundle and save, and scale when the results show.
-            </p>
+            <p className="mt-6 text-lg text-slate-300 max-w-3xl">{tx("You don't buy hardware. You subscribe to reliability. We put your engines, pumps, generators and fleets on live condition monitoring, and our engineers turn that data into a better maintenance strategy and less unplanned downtime. Choose the modules you need, bundle and save, and scale when the results show.")}</p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Pill><PiggyBank className="w-4 h-4" /> No CAPEX: hardware leased</Pill>
-              <Pill><TrendingUp className="w-4 h-4" /> Built to cut NPT</Pill>
-              <Pill><Layers className="w-4 h-4" /> Pick modules, bundle and save</Pill>
+              <Pill><PiggyBank className="w-4 h-4" />{tx(" No CAPEX: hardware leased")}</Pill>
+              <Pill><TrendingUp className="w-4 h-4" />{tx(" Built to cut NPT")}</Pill>
+              <Pill><Layers className="w-4 h-4" />{tx(" Pick modules, bundle and save")}</Pill>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#cbm-plans"
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition"
-              >
-                Build Your Plan <ArrowRight className="w-4 h-4" />
+              >{tx("Build Your Plan ")}<ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#cbm-scenarios"
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-slate-950 border border-slate-800 text-slate-200 hover:bg-slate-900 transition"
-              >
-                See it in action
-              </a>
+              >{tx("See it in action")}</a>
             </div>
           </div>
         </Container>
@@ -3527,70 +3202,49 @@ Thank you,
 
       {/* THE PROBLEM */}
       <Section
-        title="Why Traditional Maintenance Misses Failures"
-        subtitle="Most failures give warning signs first. The problem is that nobody sees the data in time, or the right tool isn't on site."
+        title={tx("Why Traditional Maintenance Misses Failures")}
+        subtitle={tx("Most failures give warning signs first. The problem is that nobody sees the data in time, or the right tool isn't on site.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Timer className="w-5 h-5" />} title="Calendar, Not Condition">
-            Fixed-interval PMs replace healthy parts and miss the ones that are failing. Cost goes up and failures
-            continue.
-          </Card>
-          <Card icon={<Eye className="w-5 h-5" />} title="Snapshots, Not the Full Picture">
-            Diagnostic tools capture one moment when a code appears. By the time someone looks, the evidence is gone.
-          </Card>
-          <Card icon={<Truck className="w-5 h-5" />} title="Truck Rolls for Every Lamp">
-            Every warning means a site visit, often without the right diagnosis, part, or laptop. Remote sites make it
-            worse.
-          </Card>
+          <Card icon={<Timer className="w-5 h-5" />} title={tx("Calendar, Not Condition")}>{tx("Fixed-interval PMs replace healthy parts and miss the ones that are failing. Cost goes up and failures continue.")}</Card>
+          <Card icon={<Eye className="w-5 h-5" />} title={tx("Snapshots, Not the Full Picture")}>{tx("Diagnostic tools capture one moment when a code appears. By the time someone looks, the evidence is gone.")}</Card>
+          <Card icon={<Truck className="w-5 h-5" />} title={tx("Truck Rolls for Every Lamp")}>{tx("Every warning means a site visit, often without the right diagnosis, part, or laptop. Remote sites make it worse.")}</Card>
         </div>
       </Section>
 
       {/* WHAT YOU BUY */}
       <Section
-        title="What You're Buying"
-        subtitle="Not devices. Not software licenses. Outcomes that show up in your maintenance KPIs."
+        title={tx("What You're Buying")}
+        subtitle={tx("Not devices. Not software licenses. Outcomes that show up in your maintenance KPIs.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<TrendingUp className="w-5 h-5" />} title="Less Unplanned Downtime">
-            Failures caught as trends, warnings validated remotely, and repairs planned instead of rushed. NPT drops
-            because fewer stops are surprises.
-          </Card>
-          <Card icon={<Wrench className="w-5 h-5" />} title="A Better Maintenance Strategy">
-            Real operating data replaces guesswork: PM intervals are set by condition, and each failure mode gets the
-            right monitoring and response.
-          </Card>
-          <Card icon={<Gauge className="w-5 h-5" />} title="Higher Reliability">
-            Root causes found and fixed, repeat failures eliminated, and MTBF tracked every month with our engineers.
-          </Card>
+          <Card icon={<TrendingUp className="w-5 h-5" />} title={tx("Less Unplanned Downtime")}>{tx("Failures caught as trends, warnings validated remotely, and repairs planned instead of rushed. NPT drops because fewer stops are surprises.")}</Card>
+          <Card icon={<Wrench className="w-5 h-5" />} title={tx("A Better Maintenance Strategy")}>{tx("Real operating data replaces guesswork: PM intervals are set by condition, and each failure mode gets the right monitoring and response.")}</Card>
+          <Card icon={<Gauge className="w-5 h-5" />} title={tx("Higher Reliability")}>{tx("Root causes found and fixed, repeat failures eliminated, and MTBF tracked every month with our engineers.")}</Card>
         </div>
       </Section>
 
       {/* CORE + ADD-ONS */}
       <Section
         id="cbm-services"
-        title="How the Subscription Works"
-        subtitle="One Cloud Platform subscription per asset, plus the add-on modules your operation needs."
+        title={tx("How the Subscription Works")}
+        subtitle={tx("One Cloud Platform subscription per asset, plus the add-on modules your operation needs.")}
       >
         {/* CORE */}
         <div className="p-6 md:p-8 rounded-3xl bg-slate-900 border border-cyan-500/40 shadow-lg">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3 text-cyan-300">
               <Router className="w-6 h-6" />
-              <span className="text-2xl font-semibold text-white">Cloud Platform</span>
+              <span className="text-2xl font-semibold text-white">{tx("Cloud Platform")}</span>
             </div>
-            <span className="text-xs text-cyan-300 border border-cyan-500/30 bg-cyan-400/10 rounded-full px-3 py-1">
-              Base subscription, required
-            </span>
+            <span className="text-xs text-cyan-300 border border-cyan-500/30 bg-cyan-400/10 rounded-full px-3 py-1">{tx("Base subscription, required")}</span>
           </div>
-          <p className="mt-3 text-slate-300 max-w-3xl">
-            Everything you need to move from reactive to condition-based maintenance, including the hardware. No
-            purchase and no capital approval needed.
-          </p>
+          <p className="mt-3 text-slate-300 max-w-3xl">{tx("Everything you need to move from reactive to condition-based maintenance, including the hardware. No purchase and no capital approval needed.")}</p>
           <ul className="mt-6 grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm text-slate-300">
             {CBM_CORE_FEATURES.map((t, i) => (
               <li key={i} className="flex gap-3 items-start">
                 <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0" />
-                <span className="leading-snug">{t}</span>
+                <span className="leading-snug">{tx(t)}</span>
               </li>
             ))}
           </ul>
@@ -3599,7 +3253,7 @@ Thank you,
         {/* ADD-ONS */}
         <div className="mt-10 flex items-center gap-3">
           <Plus className="w-5 h-5 text-cyan-400" />
-          <div className="text-xl font-semibold text-white">Add-on modules</div>
+          <div className="text-xl font-semibold text-white">{tx("Add-on modules")}</div>
         </div>
         <div className="mt-6 grid md:grid-cols-2 gap-6">
           {CBM_ADDONS.map((s) => (
@@ -3607,24 +3261,24 @@ Thank you,
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-cyan-300">
                   {s.icon}
-                  <span className="font-medium text-lg">{s.name}</span>
+                  <span className="font-medium text-lg">{tx(s.name)}</span>
                 </div>
-                <span className="text-xs text-slate-400 border border-slate-800 rounded-full px-3 py-1">Add-on</span>
+                <span className="text-xs text-slate-400 border border-slate-800 rounded-full px-3 py-1">{tx("Add-on")}</span>
               </div>
-              <div className="mt-1 text-sm text-slate-500">{s.poweredBy}</div>
-              <div className="mt-3 text-white font-semibold leading-snug">{s.tagline}</div>
+              <div className="mt-1 text-sm text-slate-500">{tx(s.poweredBy)}</div>
+              <div className="mt-3 text-white font-semibold leading-snug">{tx(s.tagline)}</div>
               <ul className="mt-4 space-y-2 text-sm text-slate-300">
                 {s.points.map((p, j) => (
                   <li key={j} className="flex gap-3 items-start">
                     <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                    <span className="leading-snug">{p}</span>
+                    <span className="leading-snug">{tx(p)}</span>
                   </li>
                 ))}
               </ul>
               <div className="mt-auto pt-5">
                 <div className="pt-4 border-t border-slate-800 text-sm">
-                  <span className="text-slate-400">Outcome: </span>
-                  <span className="text-slate-200">{s.outcome}</span>
+                  <span className="text-slate-400">{tx("Outcome: ")}</span>
+                  <span className="text-slate-200">{tx(s.outcome)}</span>
                 </div>
               </div>
             </div>
@@ -3635,8 +3289,8 @@ Thank you,
       {/* BUNDLES */}
       <Section
         id="cbm-plans"
-        title="Bundle and Save"
-        subtitle="Bundles are priced below the sum of their modules. Pick one, or build your own plan below."
+        title={tx("Bundle and Save")}
+        subtitle={tx("Bundles are priced below the sum of their modules. Pick one, or build your own plan below.")}
       >
         <div className="grid md:grid-cols-3 gap-6">
           {CBM_BUNDLES.map((b) => (
@@ -3649,34 +3303,30 @@ Thank you,
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-cyan-300">
                   {b.icon}
-                  <span className="font-medium">Bundle</span>
+                  <span className="font-medium">{tx("Bundle")}</span>
                 </div>
                 {b.highlight && (
-                  <span className="text-xs text-slate-900 bg-cyan-400 rounded-full px-3 py-1 font-semibold">
-                    Best value
-                  </span>
+                  <span className="text-xs text-slate-900 bg-cyan-400 rounded-full px-3 py-1 font-semibold">{tx("Best value")}</span>
                 )}
               </div>
-              <div className="mt-3 text-2xl font-semibold text-white">{b.name}</div>
-              <p className="mt-2 text-sm text-slate-300">{b.forWho}</p>
+              <div className="mt-3 text-2xl font-semibold text-white">{tx(b.name)}</div>
+              <p className="mt-2 text-sm text-slate-300">{tx(b.forWho)}</p>
               <ul className="mt-5 space-y-2 text-sm">
                 <li className="flex gap-3 items-center text-slate-200">
-                  <Check className="w-4 h-4 text-cyan-400 shrink-0" /> Cloud Platform
-                </li>
+                  <Check className="w-4 h-4 text-cyan-400 shrink-0" />{tx(" Cloud Platform")}</li>
                 {CBM_ADDONS.map((a) => (
                   <li
                     key={a.key}
                     className={`flex gap-3 items-center ${inBundle(b, a.key) ? "text-slate-200" : "text-slate-600 line-through"}`}
                   >
                     <Check className={`w-4 h-4 shrink-0 ${inBundle(b, a.key) ? "text-cyan-400" : "text-slate-700"}`} />
-                    {a.name}
+                    {tx(a.name)}
                   </li>
                 ))}
               </ul>
               <div className="mt-auto pt-6">
                 <div className="flex items-center gap-2 text-sm text-cyan-300">
-                  <BadgePercent className="w-4 h-4" /> Bundle pricing
-                </div>
+                  <BadgePercent className="w-4 h-4" />{tx(" Bundle pricing")}</div>
               </div>
             </div>
           ))}
@@ -3690,8 +3340,8 @@ Thank you,
       {/* SCENARIOS */}
       <Section
         id="cbm-scenarios"
-        title="Real-Time CBM in Action"
-        subtitle="Scenarios from mining, oil & gas, power generation, logistics and public transport, with the plan that solves each one."
+        title={tx("Real-Time CBM in Action")}
+        subtitle={tx("Scenarios from mining, oil & gas, power generation, logistics and public transport, with the plan that solves each one.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
           {CBM_SCENARIOS.map((c, i) => (
@@ -3699,25 +3349,25 @@ Thank you,
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-cyan-300">
                   {c.icon}
-                  <span className="font-medium text-sm">{c.industry}</span>
+                  <span className="font-medium text-sm">{tx(c.industry)}</span>
                 </div>
-                <span className="text-xs text-cyan-300 border border-cyan-500/30 bg-cyan-400/10 rounded-full px-3 py-1 whitespace-nowrap">
-                  {c.plan}
+                <span className="text-xs text-cyan-300 border border-cyan-500/30 bg-cyan-400/10 rounded-full px-3 py-1 text-right sm:whitespace-nowrap">
+                  {tx(c.plan)}
                 </span>
               </div>
-              <div className="mt-3 text-lg font-semibold text-white leading-snug">{c.title}</div>
+              <div className="mt-3 text-lg font-semibold text-white leading-snug">{tx(c.title)}</div>
               <div className="mt-4 space-y-3 text-sm">
                 <div>
-                  <span className="text-slate-400 uppercase tracking-wide text-xs">Problem</span>
-                  <p className="text-slate-300 mt-1">{c.problem}</p>
+                  <span className="text-slate-400 uppercase tracking-wide text-xs">{tx("Problem")}</span>
+                  <p className="text-slate-300 mt-1">{tx(c.problem)}</p>
                 </div>
                 <div>
-                  <span className="text-slate-400 uppercase tracking-wide text-xs">Response</span>
-                  <p className="text-slate-300 mt-1">{c.response}</p>
+                  <span className="text-slate-400 uppercase tracking-wide text-xs">{tx("Response")}</span>
+                  <p className="text-slate-300 mt-1">{tx(c.response)}</p>
                 </div>
                 <div className="flex gap-3 items-start pt-3 border-t border-slate-800">
                   <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0" />
-                  <span className="text-slate-100">{c.result}</span>
+                  <span className="text-slate-100">{tx(c.result)}</span>
                 </div>
               </div>
             </div>
@@ -3726,27 +3376,27 @@ Thank you,
       </Section>
 
       {/* WHO */}
-      <Section title="Who It's For" subtitle="One subscription model, three kinds of value.">
+      <Section title={tx("Who It's For")} subtitle={tx("One subscription model, three kinds of value.")}>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card icon={<Users className="w-5 h-5" />} title="Fleet & Plant Operators">
+          <Card icon={<Users className="w-5 h-5" />} title={tx("Fleet & Plant Operators")}>
             <ul className="space-y-2 text-sm">
-              <li>Less unplanned downtime and fewer emergency call-outs</li>
-              <li>Condition-based PMs instead of fixed intervals</li>
-              <li>An operating expense, not a capital project</li>
+              <li>{tx("Less unplanned downtime and fewer emergency call-outs")}</li>
+              <li>{tx("Condition-based PMs instead of fixed intervals")}</li>
+              <li>{tx("An operating expense, not a capital project")}</li>
             </ul>
           </Card>
-          <Card icon={<Building2 className="w-5 h-5" />} title="Dealers & Distributors">
+          <Card icon={<Building2 className="w-5 h-5" />} title={tx("Dealers & Distributors")}>
             <ul className="space-y-2 text-sm">
-              <li>Usage history that shows misuse and keeps warranty claims under control</li>
-              <li>Remote support you can resell to your own customers</li>
-              <li>Faster repairs on contract units, with fewer misdiagnoses</li>
+              <li>{tx("Usage history that shows misuse and keeps warranty claims under control")}</li>
+              <li>{tx("Remote support you can resell to your own customers")}</li>
+              <li>{tx("Faster repairs on contract units, with fewer misdiagnoses")}</li>
             </ul>
           </Card>
-          <Card icon={<Factory className="w-5 h-5" />} title="OEMs & Manufacturers">
+          <Card icon={<Factory className="w-5 h-5" />} title={tx("OEMs & Manufacturers")}>
             <ul className="space-y-2 text-sm">
-              <li>Health of every deployed unit, in the field</li>
-              <li>Fewer warranty claims through accurate pre-intervention diagnosis</li>
-              <li>Real operating data for R&D and design validation</li>
+              <li>{tx("Health of every deployed unit, in the field")}</li>
+              <li>{tx("Fewer warranty claims through accurate pre-intervention diagnosis")}</li>
+              <li>{tx("Real operating data for R&D and design validation")}</li>
             </ul>
           </Card>
         </div>
@@ -3755,31 +3405,31 @@ Thank you,
       {/* HARDWARE */}
       <Section
         id="cbm-hardware"
-        title="Hardware Included, Not Purchased"
-        subtitle="Every Cloud Platform subscription includes a leased emd Dragonfly industrial gateway. We install it, maintain it and replace it."
+        title={tx("Hardware Included, Not Purchased")}
+        subtitle={tx("Every Cloud Platform subscription includes a leased emd Dragonfly industrial gateway. We install it, maintain it and replace it.")}
       >
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <Card icon={<KeyRound className="w-5 h-5" />} title="Leased with your subscription">
+            <Card icon={<KeyRound className="w-5 h-5" />} title={tx("Leased with your subscription")}>
               <ul className="space-y-2 text-sm">
-                <li>No upfront hardware cost and no capital approval</li>
-                <li>Installation, commissioning and replacement included</li>
-                <li>Add-on modules are software: they turn on remotely, with no new hardware or site visit</li>
+                <li>{tx("No upfront hardware cost and no capital approval")}</li>
+                <li>{tx("Installation, commissioning and replacement included")}</li>
+                <li>{tx("Add-on modules are software: they turn on remotely, with no new hardware or site visit")}</li>
               </ul>
             </Card>
-            <Card icon={<Router className="w-5 h-5" />} title="Built for harsh environments">
+            <Card icon={<Router className="w-5 h-5" />} title={tx("Built for harsh environments")}>
               <ul className="space-y-2 text-sm">
-                <li>4G LTE, Wi-Fi, Bluetooth and Ethernet connectivity</li>
-                <li>IP65 enclosure, -40 to 80 °C, 9-36 V DC supply</li>
-                <li>Built-in battery and supercapacitors keep recording through power loss</li>
-                <li>Rules and logging run on the device, so it keeps working when coverage is poor</li>
+                <li>{tx("4G LTE, Wi-Fi, Bluetooth and Ethernet connectivity")}</li>
+                <li>{tx("IP65 enclosure, -40 to 80 °C, 9-36 V DC supply")}</li>
+                <li>{tx("Built-in battery and supercapacitors keep recording through power loss")}</li>
+                <li>{tx("Rules and logging run on the device, so it keeps working when coverage is poor")}</li>
               </ul>
             </Card>
-            <Card icon={<ShieldCheck className="w-5 h-5" />} title="Secure by design">
+            <Card icon={<ShieldCheck className="w-5 h-5" />} title={tx("Secure by design")}>
               <ul className="space-y-2 text-sm">
-                <li>Hardened, fully auditable Linux OS, penetration-tested by third-party security firms</li>
-                <li>Secure Boot and dedicated cryptographic hardware</li>
-                <li>Encrypted peer-to-peer tunnels for all remote sessions; your DBC files stay with you</li>
+                <li>{tx("Hardened, fully auditable Linux OS, penetration-tested by third-party security firms")}</li>
+                <li>{tx("Secure Boot and dedicated cryptographic hardware")}</li>
+                <li>{tx("Encrypted peer-to-peer tunnels for all remote sessions; your DBC files stay with you")}</li>
               </ul>
             </Card>
           </div>
@@ -3788,17 +3438,17 @@ Thank you,
             <table className="w-full text-sm text-left">
               <thead className="bg-slate-900 text-slate-300">
                 <tr>
-                  <th className="p-3 font-medium">Specification</th>
-                  <th className="p-3 font-medium">Dragonfly-Lite</th>
-                  <th className="p-3 font-medium">Dragonfly</th>
+                  <th className="p-3 font-medium">{tx("Specification")}</th>
+                  <th className="p-3 font-medium">{tx("Dragonfly-Lite")}</th>
+                  <th className="p-3 font-medium">{tx("Dragonfly")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800 text-slate-300">
                 {DRAGONFLY_SPECS.map(([k, a, b], i) => (
                   <tr key={i}>
-                    <td className="p-3 text-slate-400">{k}</td>
-                    <td className="p-3">{a}</td>
-                    <td className="p-3">{b}</td>
+                    <td className="p-3 text-slate-400">{tx(k)}</td>
+                    <td className="p-3">{tx(a)}</td>
+                    <td className="p-3">{tx(b)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -3808,15 +3458,15 @@ Thank you,
 
         {/* DRAFT NOTE: emd's published figures - confirm with emd before publishing */}
         <div className="mt-10 grid md:grid-cols-4 gap-6">
-          <Stat label="Units deployed by emd" value="8,000+" />
-          <Stat label="Countries in operation" value="14+" />
-          <Stat label="Data points processed" value="600B" />
-          <Stat label="Recording resolution" value="ms" />
+          <Stat label={tx("Units deployed by emd")} value="8,000+" />
+          <Stat label={tx("Countries in operation")} value="14+" />
+          <Stat label={tx("Data points processed")} value={tx("600B")} />
+          <Stat label={tx("Recording resolution")} value={tx("ms")} />
         </div>
       </Section>
 
       {/* HOW TO START */}
-      <Section title="How to Start" subtitle="Start small on the assets that hurt most, prove the value, then scale.">
+      <Section title={tx("How to Start")} subtitle={tx("Start small on the assets that hurt most, prove the value, then scale.")}>
         <div className="grid md:grid-cols-4 gap-6">
           {[
             {
@@ -3841,7 +3491,7 @@ Thank you,
             },
           ].map((s, i) => (
             <Card key={i} icon={s.icon} title={s.title}>
-              <p className="text-sm">{s.text}</p>
+              <p className="text-sm">{tx(s.text)}</p>
             </Card>
           ))}
         </div>
@@ -3850,30 +3500,18 @@ Thank you,
           <div>
             <div className="flex items-center gap-3 text-cyan-300">
               <NBELogo />
-              <span className="font-semibold">Northbound Engineering Services</span>
+              <span className="font-semibold">{tx("Northbound Engineering Services")}</span>
             </div>
-            <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">
-              Put your most critical assets online
-            </h3>
-            <p className="mt-2 text-slate-300 max-w-2xl">
-              Tell us which assets cost you the most when they stop. We'll propose a pilot, a plan, and the expected
-              impact on your downtime.
-            </p>
+            <h3 className="mt-3 text-2xl md:text-3xl font-semibold text-white">{tx("Put your most critical assets online")}</h3>
+            <p className="mt-2 text-slate-300 max-w-2xl">{tx("Tell us which assets cost you the most when they stop. We'll propose a pilot, a plan, and the expected impact on your downtime.")}</p>
           </div>
           <a
             href={pilotMailto}
             className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold shadow-lg hover:brightness-110 transition whitespace-nowrap"
-          >
-            Request a Pilot
-          </a>
+          >{tx("Request a Pilot")}</a>
         </div>
 
-        <p className="mt-10 text-xs text-slate-500 max-w-4xl">
-          Hardware and platform by Electronic Minds Group (emd). Dragonfly, Remote Technician, CanGuard, Warp and
-          Sentinel are products of emd. INSITE, InPower, Electronic Technician and DiagnosticLink are trademarks of
-          their respective owners. All trademarks are the property of their respective owners. Northbound Engineering
-          Services is not affiliated with or endorsed by these OEMs.
-        </p>
+        <p className="mt-10 text-xs text-slate-500 max-w-4xl">{tx("Hardware and platform by Electronic Minds Group (emd). Dragonfly, Remote Technician, CanGuard, Warp and Sentinel are products of emd. INSITE, InPower, Electronic Technician and DiagnosticLink are trademarks of their respective owners. All trademarks are the property of their respective owners. Northbound Engineering Services is not affiliated with or endorsed by these OEMs.")}</p>
       </Section>
 
       <UseCaseFooterNav />
@@ -3903,6 +3541,16 @@ function ScrollToTop() {
 
 
 export default function App() {
+  return (
+    <LangProvider>
+      <AppRoutes />
+    </LangProvider>
+  );
+}
+
+// Subscribes to the language so every page re-renders when the visitor switches EN/ES.
+function AppRoutes() {
+  useLang();
   return (
     <BrowserRouter>
       <ScrollToTop />
